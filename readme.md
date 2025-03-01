@@ -70,4 +70,6 @@ def my_function(param) :
     return param
 ```
 
+View the tests/* folder for more examples
+
 Please contribute and raise issues! We just started and this is a pioneering project.
