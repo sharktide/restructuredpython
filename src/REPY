@@ -1,0 +1,76 @@
+import re
+import sys
+import os
+
+# Define token patterns for parsing (updated to handle 'elif' and 'else')
+token_specification = [
+    ('IF', r'if'),  # if
+    ('FOR', r'for'),  # for
+    ('WHILE', r'while'),  # while
+    ('DEF', r'def'),  # def
+    ('ELIF', r'elif'),  # elif
+    ('ELSE', r'else'),  # else
+    ('IDENT', r'[A-Za-z_][A-Za-z0-9_]*'),  # variable or function name
+    ('NUMBER', r'\d+'),  # numbers
+    ('LBRACE', r'\{'),  # opening brace
+    ('RBRACE', r'\}'),  # closing brace
+    ('LPAREN', r'\('),  # opening parenthesis
+    ('RPAREN', r'\)'),  # closing parenthesis
+    ('EQUALS', r'='),  # equals sign
+    ('SKIP', r'[ \t\n\r]+'),  # skip whitespace
+    ('MISMATCH', r'.'),  # anything else
+]
+
+# Create a regex pattern for all token types
+token_regex = '|'.join(f'(?P<{pair[0]}>{pair[1]})' for pair in token_specification)
+
+def tokenize(code):
+    """Tokenizes the rePython source code."""
+    for mo in re.finditer(token_regex, code):
+        kind = mo.lastgroup
+        value = mo.group()
+        if kind == 'SKIP':
+            continue
+        elif kind == 'MISMATCH':
+            raise RuntimeError(f'Unexpected character {value!r}')
+        else:
+            yield kind, value
+
+def parse_repython(code):
+    """Parses the rePython code and converts it to valid Python code."""
+    # Replace curly braces with colons after control structures and remove closing braces
+    code = re.sub(r'\b(if|for|while|def|elif)\s+([^\{]+)\s*\{', r'\1 \2:', code)  # Opening brace -> colon
+    code = re.sub(r'\belse\s*\{', 'else:', code)  # Handle else separately
+    code = code.replace('}', '')  # Remove closing braces
+    return code
+
+def main():
+    if len(sys.argv) < 2:
+        print("Usage: python repy.py <file.repy>")
+        sys.exit(1)
+
+    input_file = sys.argv[1]
+    
+    # Check if the input file exists
+    if not os.path.exists(input_file):
+        print(f"Error: The file {input_file} does not exist.")
+        sys.exit(1)
+
+    # Read input
+    with open(input_file, 'r') as f:
+        source_code = f.read()
+
+    # Parse the code and convert it to Python code
+    python_code = parse_repython(source_code)
+
+    # Generate the output file path (same name but with .py extension)
+    output_file = os.path.splitext(input_file)[0] + '.py'
+
+    # Save the Python code to the output file
+    with open(output_file, 'w') as f:
+        f.write(python_code)
+
+    print(f"Successfully compiled {input_file} to {output_file}")
+
+if __name__ == "__main__":
+    main()
