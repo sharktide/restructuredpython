@@ -1,3 +1,5 @@
+# repython/repython.py
+import argparse
 import re
 import sys
 import os
@@ -45,11 +47,11 @@ def parse_repython(code):
     return code
 
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: python repy.py <file.repy>")
-        sys.exit(1)
+    parser = argparse.ArgumentParser(description="Compile REPY files.")
+    parser.add_argument("filename", help="The REPY file to compile.")
+    args = parser.parse_args()
 
-    input_file = sys.argv[1]
+    input_file = args.filename
     
     # Check if the input file exists
     if not os.path.exists(input_file):

@@ -3,11 +3,21 @@
 The all in one python.
 reStructuredPython aka 'rePython' is a version of python with javascript-like syntax for a cleaner, easier to read syntax that compiles into python. 
 
-To use, download the REPY file in the src/ folder of this repository and put it in the root dir of your porject. To compile repy to py use the following command:
+To download the reStructuredPython compiler using the python package index:
 
 ```shell
-python path/to/REPY path/to/your/file.repy
+pip install --upgrade restructuredpython
 ```
+
+To use the reStructuredPython compiler:
+
+```shell
+repy path/to/your/file.repy
+```
+It is that simple!
+
+reStructuredPython code is written in a file extension .repy.
+Intellisense features are coming soon!
 
 Differences from python:
 
