@@ -1,13 +1,14 @@
 # rePython
 
-The all in one python.
-reStructuredPython aka 'rePython' is a version of python with javascript-like syntax for a cleaner, easier to read syntax that compiles into python. 
+The all in one, new python.
+reStructuredPython aka 'rePython' is a version of python with javascript-like syntax for a cleaner, easier to read text that compiles into python. 
 
 To download the reStructuredPython compiler using the python package index:
 
 ```shell
 pip install --upgrade restructuredpython
 ```
+Download our vscode extension (from the visual studio marketplace)[https://marketplace.visualstudio.com/items?itemName=RihaanMeher.restructuredpython]
 
 To use the reStructuredPython compiler:
 
