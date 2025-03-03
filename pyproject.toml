@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "restructuredpython"
-version = "0.1.0"
+version = "0.1.1"
 description = "A superset of Python for advanced programming."
 authors = [{name = "Rihaan Meher", email = "meherrihaan@gmail.com"}]
 license = {text = "MIT"}

@@ -40,11 +40,17 @@ def tokenize(code):
 
 def parse_repython(code):
     """Parses the rePython code and converts it to valid Python code."""
-    # Replace curly braces with colons after control structures and remove closing braces
+    lines = code.splitlines()
+    for i in range(1, len(lines)):
+        # Check for 'else' or 'elif' statements preceded directly by a closing brace
+        if lines[i].startswith(('} else', '} elif')):
+            raise SyntaxError(f"Syntax error: Misplaced '{lines[i].strip()}' statement at line {i + 1}. (REPY-0001)")
+    # Proceed with existing transformations
     code = re.sub(r'\b(if|for|while|def|elif)\s+([^\{]+)\s*\{', r'\1 \2:', code)  # Opening brace -> colon
     code = re.sub(r'\belse\s*\{', 'else:', code)  # Handle else separately
     code = code.replace('}', '')  # Remove closing braces
     return code
+
 
 def main():
     parser = argparse.ArgumentParser(description="Compile REPY files.")

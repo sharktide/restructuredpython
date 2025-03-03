@@ -8,7 +8,7 @@ To download the reStructuredPython compiler using the python package index:
 ```shell
 pip install --upgrade restructuredpython
 ```
-Download our vscode extension (from the visual studio marketplace)[https://marketplace.visualstudio.com/items?itemName=RihaanMeher.restructuredpython]
+Download our vscode extension [from the visual studio marketplace](https://marketplace.visualstudio.com/items?itemName=RihaanMeher.restructuredpython)
 
 To use the reStructuredPython compiler:
 
@@ -74,3 +74,8 @@ def my_function(param) :
 View the tests/* folder for more examples
 
 Please contribute and raise issues! We just started and this is a pioneering project.
+
+# Common mistakes
+
+These mistakes will reslut in a syntax error thrown by the REPY compiler or invalid python.
+View the ERRORS.md file at https://github.com/sharktide/repython/blob/main/errors.md
