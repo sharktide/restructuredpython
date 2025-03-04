@@ -27,3 +27,23 @@ else {
     pass
 }
 </details>
+<details><summary>Except /  on the same line as RBRACE (REPY-0002)</summary>
+Incorrect:
+
+```repy
+try {
+    pass
+} except {     <---- REPY-0002
+    pass
+}
+```
+Correct:
+
+```repy
+try {
+    pass
+}
+except {
+    pass
+}
+</details>

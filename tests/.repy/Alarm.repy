@@ -111,7 +111,6 @@ def start() {
         while True {
             if alarm_hour == datetime.datetime.now().hour and alarm_minute == datetime.datetime.now().minute {
                 print("TIME")
-    #alarm                
                 notification.notify(
                     title = ("Alarm for " + str(alarm_hour) + ":" + str(alarm_minute)),
                     message = '''Thank you for using Clock Services''',

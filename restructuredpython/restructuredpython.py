@@ -1,10 +1,9 @@
-# repython/repython.py
 import argparse
 import re
 import sys
 import os
 
-# Define token patterns for parsing (updated to handle 'elif' and 'else')
+# Define token patterns for parsing (updated to handle 'elif', 'else', 'try', and 'except')
 token_specification = [
     ('IF', r'if'),  # if
     ('FOR', r'for'),  # for
@@ -12,6 +11,8 @@ token_specification = [
     ('DEF', r'def'),  # def
     ('ELIF', r'elif'),  # elif
     ('ELSE', r'else'),  # else
+    ('TRY', r'try'),  # try
+    ('EXCEPT', r'except'),  # except
     ('IDENT', r'[A-Za-z_][A-Za-z0-9_]*'),  # variable or function name
     ('NUMBER', r'\d+'),  # numbers
     ('LBRACE', r'\{'),  # opening brace
@@ -41,16 +42,21 @@ def tokenize(code):
 def parse_repython(code):
     """Parses the rePython code and converts it to valid Python code."""
     lines = code.splitlines()
+    
+    # Check for misplaced 'else', 'elif', or 'except' statements directly after a closing brace
     for i in range(1, len(lines)):
-        # Check for 'else' or 'elif' statements preceded directly by a closing brace
         if lines[i].startswith(('} else', '} elif')):
             raise SyntaxError(f"Syntax error: Misplaced '{lines[i].strip()}' statement at line {i + 1}. (REPY-0001)")
-    # Proceed with existing transformations
-    code = re.sub(r'\b(if|for|while|def|elif)\s+([^\{]+)\s*\{', r'\1 \2:', code)  # Opening brace -> colon
+        if lines[i].startswith('} except'):
+            raise SyntaxError(f"Syntax error: Misplaced '{lines[i].strip()}' statement at line {i + 1}. (REPY-0002)")
+        
+    # Replace curly braces with colons after control structures and remove closing braces
+    code = re.sub(r'\b(if|for|while|def|try|elif|)\s+([^\{]+)\s*\{', r'\1 \2:', code)  # Opening brace -> colon
     code = re.sub(r'\belse\s*\{', 'else:', code)  # Handle else separately
+    code = re.sub(r'\bexcept\s*\{', 'except:', code)  # Handle except separately
     code = code.replace('}', '')  # Remove closing braces
-    return code
 
+    return code
 
 def main():
     parser = argparse.ArgumentParser(description="Compile REPY files.")
