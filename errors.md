@@ -26,6 +26,8 @@ elif x > 0 {
 else {
     pass
 }
+```
+
 </details>
 <details><summary>Except /  on the same line as RBRACE (REPY-0002)</summary>
 Incorrect:
