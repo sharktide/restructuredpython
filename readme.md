@@ -1,4 +1,4 @@
-# rePython
+# reStructuredPython 0.3.0
 
 The all in one, new python.
 reStructuredPython aka 'rePython' is a version of python with javascript-like syntax for a cleaner, easier to read text that compiles into python. 
@@ -22,7 +22,7 @@ Intellisense features are coming soon!
 
 Differences from python:
 
-For, if, elif, else and function definitions now use curly brackets like this:
+Control statements now use curly brackets like this:
 
 ```repy
 x = int(input('gimme a num'))
@@ -74,6 +74,10 @@ def my_function(param) :
 View the tests/* folder for more examples
 
 Please contribute and raise issues! We just started and this is a pioneering project.
+
+# Changelog
+
+View the changelog at https://github.com/sharktide/repython/blob/main/CHANGELOG.md
 
 # Common mistakes
 

@@ -2,8 +2,8 @@ import argparse
 import re
 import sys
 import os
+import warnings
 
-# Define token patterns for parsing (updated to handle 'elif', 'else', 'try', and 'except')
 token_specification = [
     ('IF', r'if'),  # if
     ('FOR', r'for'),  # for
@@ -24,7 +24,6 @@ token_specification = [
     ('MISMATCH', r'.'),  # anything else
 ]
 
-# Create a regex pattern for all token types
 token_regex = '|'.join(f'(?P<{pair[0]}>{pair[1]})' for pair in token_specification)
 
 def tokenize(code):
@@ -35,28 +34,49 @@ def tokenize(code):
         if kind == 'SKIP':
             continue
         elif kind == 'MISMATCH':
-            raise RuntimeError(f'Unexpected character {value!r}')
+            warnings.warn(f'Unexpected character {value!r}. Continuing with compilation')
+            yield kind, value
         else:
             yield kind, value
 
+def check_syntax(input_lines):
+        for i in range(1, len(input_lines)):
+            if input_lines[i].startswith(('} else', '} elif')):
+                raise SyntaxError(f"Misplaced '{input_lines[i].strip()}' statement at line {i + 1}. (REPY-0001)")
+            if input_lines[i].startswith('} except'):
+                raise SyntaxError(f"Misplaced '{input_lines[i].strip()}' statement at line {i + 1}. (REPY-0002)")
+
 def parse_repython(code):
     """Parses the rePython code and converts it to valid Python code."""
-    lines = code.splitlines()
+    string_pattern = r'(\".*?\"|\'.*?\')|f\".*?\"|f\'.*?\''
     
-    # Check for misplaced 'else', 'elif', or 'except' statements directly after a closing brace
-    for i in range(1, len(lines)):
-        if lines[i].startswith(('} else', '} elif')):
-            raise SyntaxError(f"Syntax error: Misplaced '{lines[i].strip()}' statement at line {i + 1}. (REPY-0001)")
-        if lines[i].startswith('} except'):
-            raise SyntaxError(f"Syntax error: Misplaced '{lines[i].strip()}' statement at line {i + 1}. (REPY-0002)")
-        
-    # Replace curly braces with colons after control structures and remove closing braces
-    code = re.sub(r'\b(if|for|while|def|try|elif|)\s+([^\{]+)\s*\{', r'\1 \2:', code)  # Opening brace -> colon
-    code = re.sub(r'\belse\s*\{', 'else:', code)  # Handle else separately
-    code = re.sub(r'\bexcept\s*\{', 'except:', code)  # Handle except separately
-    code = code.replace('}', '')  # Remove closing braces
+    strings = re.findall(string_pattern, code)
+    
+    for s in strings:
+        code = code.replace(s, s.replace("{", "{{").replace("}", "}}"))
+    
+    modified_code = []
+    inside_block = False
+    brace_stack = []
+    lines = code.splitlines()
 
-    return code
+    check_syntax(lines)
+
+    
+    for line in lines:
+        if re.match(r'^\s*(if|for|while|def|try|elif|else|except)\s.*\{', line):
+            modified_code.append(line.split('{')[0] + ':')
+            brace_stack.append('{')  
+            inside_block = True
+        elif re.match(r'^\s*\}', line) and inside_block:
+            brace_stack.pop()
+            inside_block = len(brace_stack) > 0
+        else:
+            # For all other lines (non-blocks), just append them without changes
+            modified_code.append(line)
+
+
+    return '\n'.join(modified_code)
 
 def main():
     parser = argparse.ArgumentParser(description="Compile REPY files.")
@@ -65,22 +85,17 @@ def main():
 
     input_file = args.filename
     
-    # Check if the input file exists
     if not os.path.exists(input_file):
         print(f"Error: The file {input_file} does not exist.")
         sys.exit(1)
 
-    # Read input
     with open(input_file, 'r') as f:
         source_code = f.read()
 
-    # Parse the code and convert it to Python code
     python_code = parse_repython(source_code)
 
-    # Generate the output file path (same name but with .py extension)
     output_file = os.path.splitext(input_file)[0] + '.py'
 
-    # Save the Python code to the output file
     with open(output_file, 'w') as f:
         f.write(python_code)
 

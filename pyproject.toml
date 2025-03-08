@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "restructuredpython"
-version = "0.2.0"
-description = "A superset of Python for advanced programming."
+version = "0.3.0"
+description = "A superset of Python with js-like syntax"
 authors = [{name = "Rihaan Meher", email = "meherrihaan@gmail.com"}]
 license = {text = "MIT"}
 classifiers = [

@@ -1,0 +1,11 @@
+Metadata-Version: 2.2
+Name: restructuredpython
+Version: 0.3.0
+Summary: A superset of Python with js-like syntax
+Author-email: Rihaan Meher <meherrihaan@gmail.com>
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
