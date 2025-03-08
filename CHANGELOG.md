@@ -1,6 +1,6 @@
 # ReStructuredPython Changelog
 
-*Note: This changelog begins with version 0.2.0*
+*Note: This changelog skips with version 0.1.1*
 
 <details><summary> Major release 0 </summary>
 
