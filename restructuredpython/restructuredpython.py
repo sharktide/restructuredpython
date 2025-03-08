@@ -13,6 +13,7 @@ token_specification = [
     ('ELSE', r'else'),  # else
     ('TRY', r'try'),  # try
     ('EXCEPT', r'except'),  # except
+    ('CLASS', r'class'), # class
     ('IDENT', r'[A-Za-z_][A-Za-z0-9_]*'),  # variable or function name
     ('NUMBER', r'\d+'),  # numbers
     ('LBRACE', r'\{'),  # opening brace
@@ -40,11 +41,17 @@ def tokenize(code):
             yield kind, value
 
 def check_syntax(input_lines):
-        for i in range(1, len(input_lines)):
-            if input_lines[i].startswith(('} else', '} elif')):
-                raise SyntaxError(f"Misplaced '{input_lines[i].strip()}' statement at line {i + 1}. (REPY-0001)")
-            if input_lines[i].startswith('} except'):
-                raise SyntaxError(f"Misplaced '{input_lines[i].strip()}' statement at line {i + 1}. (REPY-0002)")
+    for i in range(len(input_lines)):
+        line = input_lines[i].strip()
+        
+        if line.startswith(('} else', '} elif')):
+            raise SyntaxError(f"Misplaced '{line}' statement at line {i + 1}. (REPY-0001)")
+        if line.startswith('} except'):
+            raise SyntaxError(f"Misplaced 'except' statement at line {i + 1}. (REPY-0002)")
+        if line.startswith('} def'):
+            raise SyntaxError(f"Misplaced 'def' statement at line {i + 1}. (REPY-0003)")
+        if line.startswith('} class'):
+            raise SyntaxError(f"Misplaced 'class' statement at line {i + 1}. (REPY-0004)")
 
 def parse_repython(code):
     """Parses the rePython code and converts it to valid Python code."""
@@ -64,9 +71,9 @@ def parse_repython(code):
 
     
     for line in lines:
-        if re.match(r'^\s*(if|for|while|def|try|elif|else|except)\s.*\{', line):
+        if re.match(r'^\s*(if|for|while|def|try|elif|else|except|class)\s.*\{', line):
             modified_code.append(line.split('{')[0] + ':')
-            brace_stack.append('{')  
+            brace_stack.append('{')
             inside_block = True
         elif re.match(r'^\s*\}', line) and inside_block:
             brace_stack.pop()

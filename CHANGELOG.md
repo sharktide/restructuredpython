@@ -1,4 +1,4 @@
-# ReStructuredPython Changelog
+# reStructuredPython Changelog
 
 *Note: This changelog skips with version 0.1.1*
 
@@ -6,6 +6,17 @@
 
 ---
 
+<!--------------->
+
+<details><summary>0.4.0</summary>
+
+---
+
+Added support for class statements (Added errors REPY-0003, REPY-0004)
+
+</details>
+
+<!--------------->
 <!--------------->
 
 <details><summary>0.3.0</summary>
