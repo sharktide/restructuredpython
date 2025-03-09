@@ -4,3 +4,5 @@
 docs/** -linguist-documentation
 
 *.rst linguist-detectable
+*.yaml linguist-detectable
+*.toml linguist-detectable
