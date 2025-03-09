@@ -1,0 +1,32 @@
+Elif / Else on the same line as RBRACE (REPY-0001)
+==================================================
+
+Description
+-----------
+This error occurs when an ``else`` or ``elif`` statement is on the same line as a closing RBRACE.
+
+Incorrect:
+----------
+.. code-block:: repy
+
+    if x < 0 {
+        pass
+    } elif x > 0 {     <---- REPY-0001
+        pass
+    } else {           <---- REPY-0001
+        pass
+    }
+
+Correct:
+--------
+.. code-block:: repy
+
+    if x < 0 {
+        pass
+    }                  <---- 
+    elif x > 0 {
+        pass
+    }                  <---- 
+    else {
+        pass
+    }

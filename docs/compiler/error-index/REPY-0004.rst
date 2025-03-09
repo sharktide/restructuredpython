@@ -1,0 +1,47 @@
+Class definition on the same line as RBRACE (REPY-0004)
+==========================================================
+
+Description
+-----------
+This error occurs when a ``class`` definition is on the same line as a closing RBRACE.
+
+Incorrect:
+----------
+.. code-block:: repy
+
+    class myclass() {
+        def function_a() {
+            pass
+        }
+        def function_b() {
+            pass
+        }
+    } class anotherclass() {     <---- REPY-0004
+        def function_c() {
+            pass
+        }
+        def function_d() {
+            pass
+        }
+    }
+
+Correct:
+--------
+.. code-block:: repy
+
+    class myclass() {
+        def function_a() {
+            pass
+        }
+        def function_b() {
+            pass
+        }
+    }                          <----
+    class anotherclass() {
+        def function_c() {
+            pass
+        }
+        def function_d() {
+            pass
+        }
+    }

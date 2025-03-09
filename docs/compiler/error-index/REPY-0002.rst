@@ -1,0 +1,27 @@
+Except Statement  on the same line as RBRACE (REPY-0002)
+========================================================
+
+Description
+-----------
+This error occurs when an ``except`` statement is on the same line as a closing RBRACE.
+
+Incorrect:
+----------
+.. code-block:: repy
+
+    try {
+        pass
+    } except {     <---- REPY-0002
+        pass
+    }
+
+Correct:
+--------
+.. code-block:: repy
+
+    try {
+        pass
+    }              <----
+    except {
+        pass
+    }

@@ -1,0 +1,172 @@
+import datetime
+import pytz
+import time
+import plyer
+from plyer import notification
+import playsound
+import datetime
+print("WELCOME TO CLOCK SERVICES")
+def exit() {
+    print("Thank you for using CLOCK SERVICES!")
+    print()
+    print('''  _____                                                         _____            _ 
+ |_   _|                                      ||               / ____|          | |
+   | |  __ _ _   _  __ _ _ __   __ _ ___     |  |   _ __ ___  | |     ___   ___ | |
+   | | / _` | | | |/ _` | '_ | / _` / __'   | /| | | '__/ _ | | |    / _ | / _ || |
+  _| || _| | |_| | _| | | | | _| |__ |  | ____ || | |  __/ | |___| _ | _ | |
+ |_____|__, ||__,_||__,_|_| |_||__,_|___/ |_/    |_|_|  |___|  |_____|___/ |___/|_|
+        __/ |                                                                      
+       |___/                                                                       ''')
+    print()
+    print("Exiting in 5 Seconds")
+    time.sleep(1)
+    print("Exiting in 4 Seconds")
+    time.sleep(1)
+    print("Exiting in 3 Seconds")
+    time.sleep(1)
+    print("Exiting in 2 Seconds")
+    time.sleep(1)
+    print("Exiting in 1 Seconds")
+    time.sleep(1)
+    print("Exiting in 0 Seconds")
+    quit()
+}
+def start() {
+    
+    print('''
+    How can we help you today? Select one of the following:
+
+    To set a timer, type "1"
+    To set an alarm for a specific time, type "2"
+    To check your desktop time, type "3"
+    To cancel, type "cancel"''')
+    answer = input(">>>")
+    
+    #----------------------------------------------------------------------------------------------------------#
+
+    if answer == "1" {
+        print()
+        print("Set a timer for how many seconds?")
+        timer = (int(input(">>> ")))
+        print()
+        print("To confirm, you are setting a timer for " + (str(timer)) + " seconds. To proceed, type 'proceed' else type cancel.")
+        xx = input(">>> ")
+        if xx == "proceed" {
+    #timer
+            time.sleep((timer))
+            print("TIME")
+            notification.notify(
+                title = ("Timer for " + (str(timer)) + " seconds"),
+                message = "Thank you for using Clock Services",
+                app_name = "Shark Clock Services",
+                app_icon = "Icon.ico",
+                timeout  = 20
+            )
+            for i in range(5) {
+                playsound.playsound("beep-06.mp3")
+            }
+        }
+
+        else {
+            answer = 0
+            print()
+            print()
+            print('Would you like to set another timer, alarm, or check the time again? If so, please type "proceed", else type "cancel"')
+            answer2 = input(">>> ")
+            if answer2 == "proceed" {
+                start()
+            }
+            elif answer2 == "cancel" {
+                exit()
+            }
+            else {
+                print("ERROR. TERMINATING PROGRAM.")
+                exit()
+            }
+        }
+    }
+    # ---------------------------------------------------------------------------------------------------------------------#
+
+    elif answer == "2" {
+        current_time = 0
+        print()
+        print("Set an alarm for what hour? Use 12 hour time")
+        alarm_hour = int(input(">>> "))
+        print()
+        print("Set an alarm for what minute of the hour?")
+        alarm_minute = int(input(">>> "))
+        print()
+        print("am/pm? (Case Sensitive)")
+        am_pm = input(">>> ")
+        if am_pm == "pm" {
+            alarm_hour += 12
+            print("Converting to 24 hour time...")
+        }
+        elif alarm_hour == 12 and am_pm == "am" {
+            alarm_hour -=12
+            print("Loading...")
+        }
+        print("Starting Alarm")
+        print("Success!")
+        while True {
+            if alarm_hour == datetime.datetime.now().hour and alarm_minute == datetime.datetime.now().minute {
+                print("TIME")
+                notification.notify(
+                    title = ("Alarm for " + str(alarm_hour) + ":" + str(alarm_minute)),
+                    message = '''Thank you for using Clock Services''',
+                    app_name = "Shark Clock Services",
+                    app_icon = "Icon.ico",
+                    timeout = 20
+                )
+                for i in range(5) {
+                    playsound.playsound("beep-06.mp3")
+                }
+                break
+            }
+            time.sleep(1)
+        }
+            
+        print()
+        print()
+        print('Would you like to set another timer, alarm, or check the time again? If so, please type "proceed", else type "cancel"')
+        answer2 = input(">>> ")
+        if answer2 == "proceed" {
+            start()
+        }
+        elif answer2 == "cancel" {
+            exit()
+        }
+        else {
+            print("ERROR. TERMINATING PROGRAM.")
+            exit()
+        }
+    }
+    #----------------------------------------------------------------------------------------------------#
+            
+    elif answer == "3" {
+        current_time = time.strftime("%D:%H:%M:%S", (time.localtime()))
+        print(current_time)
+        print()
+        print()
+        print('Would you like to set another timer, alarm, or check the time again? If so, please type "proceed", else type "cancel"')
+        answer2 = input(">>> ")
+        if answer2 == "proceed" {
+            start()
+        }
+        elif answer2 == "cancel" {
+            exit()
+        }
+        else {
+            print("ERROR. TERMINATING PROGRAM.")
+            exit()
+        }
+    }
+    elif answer == "cancel" {
+        exit()
+    }
+    else {
+        print("ERROR. TERMINATING PROGRAM")
+        exit()
+    }
+}
+start()
