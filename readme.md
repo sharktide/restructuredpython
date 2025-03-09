@@ -77,9 +77,9 @@ Please contribute and raise issues! We just started and this is a pioneering pro
 
 # Changelog
 
-View the changelog at https://github.com/sharktide/repython/blob/main/CHANGELOG.md
+View the changelog at https://restructuredpython.readthedocs.io/en/latest/changelog.html
 
 # Common mistakes
 
 These mistakes will reslut in a syntax error thrown by the REPY compiler or invalid python.
-View the ERRORS.md file at https://github.com/sharktide/repython/blob/main/errors.md
+View the error index at https://restructuredpython.readthedocs.io/en/latest/compiler/error_index/
