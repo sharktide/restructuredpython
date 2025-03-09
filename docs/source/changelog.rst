@@ -4,7 +4,7 @@ reStructuredPython Changelog
 *Note: This changelog skips version 0.1.1*
 
 Major release 0
-===============
+---------------
 
 .. raw:: html
 

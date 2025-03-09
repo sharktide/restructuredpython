@@ -48,5 +48,13 @@ Join the reStructuredPython community to contribute, ask questions, and stay upd
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Contents
 
+   compiler/overview
+   compiler/error_index/index
+   changelog
+   guides/Getting_Started
+   guides/Install
+   reference/index
+   compiler/error_index/index
+   tutorials/Example_Programs

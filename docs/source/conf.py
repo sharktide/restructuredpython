@@ -14,7 +14,7 @@ release = '0.4.0'
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = []
+extensions = ['python_docs_theme']
 
 templates_path = ['_templates']
 exclude_patterns = []
@@ -27,5 +27,5 @@ html_static_path = ['_static']
 
 # Define the sidebars
 html_sidebars = {
-    '**': ['searchbox.html', 'globaltoc.html', 'relations.html', 'sourcelink.html', 'documentations.html'],
+    '**': ['searchbox.html', 'globaltoc.html', 'relations.html', 'sourcelink.html'],
 }
