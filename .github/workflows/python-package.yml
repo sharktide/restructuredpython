@@ -13,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        python-version: ["3.12", "3.13"]  # Run on multiple Python versions
+        python-version: ["3.13"]
 
     steps:
       - name: Checkout code
@@ -43,7 +43,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.sha }}  # Use commit SHA as tag name or use a custom tag
-          release_name: "PR #${{ github.event.pull_request.number }}"  # PR number as release name
+          name: "PR #${{ github.event.pull_request.number }}"  # PR number as release name
           prerelease: true  # Mark as a pre-release (beta)
           files: |
             dist/*.whl
