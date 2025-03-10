@@ -1,3 +1,4 @@
+MANIFEST.in
 README.md
 pyproject.toml
 restructuredpython/__init__.py
