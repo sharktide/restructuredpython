@@ -1,0 +1,45 @@
+name: Publish Python Package
+
+on:
+  push:
+    branches:
+      - main  # Trigger the workflow only on pushes to the 'main' branch (you can adjust to your branch name)
+    paths-ignore:
+      - 'docs/**'  # Ignore changes in the 'docs' directory
+      - 'restructuredpython.egg-info/**'  # Ignore changes in the 'restructuredpython.egg-info' directory
+      - '.github/**'  # Ignore changes in the '.github' directory (for GitHub Actions workflows)
+      - '.gitattributes'  # Ignore changes to '.gitattributes'
+      - '.gitignore'  # Ignore changes to '.gitignore'
+      - 'README.md'  # Ignore changes to 'README.md'
+
+jobs:
+  publish:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.13'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install twine setuptools wheel
+
+      - name: Create .pypirc file from TWINE_ACC secret
+        run: |
+          mkdir -p ~/.pypirc
+          echo "${{ secrets.TWINE_ACC }}" > ~/.pypirc
+        shell: bash
+
+      - name: Build the package
+        run: |
+          python setup.py sdist bdist_wheel
+
+      - name: Upload package to PyPI
+        run: |
+          twine upload dist/* --config-file ~/.pypirc
