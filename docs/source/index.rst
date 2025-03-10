@@ -51,5 +51,4 @@ Join the reStructuredPython community to contribute, ask questions, and stay upd
    guides/Getting_Started
    guides/Install
    reference/index
-   compiler/error_index/index
    tutorials/Example_Programs
