@@ -42,7 +42,7 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.sha }}  # Use commit SHA as tag name or use a custom tag
+          tag_name: "PR"  # Use commit SHA as tag name or use a custom tag
           name: "PR #${{ github.event.pull_request.number }}"  # PR number as release name
           prerelease: true  # Mark as a pre-release (beta)
           files: |
