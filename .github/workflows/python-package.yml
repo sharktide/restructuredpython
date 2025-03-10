@@ -1,0 +1,52 @@
+name: Build and Create GitHub Release for PR
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: ["3.12", "3.13"]  # Run on multiple Python versions
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install setuptools wheel
+
+      #- name: Run tests with pytest
+      #  run: |
+      #    pytest  # Run your tests, replace with your test command
+
+      - name: Build the package
+        run: |
+          py -m build
+
+      - name: Create a GitHub release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.sha }}  # Use commit SHA as tag name or use a custom tag
+          release_name: "PR #${{ github.event.pull_request.number }}"  # PR number as release name
+          prerelease: true  # Mark as a pre-release (beta)
+          files: |
+            dist/*.whl
+            dist/*.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub token for authentication
