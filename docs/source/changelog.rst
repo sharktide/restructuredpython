@@ -9,6 +9,15 @@ Major release 0
 .. raw:: html
 
     <details>
+    <summary>0.5.0</summary>
+    <ul>
+        <li>Add options for using header files in python (by the ``include 'path/to/my/file.cdata``. CDATA files are regular reStructuredPython files that will be automatically added to the top of a compiled ``.repy`` file.)</li>
+    </ul>
+    </details>
+
+.. raw:: html
+
+    <details>
     <summary>0.4.0</summary>
     <ul>
         <li>Added support for class statements (Added errors REPY-0003, REPY-0004)</li>

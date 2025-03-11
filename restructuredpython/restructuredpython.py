@@ -3,7 +3,9 @@ import re
 import sys
 import os
 import warnings
+from pathlib import Path
 
+# Define token specifications
 token_specification = [
     ('IF', r'if'),  # if
     ('FOR', r'for'),  # for
@@ -79,32 +81,87 @@ def parse_repython(code):
             brace_stack.pop()
             inside_block = len(brace_stack) > 0
         else:
-            # For all other lines (non-blocks), just append them without changes
             modified_code.append(line)
-
 
     return '\n'.join(modified_code)
 
+def compile_header_file(header_filename):
+    """Compiles a .cdata file and returns the corresponding Python code."""
+    
+    # Make sure the file exists
+    header_filename = Path(header_filename).resolve()
+    header_filename = header_filename.as_posix()
+    header_filename = Path(header_filename).resolve()
+    print(f"Resolved header file path: {header_filename}")
+    
+    if not header_filename.exists():
+        raise FileNotFoundError(f"Header file {header_filename} not found.")
+    try:
+        with header_filename.open('r') as f:
+            header_code = f.read()
+        if not header_code.strip():
+            raise ValueError(f"Header file {header_filename} is empty.")
+    except Exception as e:
+        print(f"Error opening file {header_filename}: {e}")
+        return ""
+    
+    return parse_repython(header_code)
+
+def process_includes(code, input_file):
+    """Processes #include directives and compiles included .d.repy files."""
+    # Look for all `include` directives that support both single and double quotes
+    include_pattern = r'\s*include\s+[\'"]([^\'"]+)[\'"]'  # Capture lines with `include 'filename'` or `include "filename"`
+    
+    includes = re.findall(include_pattern, code)
+    if includes:
+        print(f"All include files: {includes}")  # Debugging print to see the included files
+    else:
+        print("No include found.")  # Debugging if no include is found
+
+    header_code = ""
+    for include in includes:
+        print(f"Processing include: {include}")  # Debugging the include being processed
+        
+        if not os.path.isabs(include):
+            include = os.path.join(os.path.dirname(os.path.abspath(input_file)), include)
+        
+        # Check if the file exists
+        if os.path.exists(include):
+            print(f"Compiling included file: {include}")  # Debugging: File being compiled
+            header_code += compile_header_file(include) + "\n"
+        else:
+            print(f"Error: Included file '{include}' not found.")  # Error message if file is not found
+            continue  # Skip the missing include
+
+    code_without_includes = re.sub(include_pattern, '', code)
+
+    return header_code, code_without_includes
+
+# Example use case
 def main():
     parser = argparse.ArgumentParser(description="Compile REPY files.")
     parser.add_argument("filename", help="The REPY file to compile.")
     args = parser.parse_args()
 
     input_file = args.filename
-    
+
     if not os.path.exists(input_file):
         print(f"Error: The file {input_file} does not exist.")
-        sys.exit(1)
-
+        return
+    
     with open(input_file, 'r') as f:
         source_code = f.read()
 
-    python_code = parse_repython(source_code)
+    header_code, code_without_includes = process_includes(source_code, input_file)
+
+    python_code = parse_repython(code_without_includes)
+
+    final_code = header_code + python_code
 
     output_file = os.path.splitext(input_file)[0] + '.py'
 
     with open(output_file, 'w') as f:
-        f.write(python_code)
+        f.write(final_code)
 
     print(f"Successfully compiled {input_file} to {output_file}")
 
