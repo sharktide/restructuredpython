@@ -30,12 +30,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install twine setuptools wheel
 
-      - name: Create .pypirc file from TWINE_ACC secret
-        run: |
-          mkdir -p ~/.pypirc
-          echo "${{ secrets.TWINE_ACC }}" > ~/.pypirc
-        shell: bash
-
       - name: Build the package
         run: |
           python setup.py sdist bdist_wheel
