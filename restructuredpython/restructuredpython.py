@@ -3,7 +3,9 @@ import re
 import sys
 import os
 import warnings
+from pathlib import Path
 
+# Define token specifications
 token_specification = [
     ('IF', r'if'),  # if
     ('FOR', r'for'),  # for
@@ -97,12 +99,9 @@ def parse_repython(code):
             brace_stack.append('{')
             inside_block = True
         else:
-            # If it's neither a match nor closing brace, just append the line
             modified_code.append(line)
 
-
     return '\n'.join(modified_code)
-
 
 def compile_header_file(header_filename):
     """Compiles a .cdata file and returns the corresponding Python code."""
@@ -161,20 +160,24 @@ def main():
     args = parser.parse_args()
 
     input_file = args.filename
-    
+
     if not os.path.exists(input_file):
         print(f"Error: The file {input_file} does not exist.")
-        sys.exit(1)
-
+        return
+    
     with open(input_file, 'r') as f:
         source_code = f.read()
 
-    python_code = parse_repython(source_code)
+    header_code, code_without_includes = process_includes(source_code, input_file)
+
+    python_code = parse_repython(code_without_includes)
+
+    final_code = header_code + python_code
 
     output_file = os.path.splitext(input_file)[0] + '.py'
 
     with open(output_file, 'w') as f:
-        f.write(python_code)
+        f.write(final_code)
 
     print(f"Successfully compiled {input_file} to {output_file}")
 
