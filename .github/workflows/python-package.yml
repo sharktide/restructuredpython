@@ -6,6 +6,13 @@ on:
       - opened
       - synchronize
       - reopened
+    paths-ignore:
+      - 'docs/**'  # Ignore changes in the 'docs' directory
+      - 'restructuredpython.egg-info/**'  # Ignore changes in the 'restructuredpython.egg-info' directory
+      - '.github/**'  # Ignore changes in the '.github' directory
+      - '.gitattributes'  # Ignore changes to '.gitattributes'
+      - '.gitignore'  # Ignore changes to '.gitignore'
+      - 'README.md'  # Ignore changes to 'README.md'
 
 jobs:
   build:
