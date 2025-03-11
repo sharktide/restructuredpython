@@ -51,11 +51,13 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: "v${{ env.release_version }}"
-          name: "Release ${{ env.release_version }}"  # Use version from pyproject.toml as release title
-          prerelease: true  # Mark as a pre-release (beta)
+          name: "${{ env.release_version }}"  # Use version from pyproject.toml as release title
+          prerelease: false  # Mark as a pre-release (beta)
           files: |
             dist/*.whl
             dist/*.tar.gz
+          body: |
+            View the [changelog](https://restructuredpython.readthedocs.io/en/latest/changelog.html) for information about this release.
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}  # GitHub token for authentication
 
