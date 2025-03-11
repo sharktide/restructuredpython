@@ -9,18 +9,10 @@ Incorrect:
 ----------
 .. code-block:: repy
 
-    class myclass() {
-        def function_a() {
+    match(num) {
+        case 1{
             pass
-        }
-        def function_b() {
-            pass
-        }
-    } class anotherclass() {     <---- REPY-0004
-        def function_c() {
-            pass
-        }
-        def function_d() {
+        } case _{      <---- REPY-0005
             pass
         }
     }
@@ -29,19 +21,11 @@ Correct:
 --------
 .. code-block:: repy
 
-    class myclass() {
-        def function_a() {
+    match(num) {
+        case 1{
             pass
-        }
-        def function_b() {
-            pass
-        }
-    }                          <----
-    class anotherclass() {
-        def function_c() {
-            pass
-        }
-        def function_d() {
+        }          <----
+        case _{
             pass
         }
     }
