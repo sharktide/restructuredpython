@@ -44,8 +44,10 @@ jobs:
       - name: Build the package
         run: |
           python -m build
+          
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
 
-      # Create a GitHub release with version from pyproject.toml
       - name: Create a GitHub release
         id: create_release
         uses: softprops/action-gh-release@v1
@@ -61,8 +63,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}  # GitHub token for authentication
 
-      - name: Publish package distributions to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          user: ${{ secrets.PYPI_USERNAME }}
-          password: ${{ secrets.PYPI_PASSWORD }}
+
+
