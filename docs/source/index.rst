@@ -22,6 +22,7 @@ Features
 --------
 
 * **JavaScript-like Syntax:** Enjoy a syntax reminiscent of JavaScript, making it familiar and intuitive for developers with a JavaScript background.
+* **Header Files** In reStructuredPython, enjoy having the ability to create header files, similar to C++ for easier, and more organized development. View the `syntax <https://restructuredpython.readthedocs.io/en/latest/reference/Syntax_Guide.html>`_ guide for more details.
 * **Seamless Compilation:** reStructuredPython code compiles directly into Python, ensuring compatibility with existing Python libraries and frameworks.
 * **Enhanced Readability:** The syntax enhancements aim to improve code readability and reduce verbosity.
 
