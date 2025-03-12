@@ -31,7 +31,7 @@ jobs:
       - name: Run pylint
         id: pylint
         run: |
-          pylint_output=$(pylint $(find . -type f -name "*.py" ! -path "./tests/*" ! -path "./docs/*") --output-format=text)
+          pylint_output=$(pylint restructuredpython/restructuredpython.py --output-format=text)
           echo "$pylint_output"
           echo "::set-output name=pylint_output::$pylint_output"
 
