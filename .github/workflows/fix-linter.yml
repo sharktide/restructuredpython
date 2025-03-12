@@ -46,13 +46,16 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
+          # Generate a random 8-character string for the branch name
+          RANDOM_BRANCH="lint-$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 8)"
+
           # If triggered by a PR, comment with linter issues and requested changes
           if [[ $GITHUB_EVENT_NAME == 'pull_request' ]]; then
             pylint_output=$(pylint $(find . -type f -name "*.py" ! -path "./tests/*" ! -path "./docs/*") --output-format=text)
             if [[ -n "$pylint_output" ]]; then
               echo "Posting linter issues as PR comment."
               curl -X POST \
-                -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                -H "Authorization: token ${{ secrets.GH_PAT }}" \
                 -d '{"body": "### Linter issues detected:\n\n'"$pylint_output"'"}' \
                 "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments"
             else
@@ -60,16 +63,15 @@ jobs:
             fi
           fi
 
-          # If triggered manually, create a new branch and push the fixes
+          # If triggered manually, create a new random branch, apply fixes, and push
           if [[ $GITHUB_EVENT_NAME == 'workflow_dispatch' ]]; then
-            NEW_BRANCH="auto-fix-linter"
-            git checkout -b $NEW_BRANCH
+            git checkout -b $RANDOM_BRANCH
             git add .
             git diff --cached --quiet || git commit -m "Auto-fix Linter"
-            git push origin $NEW_BRANCH
+            git push origin $RANDOM_BRANCH
           fi
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 
   # Step 7: Create PR (only if triggered manually)
   create-pr:
@@ -80,8 +82,8 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: auto-fix-linter  # New branch created if triggered manually
+          token: ${{ secrets.GH_PAT }}
+          branch: ${{ needs.lint-and-fix.outputs.random_branch }}  # Random branch created if triggered manually
           base: main
           title: "Auto-fix Linter issues"
           body: "This PR automatically fixes the PEP8 issues detected by pylint."
