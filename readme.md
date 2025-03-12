@@ -1,4 +1,4 @@
-# reStructuredPython 0.6.0
+# reStructuredPython 0.7.0
 
 The all in one, new python.
 reStructuredPython aka 'rePython' is a version of python with javascript-like syntax for a cleaner, easier to read text that compiles into python. 
