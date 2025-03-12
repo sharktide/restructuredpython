@@ -1,7 +1,7 @@
 # reStructuredPython 0.7.0
 
 The all in one, new python.
-reStructuredPython aka 'rePython' is a version of python with javascript-like syntax for a cleaner, easier to read text that compiles into python. 
+reStructuredPython aka 'rePython' is a superset of python with many new features, such as header files, similar to C and C++, Optional Javascript-like syntax with curly brackets {} around control loops, function chanining and more. All the features can be found in the syntax/feature guide of out documentation https://restructuredpython.readthedocs.io/en/latest/reference/Syntax_Guide.html
 
 To download the reStructuredPython compiler using the python package index:
 
@@ -17,63 +17,12 @@ repy path/to/your/file.repy
 ```
 It is that simple!
 
-reStructuredPython code is written in a file extension .repy.
-Intellisense features are coming soon!
+# Basics
+reStructuredPython code is written in a file extension .repy and reStructuredPython header files are written with the file extension .cdata. Functions can now be chained in a more readable syntax. Control loops an be defined with curly brackets, instead of colons. View entries 1, 2, and 3 of the [syntax guide](https://restructuredpython.readthedocs.io/en/latest/reference/Syntax_Guide.html) for more details. 
 
-Differences from python:
+# Contributing
 
-Control statements now use curly brackets like this:
-
-```repy
-x = int(input('gimme a num'))
-if x == 2 {
-    print("x is 2!")
-    if (input("say 'yes'") == 'yes') {
-        print('Hi')
-    }
-} 
-elif x < 2 {
-    print("x is less than 2!")
-} 
-else {
-    print("x is greater than 2!")
-}
-
-for i in range(10) {
-    print(i)
-}
-
-def my_function(param) {
-    return param
-}
-```
-Compiles into:
-```python
-x = int(input('gimme a num'))
-if x == 2 :
-    print("x is 2!")
-    if (input("say 'yes'") == 'yes') :
-        print('Hi')
-    
- 
-elif x < 2 :
-    print("x is less than 2!")
- 
-else:
-    print("x is greater than 2!")
-
-
-for i in range(10) :
-    print(i)
-
-
-def my_function(param) :
-    return param
-```
-
-View the tests/* folder for more examples
-
-Please contribute and raise issues! We just started and this is a pioneering project.
+Please contribute and raise issues! We just started and this is a pioneering project. Fork the repository, make your changes, update the documentation in the docs/* folder, add examples (if applicable) in the tests/.repy and their compiled versions in tests/.py directory as well as in docs/source/tutorials/programs and in docs/source/tutorials/compiled_programs. Once you have ensured all features work of the compiler by test-compiling the other files in tests/.repy/*, make a pull request with the github issue number is applicable, short concise title and description of your changes. Warining: The first paragraph of the pull request description will go to be part of the changelong, so keep it short and clear. PLEASE DO NOT label your changes as a new version. That will be done manually or by a bot.
 
 # Changelog
 
