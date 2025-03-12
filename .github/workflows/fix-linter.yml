@@ -1,9 +1,7 @@
 name: Lint and Fix Python Code
 
 on:
-  pull_request:
-    branches:
-      - main  # Trigger on pull requests to `main`
+  workflow_dispatch:  # Trigger manually
 
 jobs:
   lint-and-fix:
@@ -26,7 +24,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install pylint autopep8
 
-      # Step 4: Run pylint on specific files
+      # Step 4: Run pylint on specified files
       - name: Run pylint on specified files
         id: pylint
         run: |
@@ -34,14 +32,19 @@ jobs:
           echo "$pylint_output"
           echo "::set-output name=pylint_output::$pylint_output"
 
-      # Step 5: Apply autopep8 fixes to the files
+      # Step 5: Apply autopep8 fixes
       - name: Apply autopep8 fixes
         run: |
           autopep8 --in-place --aggressive --aggressive $(git ls-files '*.py' | grep -vE '(^tests/|^docs/)')
 
-      # Step 6: Request changes using suggest-changes action
-      - name: Request changes from autopep8 fixes
-        uses: parkerbxyz/suggest-changes@v1
-        with:
-          comment: 'Please commit the suggested changes from pylint and autopep8.'
-          event: 'REQUEST_CHANGES'
+      # Step 6: Commit and push changes directly to the main branch
+      - name: Commit and push changes to main branch
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git checkout main
+          git add .
+          git diff --cached --quiet || git commit -m "Auto-fix Linter and apply autopep8 changes"
+          git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
