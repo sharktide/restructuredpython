@@ -1,36 +1,87 @@
-name: Apply Linter Fixes
+name: Lint and Fix Python Code
 
 on:
+  pull_request:
+    branches:
+      - main  # Trigger on pull requests to `main`
   workflow_dispatch:
 
 jobs:
-  fix-linter:
+  lint-and-fix:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout the code
       - name: Checkout code
         uses: actions/checkout@v2
 
+      # Step 2: Set up Python
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: '3.x'
 
+      # Step 3: Install dependencies
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install autopep8
+          pip install pylint autopep8
 
-      - name: Automatically apply linter fixes
+      # Step 4: Run pylint and check for issues
+      - name: Run pylint
+        id: pylint
+        run: |
+          pylint_output=$(pylint $(find . -type f -name "*.py" ! -path "./tests/*" ! -path "./docs/*") --output-format=text)
+          echo "$pylint_output"
+          echo "::set-output name=pylint_output::$pylint_output"
+
+      # Step 5: Apply linter fixes using autopep8
+      - name: Apply linter fixes using autopep8
         run: |
           autopep8 --in-place --aggressive --aggressive $(find . -type f -name "*.py" ! -path "./tests/*" ! -path "./docs/*")
-          
-      - name: Commit and push fixes
+
+      # Step 6: Commit the changes if necessary
+      - name: Commit and push fixes or comment on PR
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add .
-          git diff --cached --quiet || git commit -m "Auto-fix Linter"
-          git push
+
+          # If triggered by a PR, comment with linter issues and requested changes
+          if [[ $GITHUB_EVENT_NAME == 'pull_request' ]]; then
+            pylint_output=$(pylint $(find . -type f -name "*.py" ! -path "./tests/*" ! -path "./docs/*") --output-format=text)
+            if [[ -n "$pylint_output" ]]; then
+              echo "Posting linter issues as PR comment."
+              curl -X POST \
+                -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                -d '{"body": "### Linter issues detected:\n\n'"$pylint_output"'"}' \
+                "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments"
+            else
+              echo "No linting issues found."
+            fi
+          fi
+
+          # If triggered manually, create a new branch and push the fixes
+          if [[ $GITHUB_EVENT_NAME == 'workflow_dispatch' ]]; then
+            NEW_BRANCH="auto-fix-linter"
+            git checkout -b $NEW_BRANCH
+            git add .
+            git diff --cached --quiet || git commit -m "Auto-fix Linter"
+            git push origin $NEW_BRANCH
+          fi
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # Step 7: Create PR (only if triggered manually)
+  create-pr:
+    needs: lint-and-fix
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'  # Only run this if it's a manual trigger
+    steps:
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: auto-fix-linter  # New branch created if triggered manually
+          base: main
+          title: "Auto-fix Linter issues"
+          body: "This PR automatically fixes the PEP8 issues detected by pylint."
