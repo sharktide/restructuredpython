@@ -1,7 +1,10 @@
 name: Lint and Fix Python Code
 
 on:
-  workflow_dispatch:  # Trigger manually
+  workflow_dispatch:
+
+permissions:
+  contents: write  # Allow the action to push to the repository
 
 jobs:
   lint-and-fix:
@@ -47,4 +50,4 @@ jobs:
           git diff --cached --quiet || git commit -m "Auto-fix Linter and apply autopep8 changes"
           git push origin main
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
