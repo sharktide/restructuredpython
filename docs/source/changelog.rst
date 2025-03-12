@@ -9,6 +9,15 @@ Major release 0
 .. raw:: html
 
     <details>
+    <summary>0.7.0</summary>
+    <ul>
+        <li>Addded function chaining</li>
+    </ul>
+    </details>
+
+.. raw:: html
+
+    <details>
     <summary>0.6.0</summary>
     <ul>
         <li>Add support for with, match, and case statements.</li>
