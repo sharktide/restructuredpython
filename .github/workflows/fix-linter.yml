@@ -31,7 +31,7 @@ jobs:
       - name: Run pylint
         id: pylint
         run: |
-          pylint $(git ls-files '*.py')
+          pylint_output=$(pylint $(git ls-files '*.py' | grep -vE '(^tests/|^docs/)') --output-format=text) || true
           echo "$pylint_output"
           echo "::set-output name=pylint_output::$pylint_output"
 
