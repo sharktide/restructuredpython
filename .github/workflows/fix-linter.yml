@@ -44,7 +44,6 @@ jobs:
       - name: Commit and push fixes or comment on PR
         run: |
 
-          # If triggered by a PR, comment with linter issues and requested changes
           if [[ $GITHUB_EVENT_NAME == 'pull_request' ]]; then
             pylint_output=$(pylint $(find . -type f -name "*.py" ! -path "./tests/*" ! -path "./docs/*") --output-format=text)
             if [[ -n "$pylint_output" ]]; then
@@ -58,7 +57,6 @@ jobs:
             fi
           fi
 
-          # If triggered manually, create a new random branch, apply fixes, and push
           if [[ $GITHUB_EVENT_NAME == 'workflow_dispatch' ]]; then
             git config --global user.name 'github-actions[bot]'
             git config --global user.email 'github-actions[bot]@users.noreply.github.com'
