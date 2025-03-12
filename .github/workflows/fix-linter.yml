@@ -43,11 +43,6 @@ jobs:
       # Step 6: Commit the changes if necessary
       - name: Commit and push fixes or comment on PR
         run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-
-          # Generate a random 8-character string for the branch name
-          RANDOM_BRANCH="lint-$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 8)"
 
           # If triggered by a PR, comment with linter issues and requested changes
           if [[ $GITHUB_EVENT_NAME == 'pull_request' ]]; then
@@ -65,6 +60,11 @@ jobs:
 
           # If triggered manually, create a new random branch, apply fixes, and push
           if [[ $GITHUB_EVENT_NAME == 'workflow_dispatch' ]]; then
+            git config --global user.name 'github-actions[bot]'
+            git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+            # Generate a random 8-character string for the branch name
+            RANDOM_BRANCH="lint-$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 8)"
             git checkout -b $RANDOM_BRANCH
             git add .
             git diff --cached --quiet || git commit -m "Auto-fix Linter"
