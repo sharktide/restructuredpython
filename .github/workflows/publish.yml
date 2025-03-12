@@ -11,6 +11,7 @@ on:
       - '.gitattributes'  # Ignore changes to '.gitattributes'
       - '.gitignore'  # Ignore changes to '.gitignore'
       - 'README.md'  # Ignore changes to 'README.md'
+      - 'readme.md'  # Ignore changes to 'README.md'
   workflow_dispatch:
 
 jobs:
