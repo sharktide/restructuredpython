@@ -54,10 +54,10 @@ jobs:
             pylint_output=$(pylint $(find . -type f -name "*.py" ! -path "./tests/*" ! -path "./docs/*") --output-format=text)
             if [[ -n "$pylint_output" ]]; then
               echo "Posting linter issues as PR comment."
-                    - uses: parkerbxyz/suggest-changes@v1
-                      with:
-                        comment: 'Please commit the suggested changes from autopep8 and pylint.'
-                        event: 'REQUEST_CHANGES'
+              - uses: parkerbxyz/suggest-changes@v1
+                with:
+                  comment: 'Please commit the suggested changes from autopep8 and pylint.'
+                  event: 'REQUEST_CHANGES'
             else
               echo "No linting issues found."
             fi
