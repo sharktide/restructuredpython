@@ -6,14 +6,6 @@ on:
       - main  # Trigger the workflow only on pushes to the 'main' branch
     paths:
       - pyproject.toml
-    paths-ignore:
-      - 'docs/**'  # Ignore changes in the 'docs' directory
-      - 'restructuredpython.egg-info/**'  # Ignore changes in the 'restructuredpython.egg-info' directory
-      - '.github/**'  # Ignore changes in the '.github' directory
-      - '.gitattributes'  # Ignore changes to '.gitattributes'
-      - '.gitignore'  # Ignore changes to '.gitignore'
-      - 'README.md'  # Ignore changes to 'README.md'
-      - 'readme.md'  # Ignore changes to 'README.md'
   workflow_dispatch:
 
 jobs:
