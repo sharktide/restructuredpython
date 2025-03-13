@@ -9,6 +9,15 @@ Major release 0
 .. raw:: html
 
     <details>
+    <summary>0.8.0</summary>
+    <ul>
+        <li>Addded multiline comments similar to JavaScript using /* and */</li>
+    </ul>
+    </details>
+
+.. raw:: html
+
+    <details>
     <summary>0.7.0</summary>
     <ul>
         <li>Addded function chaining</li>

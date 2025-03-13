@@ -1,4 +1,4 @@
-# reStructuredPython 0.7.0
+# reStructuredPython 0.8.0
 
 The all in one, new python.
 reStructuredPython aka 'rePython' is a superset of python with many new features, such as header files, similar to C and C++, Optional Javascript-like syntax with curly brackets {} around control loops, function chanining and more. All the features can be found in the syntax/feature guide of out documentation https://restructuredpython.readthedocs.io/en/latest/reference/Syntax_Guide.html
