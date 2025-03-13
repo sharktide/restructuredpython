@@ -5,8 +5,8 @@ import os
 import warnings
 from pathlib import Path
 
-# Define token specifications
 token_specification = [
+    ('COMMENT', r'/\*.*?\*/'),  # Multiline comment pattern
     ('IF', r'if'),
     ('FOR', r'for'),
     ('WHILE', r'while'),
@@ -32,26 +32,34 @@ token_specification = [
 ]
 
 token_regex = '|'.join(
-    f'(?P<{
-        pair[0]}>{
-            pair[1]})' for pair in token_specification)
+    f'(?P<{pair[0]}>{pair[1]})' for pair in token_specification)
 
 
 def tokenize(code):
-    """Tokenizes the rePython source code."""
+    """Tokenizes the rePython source code and handles multiline comments."""
+    inside_multiline_comment = False
     for mo in re.finditer(token_regex, code):
         kind = mo.lastgroup
         value = mo.group()
+
         if kind == 'SKIP':
-            continue
+            continue  # Skip over whitespace and newlines
+
+        elif kind == 'COMMENT':
+            # Handle multiline comments, converting them to Python-style comments
+            if value.startswith('/*') and value.endswith('*/'):
+                # This is a single multiline comment
+                comment_lines = value[2:-2].splitlines()  # Remove /* and */
+                for line in comment_lines:
+                    yield 'COMMENT', f"# {line.strip()}"
+                continue  # Skip the rest of the processing for this comment
+
         elif kind == 'MISMATCH':
-            warnings.warn(
-                f'Unexpected character {
-                    value!r}. Continuing with compilation')
-            yield kind, value
-        else:
+            warnings.warn(f'Unexpected character {value!r}. Continuing with compilation')
             yield kind, value
 
+        else:
+            yield kind, value
 
 def check_syntax(input_lines):
     for i in range(len(input_lines)):
@@ -81,7 +89,6 @@ def check_syntax(input_lines):
 
 def parse_repython(code):
     """Parses the rePython code and converts it to valid Python code."""
-
     def chain_pipeline(code):
         parts = [part.strip() for part in code.split('|>')]
         if len(parts) > 1:
@@ -113,46 +120,58 @@ def parse_repython(code):
 
     check_syntax(lines)
 
+    inside_comment_block = False
+
     for line in lines:
         processed_line = chain_pipeline(line)
-        # Handle statements that begin with a keyword and have an opening brace
-        if re.match(
-            r'^\s*(if|for|while|def|try|elif|else|except|class|match|with|case)\s.*\{',
-                processed_line):
-            # Replace the { with a colon (:) and track the opening brace
-            modified_code.append(processed_line.split('{')[0] + ':')
-            brace_stack.append('{')
-            inside_block = True
-        # Handle the case where we encounter a closing brace
-        elif re.match(r'^\s*\}', processed_line) and inside_block:
-            brace_stack.pop()  # Pop the opening brace from the stack
-            # Check if we still have open blocks
-            inside_block = len(brace_stack) > 0
-        elif re.match(r'^\s*match\(', processed_line):
-            # Specifically handle the match statement to remove { and add :
-            modified_code.append(processed_line.split('{')[0] + ':')
-            brace_stack.append('{')
-            inside_block = True
-        elif re.match(r'^\s*case', processed_line):
-            # Handle case blocks to remove { and add :
-            modified_code.append(processed_line.split('{')[0] + ':')
-            brace_stack.append('{')
-            inside_block = True
+
+        # Handling multiline comments properly
+        if inside_comment_block:
+            if processed_line.endswith("*/"):
+                # End of multiline comment block
+                modified_code.append(f"# {processed_line[:-2].strip()}")  # Remove the ending '*/'
+                inside_comment_block = False
+            else:
+                # Continuation of the multiline comment
+                modified_code.append(f"# {processed_line.strip()}")
+        elif processed_line.startswith("/*") and processed_line.endswith("*/"):
+            # Single-line comment
+            modified_code.append(f"# {processed_line[2:-2].strip()}")  # Remove the '/*' and '*/'
+        elif processed_line.startswith("/*"):
+            # Beginning of a multiline comment
+            modified_code.append(f"# {processed_line[2:].strip()}")  # Remove the starting '/*'
+            inside_comment_block = True
+        elif processed_line.endswith("*/"):
+            # Ending of a multiline comment
+            modified_code.append(f"# {processed_line[:-2].strip()}")  # Remove the ending '*/'
         else:
-            modified_code.append(processed_line)
+            # Regular code lines (not in a comment)
+            if re.match(
+                r'^\s*(if|for|while|def|try|elif|else|except|class|match|with|case)\s.*\{',
+                    processed_line):
+                modified_code.append(processed_line.split('{')[0] + ':')
+                brace_stack.append('{')
+                inside_block = True
+            # Handle the case where we encounter a closing brace
+            elif re.match(r'^\s*\}', processed_line) and inside_block:
+                brace_stack.pop()
+                inside_block = len(brace_stack) > 0
+            elif re.match(r'^\s*match\(', processed_line):
+                modified_code.append(processed_line.split('{')[0] + ':')
+                brace_stack.append('{')
+                inside_block = True
+            elif re.match(r'^\s*case', processed_line):
+                modified_code.append(processed_line.split('{')[0] + ':')
+                brace_stack.append('{')
+                inside_block = True
+            else:
+                modified_code.append(processed_line)
 
     return '\n'.join(modified_code)
 
-
 def compile_header_file(header_filename):
     """Compiles a .cdata file and returns the corresponding Python code."""
-
-    # Make sure the file exists
     header_filename = Path(header_filename).resolve()
-    header_filename = header_filename.as_posix()
-    header_filename = Path(header_filename).resolve()
-    print(f"Resolved header file path: {header_filename}")
-
     if not header_filename.exists():
         raise FileNotFoundError(f"Header file {header_filename} not found.")
     try:
@@ -170,25 +189,14 @@ def compile_header_file(header_filename):
 def process_includes(code, input_file):
     """Processes #include directives and compiles included .d.repy files."""
     include_pattern = r'\s*include\s+[\'"]([^\'"]+)[\'"]'
-
     includes = re.findall(include_pattern, code)
-    if includes:
-        print(f"All include files: {includes}")
-    else:
-        print("No include found.")
 
     header_code = ""
     for include in includes:
-        print(f"Processing include: {include}")
-
         if not os.path.isabs(include):
-            include = os.path.join(
-                os.path.dirname(
-                    os.path.abspath(input_file)),
-                include)
+            include = os.path.join(os.path.dirname(os.path.abspath(input_file)), include)
 
         if os.path.exists(include):
-            print(f"Compiling included file: {include}")
             header_code += compile_header_file(include) + "\n"
         else:
             print(f"Error: Included file '{include}' not found.")
@@ -197,8 +205,6 @@ def process_includes(code, input_file):
     code_without_includes = re.sub(include_pattern, '', code)
 
     return header_code, code_without_includes
-
-# Example use case
 
 
 def main():
@@ -215,8 +221,7 @@ def main():
     with open(input_file, 'r') as f:
         source_code = f.read()
 
-    header_code, code_without_includes = process_includes(
-        source_code, input_file)
+    header_code, code_without_includes = process_includes(source_code, input_file)
 
     python_code = parse_repython(code_without_includes)
 
