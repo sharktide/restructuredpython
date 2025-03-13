@@ -5,7 +5,7 @@
 ![Platforms: Windows, macOS, Ubuntu](https://img.shields.io/badge/Platforms-windows%20macOS%20ubuntu-pink)
 
 The all in one, new python.
-reStructuredPython aka 'rePython' is a superset of python with many new features, such as header files, similar to C and C++, Optional Javascript-like syntax with curly brackets {} around control loops, function chanining and more. All the features can be found in the syntax/feature guide of out documentation https://restructuredpython.readthedocs.io/en/latest/reference/Syntax_Guide.html
+reStructuredPython aka 'rePython' is a superset of python with many new features, such as header files, similar to C and C++, Optional Javascript-like syntax with curly brackets {} around control loops, function chanining and more. All the features can be found in the syntax/feature guide of our documentation https://restructuredpython.readthedocs.io/en/latest/reference/Syntax_Guide.html
 
 To download the reStructuredPython compiler using the python package index:
 
