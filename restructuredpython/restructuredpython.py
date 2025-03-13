@@ -46,7 +46,8 @@ def tokenize(code):
             continue  # Skip over whitespace and newlines
 
         elif kind == 'COMMENT':
-            # Handle multiline comments, converting them to Python-style comments
+            # Handle multiline comments, converting them to Python-style
+            # comments
             if value.startswith('/*') and value.endswith('*/'):
                 # This is a single multiline comment
                 comment_lines = value[2:-2].splitlines()  # Remove /* and */
@@ -55,11 +56,14 @@ def tokenize(code):
                 continue  # Skip the rest of the processing for this comment
 
         elif kind == 'MISMATCH':
-            warnings.warn(f'Unexpected character {value!r}. Continuing with compilation')
+            warnings.warn(
+                f'Unexpected character {
+                    value!r}. Continuing with compilation')
             yield kind, value
 
         else:
             yield kind, value
+
 
 def check_syntax(input_lines):
     for i in range(len(input_lines)):
@@ -129,21 +133,25 @@ def parse_repython(code):
         if inside_comment_block:
             if processed_line.endswith("*/"):
                 # End of multiline comment block
-                modified_code.append(f"# {processed_line[:-2].strip()}")  # Remove the ending '*/'
+                # Remove the ending '*/'
+                modified_code.append(f"# {processed_line[:-2].strip()}")
                 inside_comment_block = False
             else:
                 # Continuation of the multiline comment
                 modified_code.append(f"# {processed_line.strip()}")
         elif processed_line.startswith("/*") and processed_line.endswith("*/"):
             # Single-line comment
-            modified_code.append(f"# {processed_line[2:-2].strip()}")  # Remove the '/*' and '*/'
+            # Remove the '/*' and '*/'
+            modified_code.append(f"# {processed_line[2:-2].strip()}")
         elif processed_line.startswith("/*"):
             # Beginning of a multiline comment
-            modified_code.append(f"# {processed_line[2:].strip()}")  # Remove the starting '/*'
+            # Remove the starting '/*'
+            modified_code.append(f"# {processed_line[2:].strip()}")
             inside_comment_block = True
         elif processed_line.endswith("*/"):
             # Ending of a multiline comment
-            modified_code.append(f"# {processed_line[:-2].strip()}")  # Remove the ending '*/'
+            # Remove the ending '*/'
+            modified_code.append(f"# {processed_line[:-2].strip()}")
         else:
             # Regular code lines (not in a comment)
             if re.match(
@@ -168,6 +176,7 @@ def parse_repython(code):
                 modified_code.append(processed_line)
 
     return '\n'.join(modified_code)
+
 
 def compile_header_file(header_filename):
     """Compiles a .cdata file and returns the corresponding Python code."""
@@ -194,7 +203,10 @@ def process_includes(code, input_file):
     header_code = ""
     for include in includes:
         if not os.path.isabs(include):
-            include = os.path.join(os.path.dirname(os.path.abspath(input_file)), include)
+            include = os.path.join(
+                os.path.dirname(
+                    os.path.abspath(input_file)),
+                include)
 
         if os.path.exists(include):
             header_code += compile_header_file(include) + "\n"
@@ -221,7 +233,8 @@ def main():
     with open(input_file, 'r') as f:
         source_code = f.read()
 
-    header_code, code_without_includes = process_includes(source_code, input_file)
+    header_code, code_without_includes = process_includes(
+        source_code, input_file)
 
     python_code = parse_repython(code_without_includes)
 
