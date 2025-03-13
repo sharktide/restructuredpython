@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main  # Trigger the workflow only on pushes to the 'main' branch
+    paths:
+      - pyproject.toml
     paths-ignore:
       - 'docs/**'  # Ignore changes in the 'docs' directory
       - 'restructuredpython.egg-info/**'  # Ignore changes in the 'restructuredpython.egg-info' directory
