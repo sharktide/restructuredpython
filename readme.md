@@ -1,6 +1,7 @@
 # reStructuredPython 0.8.0
 ![Publish Python Package](https://github.com/sharktide/restructuredpython/actions/workflows/publish.yml/badge.svg?branch=main)
 ![Latest Version](https://img.shields.io/badge/dynamic/toml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fsharktide%2Frestructuredpython%2Frefs%2Fheads%2Fmain%2Fpyproject.toml&query=%24.project.version&label=Latest)
+![Downloads Last Month](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fpypistats.org%2Fapi%2Fpackages%2Frestructuredpython%2Frecent&query=%24.data.last_month&logo=python&logoColor=skyblue&logoSize=auto&label=Downloads%20Last%20Month)
 ![Python 3.11 3.12 3.13](https://img.shields.io/badge/Python-3.11%203.12%203.13-orange)
 ![Platforms: Windows, macOS, Ubuntu](https://img.shields.io/badge/Platforms-windows%20macOS%20ubuntu-pink)
 
