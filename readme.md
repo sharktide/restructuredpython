@@ -3,7 +3,6 @@
 ![Latest Version](https://img.shields.io/badge/dynamic/toml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fsharktide%2Frestructuredpython%2Frefs%2Fheads%2Fmain%2Fpyproject.toml&query=%24.project.version&label=Latest)
 ![Downloads Last Month](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fpypistats.org%2Fapi%2Fpackages%2Frestructuredpython%2Frecent&query=%24.data.last_month&logo=python&logoColor=skyblue&logoSize=auto&label=Downloads%20Last%20Month)
 ![Python 3.11 3.12 3.13](https://img.shields.io/badge/Python-3.11%203.12%203.13-orange)
-![Platforms: Windows, macOS, Ubuntu](https://img.shields.io/badge/Platforms-windows%20macOS%20ubuntu-pink)
 
 The all in one, new python.
 reStructuredPython aka 'rePython' is a superset of python with many new features, such as header files, similar to C and C++, Optional Javascript-like syntax with curly brackets {} around control loops, function chanining and more. All the features can be found in the syntax/feature guide of our documentation https://restructuredpython.readthedocs.io/en/latest/reference/Syntax_Guide.html
