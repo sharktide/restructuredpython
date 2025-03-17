@@ -18,4 +18,3 @@ classifiers = [
 
 [project.scripts]
 repy = "restructuredpython.restructuredpython:main"
- 
