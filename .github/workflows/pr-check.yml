@@ -27,6 +27,7 @@ jobs:
       - name: Compare pyproject.toml files
         run: |
           if [[ "${GITHUB_ACTOR}" != "github/sharktide" ]]; then
+            echo "User is not sharktide"
             if ! cmp -s base_pyproject.toml head_pyproject.toml; then
               echo "pyproject.toml has been changed, and the user is not github/sharktide."
               exit 1
