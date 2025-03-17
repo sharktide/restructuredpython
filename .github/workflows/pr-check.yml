@@ -18,7 +18,7 @@ jobs:
 
       - name: Label Authorized
         if: ${{ github.actor == 'sharktide' }}
-        uses: actions-ecosystem/add-labels@v1
+        uses: actions-ecosystem/action-add-labels@v1.1.0
         with:
           labels: 'Authorized'
           github_token: ${{ secrets.GITHUB_TOKEN }}
