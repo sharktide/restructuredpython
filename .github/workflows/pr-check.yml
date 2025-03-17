@@ -1,0 +1,31 @@
+name: PR Check
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  label-pr:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Label Authorized
+        if: ${{ github.actor == 'sharktide' }}
+        uses: actions-ecosystem/action-add-labels@v1.1.0
+        with:
+          labels: 'Authorized'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Label DO NOT MERGE
+        if: ${{ github.actor != 'sharktide' }}
+        uses: actions/labeler@v4
+        with:
+          configuration-path: .github/labeler.yml
+          github-token: ${{ secrets.GITHUB_TOKEN }}
