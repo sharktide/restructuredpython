@@ -18,11 +18,11 @@ jobs:
 
       - name: Fetch pyproject.toml from base branch
         run: |
-          curl -s "https://raw.githubusercontent.com/${GITHUB_REPO}/${BASE_REF}/pyproject.toml" -o base_pyproject.toml || echo "Base file not found"
+          curl -s "https://raw.githubusercontent.com/${{ GITHUB_REPO }}/${{ BASE_REF }}/pyproject.toml" -o base_pyproject.toml || echo "Base file not found"
 
       - name: Fetch pyproject.toml from head branch
         run: |
-          curl -s "https://raw.githubusercontent.com/${GITHUB_REPO}/refs/heads/${HEAD_REF}/pyproject.toml" -o head_pyproject.toml || echo "Head file not found"
+          curl -s "https://raw.githubusercontent.com/sharktide/restructuredpython/refs/heads/main/pyproject.toml" -o head_pyproject.toml || echo "Head file not found"
 
       - name: Compare pyproject.toml files
         run: |
