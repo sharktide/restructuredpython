@@ -16,8 +16,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Conditional Labeling
-        if: ${{ github.actor != 'github/sharktide' }}
+      - name: Label Authorized
+        if: ${{ github.actor == 'sharktide' }}
+        uses: actions-ecosystem/add-labels@v1
+        with:
+          labels: 'Authorized'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Label DO NOT MERGE
+        if: ${{ github.actor != 'sharktide' }}
         uses: actions/labeler@v4
         with:
           configuration-path: .github/labeler.yml
