@@ -1,5 +1,6 @@
 import time
 
+
 class decorators:
     @staticmethod
     def access_control(allowed_roles):
@@ -14,7 +15,9 @@ class decorators:
     @staticmethod
     def logging(func):
         def wrapper(*args, **kwargs):
-            print(f"Calling {func.__name__} with args: {args}, kwargs: {kwargs}")
+            print(
+                f"Calling {
+                    func.__name__} with args: {args}, kwargs: {kwargs}")
             result = func(*args, **kwargs)
             print(f"{func.__name__} returned {result}")
             return result
@@ -23,6 +26,7 @@ class decorators:
     @staticmethod
     def memoization(func):
         cache = {}
+
         def wrapper(*args):
             if args in cache:
                 return cache[args]
@@ -39,12 +43,12 @@ class decorators:
                     try:
                         return func(*args, **kwargs)
                     except Exception as e:
-                        print(f"Attempt {attempt+1} failed: {e}")
+                        print(f"Attempt {attempt + 1} failed: {e}")
                         time.sleep(delay)
                 raise Exception("All retries failed.")
             return wrapper
         return decorator
-    
+
     @staticmethod
     def timer(func):
         def wrapper(*args, **kwargs):

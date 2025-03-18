@@ -1,5 +1,6 @@
 def memoization(func):
     cache = {}
+
     def wrapper(*args):
         if args in cache:
             return cache[args]

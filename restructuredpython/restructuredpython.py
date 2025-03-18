@@ -194,7 +194,9 @@ def compile_header_file(header_filename):
 
     return parse_repython(header_code)
 
+
 PREDEFINED_HEADERS_DIR = os.path.join(os.path.dirname(__file__), "predefined")
+
 
 def process_includes(code, input_file):
     """Processes #include directives, handling both predefined and user-defined files."""
@@ -205,14 +207,19 @@ def process_includes(code, input_file):
 
     for include in includes:
         # Handle predefined headers
-        predefined_path = os.path.join(PREDEFINED_HEADERS_DIR, include.replace('.', os.sep) + '.py')
+        predefined_path = os.path.join(
+            PREDEFINED_HEADERS_DIR, include.replace(
+                '.', os.sep) + '.py')
         if os.path.exists(predefined_path):
             header_code += compile_header_file(predefined_path) + "\n"
             continue
 
         # Handle user-defined headers
         if not os.path.isabs(include):
-            include = os.path.join(os.path.dirname(os.path.abspath(input_file)), include)
+            include = os.path.join(
+                os.path.dirname(
+                    os.path.abspath(input_file)),
+                include)
 
         if os.path.exists(include):
             header_code += compile_header_file(include) + "\n"
@@ -223,6 +230,7 @@ def process_includes(code, input_file):
     code_without_includes = re.sub(include_pattern, '', code)
 
     return header_code, code_without_includes
+
 
 def main():
     parser = argparse.ArgumentParser(description="Compile REPY files.")
