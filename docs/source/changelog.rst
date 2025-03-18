@@ -3,6 +3,18 @@ reStructuredPython Changelog
 
 *Note: This changelog skips version 0.1.1*
 
+Major release 1
+---------------
+
+.. raw:: html
+
+    <details>
+    <summary>1.0.0</summary>
+    <ul>
+        <li>Add builtin decorators. view <a href="https://restructuredpython.readthedocs.io/en/latest/reference/Builtin_Decorators.html">this page</a> for a complete list</li>
+    </ul>
+    </details>
+
 Major release 0
 ---------------
 

@@ -33,6 +33,7 @@ Documentation
 * **Installation Guide:** Step-by-step instructions on setting up reStructuredPython in your development environment.
 * **Syntax Reference:** Comprehensive details on the available functions, classes, and modules within reStructuredPython.
 * **Examples:** Explore practical examples demonstrating the use of reStructuredPython in various scenarios.
+* **Builtin functions and decorators** Starting 1.0.0, builtin decorators have been added using the ``include`` keyword.
 
 Community and Support
 ---------------------
@@ -52,4 +53,5 @@ Join the reStructuredPython community to contribute, ask questions, and stay upd
    guides/Getting_Started
    guides/Install
    reference/index
+   reference/Builtin_Decorators
    tutorials/Example_Programs

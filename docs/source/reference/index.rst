@@ -7,3 +7,4 @@ The reference section provides detailed information about the built-in functions
    :maxdepth: 1
 
    Syntax_Guide
+   Builtin_Decorators
