@@ -8,3 +8,10 @@ restructuredpython.egg-info/SOURCES.txt
 restructuredpython.egg-info/dependency_links.txt
 restructuredpython.egg-info/entry_points.txt
 restructuredpython.egg-info/top_level.txt
+restructuredpython/predefined/__init__.py
+restructuredpython/predefined/decorators.py
+restructuredpython/predefined/decorators/access_control.py
+restructuredpython/predefined/decorators/logging.py
+restructuredpython/predefined/decorators/memoization.py
+restructuredpython/predefined/decorators/retry.py
+restructuredpython/predefined/decorators/timer.py

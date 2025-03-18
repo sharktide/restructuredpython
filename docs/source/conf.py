@@ -10,7 +10,7 @@ project = 'reStructuredPython'
 copyright = '2025, Rihaan Meher'
 author = 'Rihaan Meher'
 
-release = '0.8.0'
+release = '1.0.0'
 html_favicon = "_static/icon.png"
 
 # -- General configuration ---------------------------------------------------
@@ -26,8 +26,3 @@ exclude_patterns = []
 
 html_theme = 'furo'
 html_static_path = ['_static']
-
-# Define the sidebars
-#html_sidebars = {
-#    '**': ['searchbox.html', 'globaltoc.html', 'relations.html', 'sourcelink.html'],
-#}
