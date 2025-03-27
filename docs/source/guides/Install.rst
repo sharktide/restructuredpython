@@ -3,6 +3,7 @@ Installation Guide
 
 To install and use reStructuredPython, follow the steps below:
 
+There are two methods: Either use one of the `Installation Wizards <https://github.com/sharktide/restructuredpython/releases/v1.0.0/>`_, (Make sure to pick the right one for your system (.bat or .ps1 for windows, .sh for macOS/Linux, or .ps1 (again)/.jar if you have java or powershell installed) or follow the steps below.
 1. **Install reStructuredPython:**
 
 Open your terminal or command prompt and run the following command to install reStructuredPython using pip:
