@@ -6,3 +6,5 @@ docs/** -linguist-documentation
 *.rst linguist-detectable
 *.yaml linguist-detectable
 *.toml linguist-detectable
+*.ps1 linguist-detectable
+*.ps1 linguist-language=PowerShell
