@@ -1,2 +1,3 @@
 exclude docs/*
 exclude tests/*
+exclude install/*
