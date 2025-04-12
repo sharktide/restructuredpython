@@ -9,6 +9,15 @@ Major release 1
 .. raw:: html
 
     <details>
+    <summary>1.1.0</summary>
+    <ul>
+        <li>Added the repycl command, which autocompiles and launches reStructuredPython programs</li>
+    </ul>
+    </details>
+
+.. raw:: html
+
+    <details>
     <summary>1.0.0</summary>
     <ul>
         <li>Add builtin decorators. view <a href="https://restructuredpython.readthedocs.io/en/latest/reference/Builtin_Decorators.html">this page</a> for a complete list</li>

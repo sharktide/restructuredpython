@@ -1,2 +1,3 @@
 [console_scripts]
 repy = restructuredpython.restructuredpython:main
+repycl = restructuredpython.restructuredpython:launch
