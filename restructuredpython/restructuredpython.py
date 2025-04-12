@@ -255,23 +255,56 @@ def main():
     if not os.path.exists(input_file):
         print(f"Error: The file {input_file} does not exist.")
         return
+    if input_file.endswith('repyconfig.toml'):
+        import tomllib as toml
+        import fnmatch
+        with open(input_file, "rb") as file:
+            data = toml.load(file)
 
-    with open(input_file, 'r') as f:
-        source_code = f.read()
+        compile_value = data["config"]["compile"]
+        exclude_files = data["config"]["exclude"]
+        if compile_value == 'all':
+            extension = ".repy"
+            matching_files = []
+            for dirpath, _, filenames in os.walk("."):
+                for filename in filenames:
+                    if filename.lower().endswith(extension.lower()):
+                        file_path_temp = os.path.join(dirpath, filename)
+                        if any(fnmatch.fnmatch(file_path_temp, pattern) for pattern in exclude_files):
+                            continue
+                        matching_files.append(file_path_temp)
+            for file_path_z in matching_files:
+                with open(file_path_z, 'r') as z:
+                    source_code_z = z.read()
 
-    header_code, code_without_includes = process_includes(
-        source_code, input_file)
+                header_code_z, code_without_includes_z = process_includes(source_code_z, file_path_z)
 
-    python_code = parse_repython(code_without_includes)
+                python_code_z = parse_repython(code_without_includes_z)
 
-    final_code = header_code + python_code
+                final_code_z = header_code_z + python_code_z
 
-    output_file = os.path.splitext(input_file)[0] + '.py'
+                output_file_z = os.path.splitext(file_path_z)[0] + '.py'
 
-    with open(output_file, 'w') as f:
-        f.write(final_code)
+                with open(output_file_z, 'w') as z:
+                    z.write(final_code_z)
+                print(f"[DEBUG] Successfully compiled {file_path_z} to {output_file_z}")
+    else:
+        with open(input_file, 'r') as f:
+            source_code = f.read()
 
-    print(f"Successfully compiled {input_file} to {output_file}")
+        header_code, code_without_includes = process_includes(
+            source_code, input_file)
+
+        python_code = parse_repython(code_without_includes)
+
+        final_code = header_code + python_code
+
+        output_file = os.path.splitext(input_file)[0] + '.py'
+
+        with open(output_file, 'w') as f:
+            f.write(final_code)
+
+        print(f"[DEBUG] Successfully compiled {input_file} to {output_file}")
 
 
 def launch():
@@ -303,7 +336,4 @@ def launch():
 
 
 if __name__ == "__main__":
-    main(1)
-
-if __name__ == "__launch__":
-    main(2)
+    main()

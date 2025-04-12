@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "restructuredpython"
-version = "1.1.0"
+version = "1.2.0"
 description = "A superset of Python with js-like syntax"
 authors = [{name = "Rihaan Meher", email = "meherrihaan@gmail.com"}]
 license = {text = "MIT"}
