@@ -3,6 +3,7 @@ import re
 import sys
 import os
 import warnings
+import tempfile
 from pathlib import Path
 
 token_specification = [
@@ -231,6 +232,16 @@ def process_includes(code, input_file):
 
     return header_code, code_without_includes
 
+def execute_code_temporarily(code):
+    with tempfile.TemporaryDirectory() as tmpdir:
+        temp_file_path = os.path.join(tmpdir, "compiled_repy.py")
+        with open(temp_file_path, 'w') as temp_file:
+            temp_file.write(code)
+        try:
+            exec(open(temp_file_path).read(), {"__name__": "__main__"})
+        except Exception as e:
+            print(f"Error during execution: {e}")
+            print(f"You can view the generated file at {(temp_file_path)}")
 
 def main():
     parser = argparse.ArgumentParser(description="Compile REPY files.")
@@ -258,8 +269,38 @@ def main():
     with open(output_file, 'w') as f:
         f.write(final_code)
 
-    print(f"Successfully compiled {input_file} to {output_file}")
+    print(f"Successfully compiled {input_file} to {output_file}")     
+
+def launch():
+    parser = argparse.ArgumentParser(description="Preview REPY execution.")
+    parser.add_argument("filename", help="The REPY file to preview.")
+    args = parser.parse_args()
+
+    input_file = args.filename
+
+    if not os.path.exists(input_file):
+        print(f"Error: The file {input_file} does not exist.")
+        return
+
+    with open(input_file, 'r') as f:
+        source_code = f.read()
+
+    header_code, code_without_includes = process_includes(
+        source_code, input_file)
+
+    python_code = parse_repython(code_without_includes)
+
+    final_code = header_code + python_code
+
+    # Execute the compiled code directly
+    try:
+        execute_code_temporarily(final_code)
+    except Exception as e:
+        print(f"Error during execution: {e}")
 
 
 if __name__ == "__main__":
-    main()
+    main(1)
+
+if __name__ == "__launch__":
+    main(2)

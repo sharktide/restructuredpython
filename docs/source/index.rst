@@ -12,11 +12,16 @@ To begin using reStructuredPython, install the compiler via pip:
 
    pip install --upgrade restructuredpython
 
-After installation, you can compile your .repy files using the following command:
+After installation, you can compile your .repy files to .py using the following command:
 
 .. code-block:: shell
 
    repy path/to/your/file.repy
+
+Or you can directly run .repy programs via the ``repycl`` command if using 1.1.0+
+.. code-block:: shell
+
+   repycl path/to/your/file.repy
 
 Features
 --------
