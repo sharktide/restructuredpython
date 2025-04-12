@@ -232,6 +232,7 @@ def process_includes(code, input_file):
 
     return header_code, code_without_includes
 
+
 def execute_code_temporarily(code):
     with tempfile.TemporaryDirectory() as tmpdir:
         temp_file_path = os.path.join(tmpdir, "compiled_repy.py")
@@ -242,6 +243,7 @@ def execute_code_temporarily(code):
         except Exception as e:
             print(f"Error during execution: {e}")
             print(f"You can view the generated file at {(temp_file_path)}")
+
 
 def main():
     parser = argparse.ArgumentParser(description="Compile REPY files.")
@@ -269,7 +271,8 @@ def main():
     with open(output_file, 'w') as f:
         f.write(final_code)
 
-    print(f"Successfully compiled {input_file} to {output_file}")     
+    print(f"Successfully compiled {input_file} to {output_file}")
+
 
 def launch():
     parser = argparse.ArgumentParser(description="Preview REPY execution.")
