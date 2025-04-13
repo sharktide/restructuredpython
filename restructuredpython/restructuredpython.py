@@ -260,9 +260,16 @@ def main():
         import fnmatch
         with open(input_file, "rb") as file:
             data = toml.load(file)
-
-        compile_value = data["config"]["compile"]
-        exclude_files = data["config"]["exclude"]
+        try:
+            compile_value = data["config"]["compile"]
+        except:
+            compile_value = "null"
+            print("[WARNING] Error reading compile value from config")
+        try:
+            exclude_files = data["config"]["exclude"]
+        except:
+            exclude_files = []
+            print("[WARNING] No excluded files found in config")
         if compile_value == 'all':
             extension = ".repy"
             matching_files = []
