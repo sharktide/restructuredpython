@@ -10,7 +10,7 @@ project = 'reStructuredPython'
 copyright = '2025, Rihaan Meher'
 author = 'Rihaan Meher'
 
-release = '1.1.0'
+release = '1.2.0'
 html_favicon = "_static/icon.png"
 
 # -- General configuration ---------------------------------------------------
