@@ -18,11 +18,17 @@ exclude = ["./tests/*", "./docs/*"]
 
 Explanation:
 
-*``compile = "all"``: Will compile all files in the root directory except those files/dirs mentioned in ``exclude``
-*``exclude = ["./tests/*", "./docs/*"]`` Will not compile these files/directories
+- ``compile = "all"``: Will compile all files in the root directory except those files/dirs mentioned in ``exclude``
+- ``exclude = ["./tests/*", "./docs/*"]`` Will not compile these files/directories
 
 Complete reference
 
-*Section ``config`` (1/1): Contains main information for the compiler
-*    Key ``compile`` (1/2): Contains information about what files to compile
-*       ``"all"``
+Section ``config`` (1/1): Contains main information for the compiler
+
+  Key ``compile`` (1/2) Type: str: Contains information about what files to compile
+
+    ``"all"``: Compiles all files in the given diretory, except those listed in the key ``exclude``
+
+  Key ``exclude`` (2/2) Type: List: A list of paths and directories to exclude.
+
+    Written as ``["./path/to/dir/", "./path/to/file.repy", ...]``
