@@ -262,12 +262,12 @@ def main():
             data = toml.load(file)
         try:
             compile_value = data["config"]["compile"]
-        except:
+        except BaseException:
             compile_value = "null"
             print("[WARNING] Error reading compile value from config")
         try:
             exclude_files = data["config"]["exclude"]
-        except:
+        except BaseException:
             exclude_files = []
             print("[WARNING] No excluded files found in config")
         if compile_value == 'all':
@@ -277,14 +277,16 @@ def main():
                 for filename in filenames:
                     if filename.lower().endswith(extension.lower()):
                         file_path_temp = os.path.join(dirpath, filename)
-                        if any(fnmatch.fnmatch(file_path_temp, pattern) for pattern in exclude_files):
+                        if any(fnmatch.fnmatch(file_path_temp, pattern)
+                               for pattern in exclude_files):
                             continue
                         matching_files.append(file_path_temp)
             for file_path_z in matching_files:
                 with open(file_path_z, 'r') as z:
                     source_code_z = z.read()
 
-                header_code_z, code_without_includes_z = process_includes(source_code_z, file_path_z)
+                header_code_z, code_without_includes_z = process_includes(
+                    source_code_z, file_path_z)
 
                 python_code_z = parse_repython(code_without_includes_z)
 
@@ -294,7 +296,8 @@ def main():
 
                 with open(output_file_z, 'w') as z:
                     z.write(final_code_z)
-                print(f"[DEBUG] Successfully compiled {file_path_z} to {output_file_z}")
+                print(
+                    f"[DEBUG] Successfully compiled {file_path_z} to {output_file_z}")
     else:
         with open(input_file, 'r') as f:
             source_code = f.read()
