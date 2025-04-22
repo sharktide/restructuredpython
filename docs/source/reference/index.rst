@@ -8,3 +8,4 @@ The reference section provides detailed information about the built-in functions
 
    Syntax_Guide
    Builtin_Decorators
+   repyconfig.toml

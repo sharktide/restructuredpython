@@ -30,6 +30,7 @@ Features
 * **Header Files** In reStructuredPython, enjoy having the ability to create header files, similar to C++ for easier, and more organized development. View the `syntax <https://restructuredpython.readthedocs.io/en/latest/reference/Syntax_Guide.html>`_ guide for more details.
 * **Seamless Compilation:** reStructuredPython code compiles directly into Python, ensuring compatibility with existing Python libraries and frameworks.
 * **Enhanced Readability:** The syntax enhancements which include multiline comments aim to improve code readability and reduce verbosity.
+* **repyconfig.toml:** Easily control the build of your projects with a repyconfig.toml
 
 Documentation
 -------------
