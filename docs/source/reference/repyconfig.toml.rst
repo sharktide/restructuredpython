@@ -10,11 +10,11 @@ Introduced in 1.2.0, it has a very simple schema but will be expanded on jn futu
 
 Example schema:
 
-.. code-block::toml
+.. code-block:: toml
 
-[config]
-compile = "all"
-exclude = ["./tests/*", "./docs/*"]
+    [config]
+    compile = "all"
+    exclude = ["./tests/*", "./docs/*"]
 
 Explanation:
 
@@ -32,3 +32,5 @@ Section ``config`` (1/1): Contains main information for the compiler
   Key ``exclude`` (2/2) Type: List: A list of paths and directories to exclude.
 
     Written as ``["./path/to/dir/", "./path/to/file.repy", ...]``
+
+More items coming soon.
