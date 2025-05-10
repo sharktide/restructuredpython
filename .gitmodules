@@ -1,3 +1,3 @@
 [submodule "repython-vs"]
-	path = /repython-vs
+	path = repython-vs
 	url = https://github.com/sharktide/repython-vs.git
