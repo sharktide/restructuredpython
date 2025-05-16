@@ -23,8 +23,8 @@ jobs:
 
       - name: Compile Windows DLLs
         run: |
-          clang -shared -m32 -o restructuredpython/lib/io32.dll restructuredpython/include/io.c -Wl,--out-implib,restructuredpython/lib/io32.lib
-          clang -shared -m64 -o restructuredpython/lib/io64.dll restructuredpython/include/io.c -Wl,--out-implib,restructuredpython/lib/io64.lib
+          clang -shared -m32 -o restructuredpython/lib/io32.dll restructuredpython/include/io.c
+          clang -shared -m64 -o restructuredpython/lib/io64.dll restructuredpython/include/io.c
 
 
       - name: Upload Windows artifacts
@@ -42,7 +42,6 @@ jobs:
       - name: Compile Linux .so
         run: |
           gcc -shared -fPIC -o restructuredpython/lib/io.so restructuredpython/include/io.c
-
       - name: Upload Linux artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -57,7 +56,7 @@ jobs:
 
       - name: Compile macOS .dylib
         run: |
-          clang -shared -o restructuredpython/lib/io.dylib restructuredpython/include/io.c
+          clang -shared -fPIC -fdeclspec -o restructuredpython/lib/io.dylib restructuredpython/include/io.c
 
       - name: Upload macOS artifacts
         uses: actions/upload-artifact@v4
