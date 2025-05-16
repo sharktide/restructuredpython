@@ -16,17 +16,17 @@ import struct
 spec = importlib.util.find_spec("restructuredpython")
 if spec and spec.origin:
     package_dir = os.path.dirname(spec.origin)
-    io_dll = os.path.join(package_dir, "lib", "io64.dll")
-    io32_dll = os.path.join(package_dir, "lib", "io32.dll")  # Adjust based on platform
-    io_so = os.path.join(package_dir, "lib", "io.so")
+    io_dll = os.path.join(package_dir, "lib", "windows-libs", "io64.dll")
+    io32_dll = os.path.join(package_dir, "lib", "windows-lib", "io32.dll")  # Adjust based on platform
+    io_so = os.path.join(package_dir, "lib", "linux-libs", "io.so")
 
-    io_dylib = os.path.join(package_dir, "lib", "io.dylib")
+    io_dylib = os.path.join(package_dir, "lib", "macos-libs", "io.dylib")
 
 if sys.platform == "win32":
     if (struct.calcsize("P") * 8) == 32:
-        lib = ctypes.WinDLL(io_dll)
-    else:
         lib = ctypes.WinDLL(io32_dll)
+    else:
+        lib = ctypes.WinDLL(io_dll)
 elif sys.platform == "darwin":
     lib = ctypes.CDLL(io_dylib)
 else:
