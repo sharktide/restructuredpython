@@ -23,8 +23,9 @@ jobs:
 
       - name: Compile Windows DLLs
         run: |
-          clang -shared -m32 -o restructuredpython/lib/io32.dll restructuredpython/include/io.c
-          clang -shared -m64 -o restructuredpython/lib/io64.dll restructuredpython/include/io.c
+          clang -shared -m32 -o restructuredpython/lib/io32.dll restructuredpython/include/io.c -Wl,--out-implib,restructuredpython/lib/io32.lib
+          clang -shared -m64 -o restructuredpython/lib/io64.dll restructuredpython/include/io.c -Wl,--out-implib,restructuredpython/lib/io64.lib
+
 
       - name: Upload Windows artifacts
         uses: actions/upload-artifact@v4

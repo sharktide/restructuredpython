@@ -1,8 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#ifdef _WIN32
+#define EXPORT __declspec(dllexport)
+#else
+#define EXPORT __attribute__((visibility("default")))
+#endif
 
-__declspec(dllexport) int check_file_exists(const char *filename) {
+EXPORT int check_file_exists(const char *filename) {
     FILE *file = fopen(filename, "r");
     if (file) {
         fclose(file);
@@ -11,7 +16,7 @@ __declspec(dllexport) int check_file_exists(const char *filename) {
     return 0;
 }
 
-__declspec(dllexport) char* read_file(const char *filename) {
+EXPORT char* read_file(const char *filename) {
     FILE *file = fopen(filename, "r");
     if (!file) return NULL;
 
@@ -26,7 +31,7 @@ __declspec(dllexport) char* read_file(const char *filename) {
     return buffer;
 }
 
-__declspec(dllexport) int write_file(const char *filename, const char *data) {
+EXPORT int write_file(const char *filename, const char *data) {
     FILE *file = fopen(filename, "w");
     if (!file) return 0;
 
@@ -35,12 +40,12 @@ __declspec(dllexport) int write_file(const char *filename, const char *data) {
     return 1;
 }
 
-__declspec(dllexport) char* read_binary_file(const char *filename, size_t *size) {
+EXPORT char* read_binary_file(const char *filename, size_t *size) {
     FILE *file = fopen(filename, "rb");
     if (!file) return NULL;
 
     fseek(file, 0, SEEK_END);
-    *size = ftell(file);  // Get file size
+    *size = ftell(file);
     rewind(file);
 
     char *buffer = (char*)malloc(*size);
