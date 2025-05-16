@@ -15,7 +15,7 @@ on:
       - 'README.md'
 
 jobs:
-  build-windows:
+  Windows:
     runs-on: windows-latest
     steps:
       - name: Checkout code
@@ -33,7 +33,7 @@ jobs:
           name: windows-libs
           path: restructuredpython/lib/io*.dll
 
-  build-linux:
+  Ubuntu:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -48,7 +48,7 @@ jobs:
           name: linux-libs
           path: restructuredpython/lib/io.so
 
-  build-macos:
+  macOS:
     runs-on: macos-latest
     steps:
       - name: Checkout code
@@ -66,7 +66,7 @@ jobs:
 
   build-package:
     runs-on: windows-latest
-    needs: [build-windows, build-linux, build-macos]
+    needs: [Windows, Ubuntu, macOS]
     strategy:
       matrix:
         python-version: ["3.13"]
@@ -97,7 +97,7 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: "PR #${{ github.event.pull_request.number }}"
+          tag_name: "#${{ github.event.pull_request.number }}"
           name: "PR #${{ github.event.pull_request.number }}"
           prerelease: true
           files: |
