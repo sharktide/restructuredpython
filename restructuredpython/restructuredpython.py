@@ -104,7 +104,7 @@ def tokenize(code):
                     yield 'COMMENT', f"# {line.strip()}"
                 continue
         elif kind == 'MISMATCH':
-            warnings.warn(f'Unexpected character {value!r}. Continuing with compilation') # fmt: skip
+            warnings.warn(f"Unexpected character {value!r}. Continuing with compilation") # fmt: skip
             yield kind, value
 
         else:
@@ -116,25 +116,15 @@ def check_syntax(input_lines):
         line = input_lines[i].strip()
 
         if line.startswith(('} else', '} elif')):
-            raise SyntaxError(
-                f"Misplaced '{line}' statement at line {
-                    i + 1}. (REPY-0001)")
+            raise SyntaxError(f"Misplaced '{line}' statement at line {i + 1}. (REPY-0001)")  # fmt: skip
         if line.startswith('} except'):
-            raise SyntaxError(
-                f"Misplaced 'except' statement at line {
-                    i + 1}. (REPY-0002)")
+            raise SyntaxError(f"Misplaced 'except' statement at line {i + 1}. (REPY-0002)")  # fmt: skip
         if line.startswith('} def'):
-            raise SyntaxError(
-                f"Misplaced 'def' statement at line {
-                    i + 1}. (REPY-0003)")
+            raise SyntaxError(f"Misplaced 'def' statement at line {i + 1}. (REPY-0003)") # fmt: skip
         if line.startswith('} class'):
-            raise SyntaxError(
-                f"Misplaced 'class' statement at line {
-                    i + 1}. (REPY-0004)")
+            raise SyntaxError(f"Misplaced 'class' statement at line {i + 1}. (REPY-0004)") # fmt: skip
         if line.startswith('} case'):
-            raise SyntaxError(
-                f"Misplaced 'case' statement at line {
-                    i + 1}. (REPY-0005)")
+            raise SyntaxError(f"Misplaced 'case' statement at line {i + 1}. (REPY-0005)")  # fmt: skip
 
 
 def parse_repython(code):
