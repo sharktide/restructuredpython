@@ -104,9 +104,7 @@ def tokenize(code):
                     yield 'COMMENT', f"# {line.strip()}"
                 continue
         elif kind == 'MISMATCH':
-            warnings.warn(
-                f'Unexpected character {
-                    value!r}. Continuing with compilation')
+            warnings.warn(f'Unexpected character {value!r}. Continuing with compilation') # fmt: skip
             yield kind, value
 
         else:
