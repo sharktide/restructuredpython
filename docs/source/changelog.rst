@@ -3,6 +3,18 @@ reStructuredPython Changelog
 
 *Note: This changelog skips version 0.1.1*
 
+Major release 2
+---------------
+
+.. raw:: html
+
+    <details>
+    <summary>2.0.0</summary>
+    <ul>
+        <li>Completely overhauled the compiler's to sideload I/O operations to a .dll/.so/.dylib made with C</li>
+    </ul>
+    </details>
+
 Major release 1
 ---------------
 

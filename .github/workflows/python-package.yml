@@ -7,24 +7,77 @@ on:
       - synchronize
       - reopened
     paths-ignore:
-      - 'docs/**'  # Ignore changes in the 'docs' directory
-      - 'restructuredpython.egg-info/**'  # Ignore changes in the 'restructuredpython.egg-info' directory
-      - '.github/**'  # Ignore changes in the '.github' directory
-      - '.gitattributes'  # Ignore changes to '.gitattributes'
-      - '.gitignore'  # Ignore changes to '.gitignore'
-      - 'README.md'  # Ignore changes to 'README.md'
+      - 'docs/**'
+      - 'restructuredpython.egg-info/**'
+      - '.github/**'
+      - '.gitattributes'
+      - '.gitignore'
+      - 'README.md'
 
 jobs:
-  build:
+  Windows:
     runs-on: windows-latest
-
-    strategy:
-      matrix:
-        python-version: ["3.13"]
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Compile Windows DLLs
+        run: |
+          clang -shared -m32 -o restructuredpython/lib/io32.dll restructuredpython/include/io.c
+          clang -shared -m64 -o restructuredpython/lib/io64.dll restructuredpython/include/io.c
+
+
+      - name: Upload Windows artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-libs
+          path: restructuredpython/lib/io*.dll
+
+  Ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Compile Linux .so
+        run: |
+          gcc -shared -fPIC -o restructuredpython/lib/io.so restructuredpython/include/io.c
+      - name: Upload Linux artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-libs
+          path: restructuredpython/lib/io.so
+
+  macOS:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Compile macOS .dylib
+        run: |
+          clang -shared -fPIC -fdeclspec -o restructuredpython/lib/io.dylib restructuredpython/include/io.c
+
+      - name: Upload macOS artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-libs
+          path: restructuredpython/lib/io.dylib
+
+  build-package:
+    runs-on: windows-latest
+    needs: [Windows, Ubuntu, macOS]
+    strategy:
+      matrix:
+        python-version: ["3.13"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Download all compiled libraries
+        uses: actions/download-artifact@v4
+        with:
+          path: restructuredpython/lib/
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
@@ -34,26 +87,21 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
           pip install setuptools wheel build
-
-      #- name: Run tests with pytest
-      #  run: |
-      #    pytest  # Run your tests, replace with your test command
 
       - name: Build the package
         run: |
-          py -m build
+          python -m build
 
       - name: Create a GitHub release
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: "PR"  # Use commit SHA as tag name or use a custom tag
-          name: "PR #${{ github.event.pull_request.number }}"  # PR number as release name
-          prerelease: true  # Mark as a pre-release (beta)
+          tag_name: "#${{ github.event.pull_request.number }}"
+          name: "PR #${{ github.event.pull_request.number }}"
+          prerelease: true
           files: |
             dist/*.whl
             dist/*.tar.gz
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}  # GitHub token for authentication
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}

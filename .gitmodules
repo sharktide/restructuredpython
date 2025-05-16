@@ -1,3 +1,6 @@
 [submodule "repython-vs"]
 	path = repython-vs
 	url = https://github.com/sharktide/repython-vs.git
+[submodule "restructuredpython-web"]
+	path = restructuredpython-web
+	url = https://github.com/sharktide/restructuredpython-web.git
