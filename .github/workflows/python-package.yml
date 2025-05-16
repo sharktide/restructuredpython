@@ -37,10 +37,6 @@ jobs:
           pip install -r requirements.txt
           pip install setuptools wheel build
 
-      #- name: Run tests with pytest
-      #  run: |
-      #    pytest  # Run your tests, replace with your test command
-
       - name: Build the package
         run: |
           py -m build
@@ -49,11 +45,11 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: "PR"  # Use commit SHA as tag name or use a custom tag
-          name: "PR #${{ github.event.pull_request.number }}"  # PR number as release name
-          prerelease: true  # Mark as a pre-release (beta)
+          tag_name: "PR #${{ github.event.pull_request.number }}"
+          name: "PR #${{ github.event.pull_request.number }}"
+          prerelease: true
           files: |
             dist/*.whl
             dist/*.tar.gz
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}  # GitHub token for authentication
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}

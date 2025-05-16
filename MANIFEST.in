@@ -1,3 +1,12 @@
 exclude docs/*
 exclude tests/*
 exclude install/*
+include restructuredpython/restructuredpython.py
+include restructuredpython/lib/io.dll
+include restructuredpython/lib/io.so
+include restructuredpython/lib/io.dylib
+recursive-include restructuredpython/predefined *
+recursive-include restructuredpython/lib *
+recursive-include restructuredpython/include *
+
+

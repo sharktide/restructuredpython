@@ -1,9 +1,9 @@
 Metadata-Version: 2.4
 Name: restructuredpython
-Version: 1.2.0
-Summary: A superset of Python with js-like syntax
+Version: 2.0.0
+Summary: A superset of Python with many new features, including multiline comments, header files, and optional curly brackets around control statements
 Author-email: Rihaan Meher <meherrihaan@gmail.com>
-License: MIT
+License: Apache-2.0
 Classifier: Programming Language :: Python :: 3
 Classifier: Programming Language :: Python :: 3.10
 Classifier: Programming Language :: Python :: 3.11
