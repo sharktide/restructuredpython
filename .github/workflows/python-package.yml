@@ -27,7 +27,7 @@ jobs:
           clang -shared -m64 -o restructuredpython/lib/io64.dll restructuredpython/include/io.c
 
       - name: Upload Windows artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: windows-libs
           path: restructuredpython/lib/io*.dll
@@ -43,7 +43,7 @@ jobs:
           gcc -shared -fPIC -o restructuredpython/lib/io.so restructuredpython/include/io.c
 
       - name: Upload Linux artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: linux-libs
           path: restructuredpython/lib/io.so
@@ -59,7 +59,7 @@ jobs:
           clang -shared -o restructuredpython/lib/io.dylib restructuredpython/include/io.c
 
       - name: Upload macOS artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: macos-libs
           path: restructuredpython/lib/io.dylib
