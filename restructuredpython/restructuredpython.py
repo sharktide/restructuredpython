@@ -17,7 +17,7 @@ spec = importlib.util.find_spec("restructuredpython")
 if spec and spec.origin:
     package_dir = os.path.dirname(spec.origin)
     io_dll = os.path.join(package_dir, "lib", "windows-libs", "io64.dll")
-    io32_dll = os.path.join(package_dir, "lib", "windows-lib", "io32.dll")  # Adjust based on platform
+    io32_dll = os.path.join(package_dir, "lib", "windows-lib", "io32.dll")
     io_so = os.path.join(package_dir, "lib", "linux-libs", "io.so")
 
     io_dylib = os.path.join(package_dir, "lib", "macos-libs", "io.dylib")
@@ -33,7 +33,6 @@ else:
     lib = ctypes.CDLL(io_so)
 
 
-# Define argument & return types
 lib.check_file_exists.argtypes = [ctypes.c_char_p]
 lib.check_file_exists.restype = ctypes.c_int
 
@@ -56,9 +55,25 @@ def load_toml_binary(filename):
 
     raw_data = ctypes.string_at(raw_data_ptr, size.value)
     return toml.loads(raw_data.decode())
+def read_file_utf8(filename: str) -> str:
+    size = ctypes.c_size_t()
+    filename_bytes = filename.encode('utf-8')
+    
+    ptr = lib.read_binary_file(filename_bytes, ctypes.byref(size))
+    if not ptr:
+        raise FileNotFoundError(f"File not found: {filename}")
+    
+    raw_bytes = ctypes.string_at(ptr, size.value)
+
+    try:
+        text = raw_bytes.decode('utf-8')
+    except UnicodeDecodeError as e:
+        raise ValueError(f"File is not valid UTF-8: {e}")
+    
+    return text
 
 token_specification = [
-    ('COMMENT', r'/\*.*?\*/'),  # Multiline comment pattern
+    ('COMMENT', r'/\*.*?\*/'),
     ('IF', r'if'),
     ('FOR', r'for'),
     ('WHILE', r'while'),
@@ -71,8 +86,8 @@ token_specification = [
     ('WITH', r'with'),
     ('MATCH', r'match'),
     ('CASE', r'case'),
-    ('PIPE', r'\|>'),  # pipeline operator
-    ('IDENT', r'[A-Za-z_][A-Za-z0-9_]*'),  # variable or function name
+    ('PIPE', r'\|>'),
+    ('IDENT', r'[A-Za-z_][A-Za-z0-9_]*'),
     ('NUMBER', r'\d+'),
     ('LBRACE', r'\{'),
     ('RBRACE', r'\}'),
@@ -206,7 +221,7 @@ def compile_header_file(header_filename):
     if lib.check_file_exists(header_filename.encode()) == 0:
         raise FileNotFoundError(f"Header file {header_filename} not found.")
     try:
-        header_code = lib.read_file(header_filename.encode()).decode()
+        header_code = read_file_utf8(header_filename)
         if not header_code.strip():
             raise ValueError(f"Header file {header_filename} is empty.")
     except Exception as e:
@@ -227,15 +242,14 @@ def process_includes(code, input_file):
     header_code = ""
 
     for include in includes:
-        # Handle predefined headers
+        # predefined
         predefined_path = os.path.join(
             PREDEFINED_HEADERS_DIR, include.replace(
                 '.', os.sep) + '.py')
         if lib.check_file_exists(predefined_path.encode()):
             header_code += compile_header_file(predefined_path) + "\n"
             continue
-
-        # Handle user-defined headers
+        # userdefined
         if not os.path.isabs(include):
             include = os.path.join(
                 os.path.dirname(
@@ -355,7 +369,6 @@ def launch():
 
     final_code = header_code + python_code
 
-    # Execute the compiled code directly
     try:
         execute_code_temporarily(final_code)
     except Exception as e:
