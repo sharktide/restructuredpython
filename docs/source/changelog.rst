@@ -9,6 +9,15 @@ Major release 2
 .. raw:: html
 
     <details>
+    <summary>2.1.0</summary>
+    <ul>
+        <li>The strict_types decorator is here! Refer to reference/builtin_decorators/decorators.strict_types of the documentation!</li>
+    </ul>
+    </details>
+
+.. raw:: html
+
+    <details>
     <summary>2.0.0</summary>
     <ul>
         <li>Completely overhauled the compiler's to sideload I/O operations to a .dll/.so/.dylib made with C</li>
