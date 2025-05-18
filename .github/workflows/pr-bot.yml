@@ -1,0 +1,57 @@
+name: reStructuredPython automated PR Labeling
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  update-labels:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Parse comment and update PR labels
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const comment = context.payload.comment.body;
+            const prNumber = context.payload.issue.number;
+            const labelsToAdd = [];
+            const labelsToRemove = [];
+
+            const status = {
+              windows: false,
+              mac: false,
+              ubuntu: false
+            };
+
+            if (comment.includes("!windows-passing")) status.windows = true;
+            if (comment.includes("!windows-failing")) status.windows = false;
+            if (comment.includes("!mac-passing")) status.mac = true;
+            if (comment.includes("!mac-failing")) status.mac = false;
+            if (comment.includes("!ubuntu-passing")) status.ubuntu = true;
+            if (comment.includes("!ubuntu-failing")) status.ubuntu = false;
+
+            const allPassing = status.windows && status.mac && status.ubuntu;
+            const anyFailing = !status.windows || !status.mac || !status.ubuntu;
+
+            if (allPassing) {
+              labelsToAdd.push("awaiting merge");
+              labelsToRemove.push("DO-NOT-MERGE");
+            } else if (anyFailing) {
+              labelsToAdd.push("DO-NOT-MERGE");
+              labelsToRemove.push("awaiting merge");
+            }
+
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              labels: labelsToAdd
+            });
+
+            for (const label of labelsToRemove) {
+              await github.rest.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                name: label
+              }).catch(() => {});
+            }
