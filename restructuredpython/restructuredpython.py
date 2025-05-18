@@ -17,7 +17,7 @@ spec = importlib.util.find_spec("restructuredpython")
 if spec and spec.origin:
     package_dir = os.path.dirname(spec.origin)
     io_dll = os.path.join(package_dir, "lib", "windows-libs", "io64.dll")
-    
+
     io32_dll = os.path.join(package_dir, "lib", "windows-lib", "io32.dll")
 
     io_so = os.path.join(package_dir, "lib", "linux-libs", "io.so")
@@ -60,21 +60,23 @@ def load_toml_binary(filename):
 
     raw_data = ctypes.string_at(raw_data_ptr, size.value)
     return toml.loads(raw_data.decode())
+
+
 def read_file_utf8(filename: str) -> str:
     size = ctypes.c_size_t()
     filename_bytes = filename.encode('utf-8')
-    
+
     ptr = lib.read_binary_file(filename_bytes, ctypes.byref(size))
     if not ptr:
         raise FileNotFoundError(f"File not found: {filename}")
-    
+
     raw_bytes = ctypes.string_at(ptr, size.value)
 
     try:
         text = raw_bytes.decode('utf-8')
     except UnicodeDecodeError as e:
         raise ValueError(f"File is not valid UTF-8: {e}")
-    
+
     return text
 
 
