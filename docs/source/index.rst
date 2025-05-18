@@ -1,7 +1,9 @@
 reStructuredPython Documentation
 ================================
 
-Welcome to the reStructuredPython documentation! reStructuredPython, also known as 'rePython', is a Python variant that introduces JavaScript-like syntax for a cleaner and more readable coding experience. It compiles seamlessly into standard Python code.
+Welcome to the reStructuredPython documentation! reStructuredPython, also known as 'rePython', is a superset of python with full compatibility with existing python libaries that compiles back into standard python!
+
+https://github.com/sharktide/restructuredpython
 
 Getting Started
 ---------------
@@ -31,6 +33,7 @@ Features
 * **Seamless Compilation:** reStructuredPython code compiles directly into Python, ensuring compatibility with existing Python libraries and frameworks.
 * **Enhanced Readability:** The syntax enhancements which include multiline comments aim to improve code readability and reduce verbosity.
 * **repyconfig.toml:** Easily control the build of your projects with a repyconfig.toml
+* **Strict Types** Enhance your python projects wil strict types in functions with the builtin strict_types decorator
 
 Documentation
 -------------

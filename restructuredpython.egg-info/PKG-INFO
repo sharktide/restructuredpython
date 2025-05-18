@@ -1,7 +1,7 @@
 Metadata-Version: 2.4
 Name: restructuredpython
-Version: 2.0.0
-Summary: A superset of Python with many new features, including multiline comments, header files, and optional curly brackets around control statements
+Version: 2.1.0
+Summary: A superset of Python with many new features, including full JS integration, multiline comments, header files, and optional curly brackets around control statements
 Author-email: Rihaan Meher <meherrihaan@gmail.com>
 License: Apache-2.0
 Classifier: Programming Language :: Python :: 3

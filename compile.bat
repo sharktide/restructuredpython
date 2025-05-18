@@ -15,11 +15,16 @@ xcopy "%SRC_DIR%\*" "%DEST%" /E /H /C /I /exclude:exclude.txt
 pushd "C:\TempBuild"
 cl /LD restructuredpython/include/io.c
 
-for %%F in (*.dll) do xcopy "%%F" "%SRC_DIR%/restructuredpython/lib" /Y
+set /p arch="Was this run from an x64 tools prompt (y/n) >"
+if "%arch%"=="y" (
+for %%F in (io.dll) do xcopy "%%F" "%SRC_DIR%/restructuredpython/lib/windows-libs/io64.dll" /Y
+) else (
+for %%F in (io.dll) do xcopy "%%F" "%SRC_DIR%/restructuredpython/lib/windows-libs/io32.dll" /Y
+)
 
 echo Deleting copied files
 
-del /Q "%DEST%\*.*"
+del /Q C:\TempBuild
 
 popd
 
