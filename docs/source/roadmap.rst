@@ -1,11 +1,6 @@
 Roadmap
 =======
 
-1.2.0
------
+Nothing to see here!
 
-Possibly add built-in functions, not only decorators. This will definetly happen, we just aren't sure if it will happen in 1.1.1
-
-Expected release dates:
-
-TBD
+The content of releases 2.2.0 2.3.0 and 2.4.0 has not been decided yet

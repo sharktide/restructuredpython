@@ -1,7 +1,2 @@
 # Auto detect text files and perform LF normalization
 * text=auto
-
-docs/** -linguist-documentation
-
-*.rst linguist-detectable
-*.ps1 linguist-detectable
