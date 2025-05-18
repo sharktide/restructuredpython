@@ -17,7 +17,9 @@ spec = importlib.util.find_spec("restructuredpython")
 if spec and spec.origin:
     package_dir = os.path.dirname(spec.origin)
     io_dll = os.path.join(package_dir, "lib", "windows-libs", "io64.dll")
+    
     io32_dll = os.path.join(package_dir, "lib", "windows-lib", "io32.dll")
+
     io_so = os.path.join(package_dir, "lib", "linux-libs", "io.so")
 
     io_dylib = os.path.join(package_dir, "lib", "macos-libs", "io.dylib")
@@ -42,8 +44,11 @@ lib.read_file.restype = ctypes.c_char_p
 lib.write_file.argtypes = [ctypes.c_char_p, ctypes.c_char_p]
 lib.write_file.restype = ctypes.c_int
 
-lib.read_binary_file.argtypes = [ctypes.c_char_p, ctypes.POINTER(ctypes.c_size_t)]
+lib.read_binary_file.argtypes = [
+    ctypes.c_char_p, ctypes.POINTER(
+        ctypes.c_size_t)]
 lib.read_binary_file.restype = ctypes.POINTER(ctypes.c_char)
+
 
 def load_toml_binary(filename):
     filename = str(filename)
@@ -71,6 +76,7 @@ def read_file_utf8(filename: str) -> str:
         raise ValueError(f"File is not valid UTF-8: {e}")
     
     return text
+
 
 token_specification = [
     ('COMMENT', r'/\*.*?\*/'),
@@ -119,7 +125,9 @@ def tokenize(code):
                     yield 'COMMENT', f"# {line.strip()}"
                 continue
         elif kind == 'MISMATCH':
-            warnings.warn(f"Unexpected character {value!r}. Continuing with compilation") # fmt: skip
+            warnings.warn(
+                f"Unexpected character {
+                    value!r}. Continuing with compilation")  # fmt: skip
             yield kind, value
 
         else:
@@ -131,15 +139,25 @@ def check_syntax(input_lines):
         line = input_lines[i].strip()
 
         if line.startswith(('} else', '} elif')):
-            raise SyntaxError(f"Misplaced '{line}' statement at line {i + 1}. (REPY-0001)")  # fmt: skip
+            raise SyntaxError(
+                f"Misplaced '{line}' statement at line {
+                    i + 1}. (REPY-0001)")  # fmt: skip
         if line.startswith('} except'):
-            raise SyntaxError(f"Misplaced 'except' statement at line {i + 1}. (REPY-0002)")  # fmt: skip
+            raise SyntaxError(
+                f"Misplaced 'except' statement at line {
+                    i + 1}. (REPY-0002)")  # fmt: skip
         if line.startswith('} def'):
-            raise SyntaxError(f"Misplaced 'def' statement at line {i + 1}. (REPY-0003)") # fmt: skip
+            raise SyntaxError(
+                f"Misplaced 'def' statement at line {
+                    i + 1}. (REPY-0003)")  # fmt: skip
         if line.startswith('} class'):
-            raise SyntaxError(f"Misplaced 'class' statement at line {i + 1}. (REPY-0004)") # fmt: skip
+            raise SyntaxError(
+                f"Misplaced 'class' statement at line {
+                    i + 1}. (REPY-0004)")  # fmt: skip
         if line.startswith('} case'):
-            raise SyntaxError(f"Misplaced 'case' statement at line {i + 1}. (REPY-0005)")  # fmt: skip
+            raise SyntaxError(
+                f"Misplaced 'case' statement at line {
+                    i + 1}. (REPY-0005)")  # fmt: skip
 
 
 def parse_repython(code):
@@ -316,7 +334,6 @@ def main():
             for file_path_z in matching_files:
                 file_path_z = str(file_path_z)
                 source_code_z = lib.read_file(file_path_z.encode()).decode()
-
 
                 header_code_z, code_without_includes_z = process_includes(
                     source_code_z, file_path_z)
