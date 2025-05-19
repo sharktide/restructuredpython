@@ -33,15 +33,7 @@ Or you could do this:
 Decorators
 ----------
 
-This is the list of built in decorators avalible in reStructuredPython.
-
-5. **decorators.access_control
-
-Allows only certain user roles to use a function
-
-Example:
-
-
+See:
 
 .. toctree::
    :maxdepth: 2
