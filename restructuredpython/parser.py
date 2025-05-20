@@ -1,6 +1,7 @@
 from restructuredpython.check_syntax import check_syntax
 import re
 
+
 def parse_repython(code):
     """Parses the rePython code and converts it to valid Python code."""
     def chain_pipeline(code):

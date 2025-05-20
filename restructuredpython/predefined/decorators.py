@@ -87,9 +87,11 @@ class decorators:
             # Check return type
             expected_return = type_hints.get('return')
             if expected_return and not isinstance(result, expected_return):
-                raise TypeError(f"Return value expected {expected_return.__name__}, got {type(result).__name__}")
+                raise TypeError(
+                    f"Return value expected {
+                        expected_return.__name__}, got {
+                        type(result).__name__}")
 
             return result
 
         return wrapper
-

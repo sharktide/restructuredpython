@@ -10,6 +10,7 @@ from restructuredpython.parser import parse_repython
 from restructuredpython import cload
 from restructuredpython.cload import *
 
+
 def compile_header_file(header_filename):
     """Compiles a .cdata file and returns the corresponding Python code."""
     header_filename = Path(header_filename).resolve()
