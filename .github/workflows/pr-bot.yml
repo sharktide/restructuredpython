@@ -16,27 +16,29 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const comment = context.payload.comment.body.trim();
             const prNumber = context.payload.issue.number;
             const labelsToAdd = [];
             const labelsToRemove = [];
             
-            // Ensure only recognized status comments trigger changes
-            const validPrefixes = [
-              "!windows-passing", "!windows-failing",
-              "!mac-passing", "!mac-failing",
-              "!ubuntu-passing", "!ubuntu-failing"
-            ];
+            // Fetch all comments on the PR
+            const comments = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber
+            });
             
-            if (!validPrefixes.some(prefix => comment.startsWith(prefix))) {
-              return; // Ignore unrelated comments
-            }
+            const status = { windows: false, mac: false, ubuntu: false };
             
-            const status = {
-              windows: comment.startsWith("!windows-passing"),
-              mac: comment.startsWith("!mac-passing"),
-              ubuntu: comment.startsWith("!ubuntu-passing")
-            };
+            // Loop through comments to determine status
+            comments.data.forEach(comment => {
+              const text = comment.body.trim();
+              if (text.startsWith("!windows-passing")) status.windows = true;
+              if (text.startsWith("!windows-failing")) status.windows = false;
+              if (text.startsWith("!mac-passing")) status.mac = true;
+              if (text.startsWith("!mac-failing")) status.mac = false;
+              if (text.startsWith("!ubuntu-passing")) status.ubuntu = true;
+              if (text.startsWith("!ubuntu-failing")) status.ubuntu = false;
+            });
             
             const allPassing = status.windows && status.mac && status.ubuntu;
             const anyFailing = !status.windows || !status.mac || !status.ubuntu;
@@ -67,4 +69,3 @@ jobs:
                 name: label
               }).catch(() => {});
             }
-
