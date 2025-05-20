@@ -16,27 +16,31 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const comment = context.payload.comment.body;
+            const comment = context.payload.comment.body.trim();
             const prNumber = context.payload.issue.number;
             const labelsToAdd = [];
             const labelsToRemove = [];
-
+            
+            // Ensure only recognized status comments trigger changes
+            const validPrefixes = [
+              "!windows-passing", "!windows-failing",
+              "!mac-passing", "!mac-failing",
+              "!ubuntu-passing", "!ubuntu-failing"
+            ];
+            
+            if (!validPrefixes.some(prefix => comment.startsWith(prefix))) {
+              return; // Ignore unrelated comments
+            }
+            
             const status = {
-              windows: false,
-              mac: false,
-              ubuntu: false
+              windows: comment.startsWith("!windows-passing"),
+              mac: comment.startsWith("!mac-passing"),
+              ubuntu: comment.startsWith("!ubuntu-passing")
             };
-
-            if (comment.includes("!windows-passing")) status.windows = true;
-            if (comment.includes("!windows-failing")) status.windows = false;
-            if (comment.includes("!mac-passing")) status.mac = true;
-            if (comment.includes("!mac-failing")) status.mac = false;
-            if (comment.includes("!ubuntu-passing")) status.ubuntu = true;
-            if (comment.includes("!ubuntu-failing")) status.ubuntu = false;
-
+            
             const allPassing = status.windows && status.mac && status.ubuntu;
             const anyFailing = !status.windows || !status.mac || !status.ubuntu;
-
+            
             if (allPassing) {
               labelsToAdd.push("awaiting merge");
               labelsToRemove.push("DO-NOT-MERGE");
@@ -44,14 +48,17 @@ jobs:
               labelsToAdd.push("DO-NOT-MERGE");
               labelsToRemove.push("awaiting merge");
             }
-
-            await github.rest.issues.addLabels({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: prNumber,
-              labels: labelsToAdd
-            });
-
+            
+            // Apply label changes only if necessary
+            if (labelsToAdd.length > 0) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                labels: labelsToAdd
+              });
+            }
+            
             for (const label of labelsToRemove) {
               await github.rest.issues.removeLabel({
                 owner: context.repo.owner,
@@ -60,3 +67,4 @@ jobs:
                 name: label
               }).catch(() => {});
             }
+
