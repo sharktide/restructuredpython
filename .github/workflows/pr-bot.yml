@@ -17,8 +17,6 @@ jobs:
         with:
           script: |
             const prNumber = context.payload.issue.number;
-            const labelsToAdd = [];
-            const labelsToRemove = [];
             
             // Fetch all comments on the PR
             const comments = await github.rest.issues.listComments({
@@ -27,45 +25,18 @@ jobs:
               issue_number: prNumber
             });
             
-            const status = { windows: false, mac: false, ubuntu: false };
+            // Check if any failing status exists
+            const failingComments = ["!windows-failing", "!macos-failing", "!ubuntu-failing"];
+            const anyFailing = failingComments.some(tag => 
+              comments.data.some(comment => comment.body.trim() === tag)
+            );
             
-            // Loop through comments to determine status
-            comments.data.forEach(comment => {
-              const text = comment.body.trim();
-              if (text.startsWith("!windows-passing")) status.windows = true;
-              if (text.startsWith("!windows-failing")) status.windows = false;
-              if (text.startsWith("!mac-passing")) status.mac = true;
-              if (text.startsWith("!mac-failing")) status.mac = false;
-              if (text.startsWith("!ubuntu-passing")) status.ubuntu = true;
-              if (text.startsWith("!ubuntu-failing")) status.ubuntu = false;
-            });
-            
-            const allPassing = status.windows && status.mac && status.ubuntu;
-            const anyFailing = !status.windows || !status.mac || !status.ubuntu;
-            
-            if (allPassing) {
-              labelsToAdd.push("awaiting merge");
-              labelsToRemove.push("DO-NOT-MERGE");
-            } else if (anyFailing) {
-              labelsToAdd.push("DO-NOT-MERGE");
-              labelsToRemove.push("awaiting merge");
-            }
-            
-            // Apply label changes only if necessary
-            if (labelsToAdd.length > 0) {
+            // Add DO-NOT-MERGE only if at least one fails
+            if (anyFailing) {
               await github.rest.issues.addLabels({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: prNumber,
-                labels: labelsToAdd
+                labels: ["DO-NOT-MERGE"]
               });
-            }
-            
-            for (const label of labelsToRemove) {
-              await github.rest.issues.removeLabel({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: prNumber,
-                name: label
-              }).catch(() => {});
-            }
+            } 
