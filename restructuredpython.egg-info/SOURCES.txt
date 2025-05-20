@@ -2,8 +2,10 @@ MANIFEST.in
 README.md
 pyproject.toml
 restructuredpython/__init__.py
+restructuredpython/check_syntax.py
+restructuredpython/cload.py
+restructuredpython/parser.py
 restructuredpython/restructuredpython.py
-restructuredpython/test.py
 restructuredpython.egg-info/PKG-INFO
 restructuredpython.egg-info/SOURCES.txt
 restructuredpython.egg-info/dependency_links.txt
