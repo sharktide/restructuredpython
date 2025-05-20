@@ -9,10 +9,18 @@ Major release 2
 .. raw:: html
 
     <details>
-    <summary>2.1.0</summary>
-    <ul>
-        <li>The strict_types decorator is here! Refer to reference/builtin_decorators/decorators.strict_types of the documentation!</li>
-    </ul>
+    <summary>2.1.0 - 2.1.1</summary>
+        <details>
+            <summary>2.1.1</summary>
+            <ul>
+                <li>Fix #25</li>
+        </details>
+        <details>
+            <summary>2.1.0</summary>
+            <ul>
+                <li>The strict_types decorator is here! Refer to reference/builtin_decorators/decorators.strict_types of the documentation!</li>
+            </ul>
+        </details>
     </details>
 
 .. raw:: html
