@@ -7,14 +7,20 @@ import tomllib as toml
 import time
 from textformat import *
 
+
 def time_opening(func):
     def wrapper(*args, **kwargs):
         start_time = time.time()
         result = func(*args, **kwargs)
         end_time = time.time()
-        print(f"Loading {func.__name__} module took {end_time - start_time:.2f} seconds.")
+        print(
+            f"Loading {
+                func.__name__} module took {
+                end_time -
+                start_time:.2f} seconds.")
         return result
     return wrapper
+
 
 spec = importlib.util.find_spec("restructuredpython")
 if spec and spec.origin:
@@ -35,6 +41,7 @@ elif sys.platform == "darwin":
 else:
     lib = ctypes.CDLL(io_so)
 
+
 def io_s():
     lib.check_file_exists.argtypes = [ctypes.c_char_p]
     lib.check_file_exists.restype = ctypes.c_int
@@ -50,6 +57,7 @@ def io_s():
             ctypes.c_size_t)]
     lib.read_binary_file.restype = ctypes.POINTER(ctypes.c_char)
 
+
 io_s()
 
 load_e = time.perf_counter()
@@ -63,7 +71,8 @@ def load_toml_binary(filename):
     raw_data_ptr = lib.read_binary_file(filename.encode(), ctypes.byref(size))
 
     if not raw_data_ptr:
-        raise FileNotFoundError(f"{bcolors.BOLD}{bcolors.FAIL}Could not read {filename}{bcolors.ENDC}")
+        raise FileNotFoundError(
+            f"{bcolors.BOLD}{bcolors.FAIL}Could not read {filename}{bcolors.ENDC}")
 
     raw_data = ctypes.string_at(raw_data_ptr, size.value)
     return toml.loads(raw_data.decode())
@@ -75,13 +84,15 @@ def read_file_utf8(filename: str) -> str:
 
     ptr = lib.read_binary_file(filename_bytes, ctypes.byref(size))
     if not ptr:
-        raise FileNotFoundError(f"{bcolors.BOLD}{bcolors.FAIL}File not found: {filename}{bcolors.ENDC}")
+        raise FileNotFoundError(
+            f"{bcolors.BOLD}{bcolors.FAIL}File not found: {filename}{bcolors.ENDC}")
 
     raw_bytes = ctypes.string_at(ptr, size.value)
 
     try:
         text = raw_bytes.decode('utf-8')
     except UnicodeDecodeError as e:
-        raise UnicodeDecodeError(f"{bcolors.BOLD}{bcolors.FAIL}{e}{bcolors.ENDC}")
+        raise UnicodeDecodeError(
+            f"{bcolors.BOLD}{bcolors.FAIL}{e}{bcolors.ENDC}")
 
     return text

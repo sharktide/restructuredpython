@@ -11,18 +11,22 @@ from .parser import parse_repython
 from .cload import *
 from textformat import *
 
+
 def compile_header_file(header_filename):
     """Compiles a .cdata file and returns the corresponding Python code."""
     header_filename = Path(header_filename).resolve()
     header_filename = str(header_filename)
     if lib.check_file_exists(header_filename.encode()) == 0:
-        raise FileNotFoundError(f"{bcolors.BOLD}{bcolors.FAIL}Header file {header_filename} not found.{bcolors.ENDC}")
+        raise FileNotFoundError(
+            f"{bcolors.BOLD}{bcolors.FAIL}Header file {header_filename} not found.{bcolors.ENDC}")
     try:
         header_code = read_file_utf8(header_filename)
         if not header_code.strip():
-            raise ValueError(f"{bcolors.BOLD}{bcolors.FAIL}Header file {header_filename} is empty.{bcolors.ENDC}")
+            raise ValueError(
+                f"{bcolors.BOLD}{bcolors.FAIL}Header file {header_filename} is empty.{bcolors.ENDC}")
     except Exception as e:
-        print(f"{bcolors.WARNING}Error opening file {header_filename}: {e}{bcolors.ENDC}")
+        print(
+            f"{bcolors.WARNING}Error opening file {header_filename}: {e}{bcolors.ENDC}")
         return ""
 
     return parse_repython(header_code)
@@ -56,7 +60,11 @@ def process_includes(code, input_file):
         if lib.check_file_exists(include.encode()):
             header_code += compile_header_file(include) + "\n"
         else:
-            print(f"{bcolors.BOLD}{bcolors.FAIL}Error: Included file '{include}' not found.{bcolors.ENDC}")
+            print(
+                f"{
+                    bcolors.BOLD}{
+                    bcolors.FAIL}Error: Included file '{include}' not found.{
+                    bcolors.ENDC}")
             continue
 
     code_without_includes = re.sub(include_pattern, '', code)
@@ -73,7 +81,10 @@ def execute_code_temporarily(code):
             exec(open(temp_file_path).read(), {"__name__": "__main__"})
         except Exception as e:
             print(f"{bcolors.FAIL}Error during execution: {e}")
-            print(f"You can view the generated file at {(temp_file_path)}{bcolors.ENDC}")
+            print(
+                f"You can view the generated file at {
+                    (temp_file_path)}{
+                    bcolors.ENDC}")
 
 
 def main():
@@ -86,7 +97,11 @@ def main():
     input_file = str(input_file)
 
     if lib.check_file_exists(input_file.encode()) == 0:
-        print(f"{bcolors.BOLD}{bcolors.FAIL}Error: The file {input_file} does not exist.{bcolors.ENDC}")
+        print(
+            f"{
+                bcolors.BOLD}{
+                bcolors.FAIL}Error: The file {input_file} does not exist.{
+                bcolors.ENDC}")
         return
     if input_file.endswith('repyconfig.toml'):
         data = load_toml_binary(input_file)
@@ -94,12 +109,14 @@ def main():
             compile_value = data["config"]["compile"]
         except BaseException:
             compile_value = "null"
-            raise BaseException(f"{bcolors.BOLD}{bcolors.FAIL}Error reading compile value from config{bcolors.ENDC}")
+            raise BaseException(
+                f"{bcolors.BOLD}{bcolors.FAIL}Error reading compile value from config{bcolors.ENDC}")
         try:
             exclude_files = data["config"]["exclude"]
         except BaseException:
             exclude_files = []
-            print(f"{bcolors.WARNING}[WARNING] No excluded files found in config{bcolors.ENDC}")
+            print(
+                f"{bcolors.WARNING}[WARNING] No excluded files found in config{bcolors.ENDC}")
         if compile_value == 'all':
             extension = ".repy"
             matching_files = []
@@ -142,7 +159,8 @@ def main():
 
         lib.write_file(output_file.encode(), final_code.encode())
 
-        print(f"{bcolors.BOLD}{bcolors.OKGREEN}Compiled {input} to {output_file}{bcolors.ENDC}")
+        print(
+            f"{bcolors.BOLD}{bcolors.OKGREEN}Compiled {input} to {output_file}{bcolors.ENDC}")
 
 
 def launch():
