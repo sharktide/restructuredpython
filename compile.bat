@@ -17,9 +17,9 @@ cl /LD restructuredpython/include/io.c
 
 set /p arch="Was this run from an x64 tools prompt (y/n) >"
 if "%arch%"=="y" (
-for %%F in (io.dll) do xcopy "%%F" "%SRC_DIR%/restructuredpython/lib/windows-libs/io64.dll" /Y
+    for %%F in (io.dll) do xcopy "%%F" "%SRC_DIR%/restructuredpython/lib/windows-libs/io64.dll" /Y
 ) else (
-for %%F in (io.dll) do xcopy "%%F" "%SRC_DIR%/restructuredpython/lib/windows-libs/io32.dll" /Y
+    for %%F in (io.dll) do xcopy "%%F" "%SRC_DIR%/restructuredpython/lib/windows-libs/io32.dll" /Y
 )
 
 echo Deleting copied files

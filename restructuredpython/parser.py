@@ -1,9 +1,9 @@
-from restructuredpython.check_syntax import check_syntax
+from .check_syntax import check_syntax
 import re
 
 
 def parse_repython(code):
-    """Parses the rePython code and converts it to valid Python code."""
+    """Parses reStructuredPython and converts it to Python."""
     def chain_pipeline(code):
         parts = [part.strip() for part in code.split('|>')]
         if len(parts) > 1:
