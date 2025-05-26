@@ -6,23 +6,23 @@ from pathlib import Path
 import sys
 import tomllib as toml
 import fnmatch
-from restructuredpython.parser import parse_repython
-from restructuredpython import cload
-from restructuredpython.cload import *
 
+from .parser import parse_repython
+from .cload import *
+from textformat import *
 
 def compile_header_file(header_filename):
     """Compiles a .cdata file and returns the corresponding Python code."""
     header_filename = Path(header_filename).resolve()
     header_filename = str(header_filename)
     if lib.check_file_exists(header_filename.encode()) == 0:
-        raise FileNotFoundError(f"Header file {header_filename} not found.")
+        raise FileNotFoundError(f"{bcolors.BOLD}{bcolors.FAIL}Header file {header_filename} not found.{bcolors.ENDC}")
     try:
         header_code = read_file_utf8(header_filename)
         if not header_code.strip():
-            raise ValueError(f"Header file {header_filename} is empty.")
+            raise ValueError(f"{bcolors.BOLD}{bcolors.FAIL}Header file {header_filename} is empty.{bcolors.ENDC}")
     except Exception as e:
-        print(f"Error opening file {header_filename}: {e}")
+        print(f"{bcolors.WARNING}Error opening file {header_filename}: {e}{bcolors.ENDC}")
         return ""
 
     return parse_repython(header_code)
@@ -56,7 +56,7 @@ def process_includes(code, input_file):
         if lib.check_file_exists(include.encode()):
             header_code += compile_header_file(include) + "\n"
         else:
-            print(f"Error: Included file '{include}' not found.")
+            print(f"{bcolors.BOLD}{bcolors.FAIL}Error: Included file '{include}' not found.{bcolors.ENDC}")
             continue
 
     code_without_includes = re.sub(include_pattern, '', code)
@@ -65,14 +65,15 @@ def process_includes(code, input_file):
 
 
 def execute_code_temporarily(code):
+    """Executes the compiled python code"""
     with tempfile.TemporaryDirectory() as tmpdir:
         temp_file_path = os.path.join(tmpdir, "compiled_repy.py")
         lib.write_file(temp_file_path.encode(), code.encode())
         try:
             exec(open(temp_file_path).read(), {"__name__": "__main__"})
         except Exception as e:
-            print(f"Error during execution: {e}")
-            print(f"You can view the generated file at {(temp_file_path)}")
+            print(f"{bcolors.FAIL}Error during execution: {e}")
+            print(f"You can view the generated file at {(temp_file_path)}{bcolors.ENDC}")
 
 
 def main():
@@ -85,7 +86,7 @@ def main():
     input_file = str(input_file)
 
     if lib.check_file_exists(input_file.encode()) == 0:
-        print(f"Error: The file {input_file} does not exist.")
+        print(f"{bcolors.BOLD}{bcolors.FAIL}Error: The file {input_file} does not exist.{bcolors.ENDC}")
         return
     if input_file.endswith('repyconfig.toml'):
         data = load_toml_binary(input_file)
@@ -93,12 +94,12 @@ def main():
             compile_value = data["config"]["compile"]
         except BaseException:
             compile_value = "null"
-            print("[WARNING] Error reading compile value from config")
+            raise BaseException(f"{bcolors.BOLD}{bcolors.FAIL}Error reading compile value from config{bcolors.ENDC}")
         try:
             exclude_files = data["config"]["exclude"]
         except BaseException:
             exclude_files = []
-            print("[WARNING] No excluded files found in config")
+            print(f"{bcolors.WARNING}[WARNING] No excluded files found in config{bcolors.ENDC}")
         if compile_value == 'all':
             extension = ".repy"
             matching_files = []
@@ -126,7 +127,7 @@ def main():
                 lib.write_file(output_file_z.encode(), final_code_z.encode())
 
                 print(
-                    f"[DEBUG] Successfully compiled {file_path_z} to {output_file_z}")
+                    f"{bcolors.OKGREEN}Compiled {file_path_z} to {output_file_z}{bcolors.ENDC}")
     else:
         source_code = lib.read_file(input_file.encode()).decode()
 
@@ -141,7 +142,7 @@ def main():
 
         lib.write_file(output_file.encode(), final_code.encode())
 
-        print(f"[DEBUG] Successfully compiled {input_file} to {output_file}")
+        print(f"{bcolors.BOLD}{bcolors.OKGREEN}Compiled {input} to {output_file}{bcolors.ENDC}")
 
 
 def launch():

@@ -9,6 +9,13 @@ Major release 2
 .. raw:: html
 
     <details>
+    <summary>2.2.0</summary>
+    <ul>
+        <li>Add color to error messages using the textfmt module</li>
+    </ul>
+    </details>
+
+    <details>
     <summary>2.1.0 - 2.1.1</summary>
         <details>
             <summary>2.1.1</summary>
