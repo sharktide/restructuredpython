@@ -9,10 +9,18 @@ Major release 2
 .. raw:: html
 
     <details>
-    <summary>2.2.0</summary>
-    <ul>
-        <li>Add color to error messages using the textfmt module</li>
-    </ul>
+    <summary>2.2.0 - 2.2.1</summary>
+        <details>
+        <summary>2.2.1</summary>
+            <ul>
+                <li>Fixed importlib errors on newer python versions</li>
+            </ul>
+        <details>
+        <summary>2.2.0</summary>
+            <ul>
+                <li>Add color to error messages using the textfmt module</li>
+            </ul>
+        </details>
     </details>
 
     <details>

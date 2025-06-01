@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "restructuredpython"
-version = "2.2.0"
+version = "2.2.1"
 description = "A superset of Python with many new features, including full JS integration, multiline comments, header files, and optional curly brackets around control statements"
 authors = [{name = "Rihaan Meher", email = "meherrihaan@gmail.com"}]
 license = {text = "Apache-2.0"}
