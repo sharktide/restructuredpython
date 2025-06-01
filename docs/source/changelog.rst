@@ -15,6 +15,7 @@ Major release 2
             <ul>
                 <li>Fixed importlib errors on newer python versions</li>
             </ul>
+        </details>
         <details>
         <summary>2.2.0</summary>
             <ul>
