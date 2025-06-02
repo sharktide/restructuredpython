@@ -12,7 +12,7 @@ To download the reStructuredPython compiler using the python package index:
 ```shell
 pip install --upgrade restructuredpython
 ```
-Download our vscode extension [from the visual studio marketplace](https://marketplace.visualstudio.com/items?itemName=RihaanMeher.restructuredpython)
+Download our vscode extension with intellisense support [from the visual studio marketplace](https://marketplace.visualstudio.com/items?itemName=RihaanMeher.restructuredpython)
 
 To use the reStructuredPython compiler:
 
