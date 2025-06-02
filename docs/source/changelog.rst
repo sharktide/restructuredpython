@@ -9,11 +9,19 @@ Major release 2
 .. raw:: html
 
     <details>
+    <summary>2.3.0</summary>
+        <ul>
+            <li>Fixed <a href="https://github.com/sharktide/restructuredpython/issues/28">#28</a>, <a href="https://github.com/sharktide/restructuredpython/issues/31">#31</a>, <a href="https://github.com/sharktide/restructuredpython/issues/32">#32</a>, <a href="https://github.com/sharktide/restructuredpython/issues/33">#33<a>, <a href="https://github.com/sharktide/restructuredpython/issues/34">#34</a></li>
+            <li>Added the LICENSE file <a href="https://github.com/sharktide/restructuredpython/issues/34">#34</a></li>
+            <li>Fixed random fails from .decode() <a href="https://github.com/sharktide/restructuredpython/issues/31">#31</a>
+        </ul>
+    </details>
+    <details>
     <summary>2.2.0 - 2.2.1</summary>
         <details>
         <summary>2.2.1</summary>
             <ul>
-                <li>Fixed importlib errors on newer python versions</li>
+                <li>Fixed importlib errors on newer python versions <a href="https://github.com/sharktide/restructuredpython/issues/29">#29</a></li>
             </ul>
         </details>
         <details>
@@ -29,12 +37,12 @@ Major release 2
         <details>
             <summary>2.1.1</summary>
             <ul>
-                <li>Fix #25</li>
+                <li>Fix <a href="https://github.com/sharktide/restructuredpython/issues/25">#25</a></li>
         </details>
         <details>
             <summary>2.1.0</summary>
             <ul>
-                <li>The strict_types decorator is here! Refer to reference/builtin_decorators/decorators.strict_types of the documentation!</li>
+                <li>The strict_types decorator is here! Refer to <a href="https://restructuredpython.readthedocs.io/en/latest/reference/Builtin_Decorators/strict_types.html">reference/builtin_decorators/decorators.strict_types</a> of the documentation!</li>
             </ul>
         </details>
     </details>
