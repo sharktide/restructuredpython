@@ -1,3 +1,17 @@
+# Copyright 2025 Rihaan Meher
+
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+
+#     http://www.apache.org/licenses/LICENSE-2.0
+
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 import argparse
 import re
 import os
@@ -9,8 +23,8 @@ import fnmatch
 
 from .parser import parse_repython
 from .cload import *
+from .tempload import *
 from textformat import *
-
 
 def compile_header_file(header_filename):
     """Compiles a .cdata file and returns the corresponding Python code."""
@@ -71,22 +85,6 @@ def process_includes(code, input_file):
 
     return header_code, code_without_includes
 
-
-def execute_code_temporarily(code):
-    """Executes the compiled python code"""
-    with tempfile.TemporaryDirectory() as tmpdir:
-        temp_file_path = os.path.join(tmpdir, "compiled_repy.py")
-        lib.write_file(temp_file_path.encode(), code.encode())
-        try:
-            exec(open(temp_file_path).read(), {"__name__": "__main__"})
-        except Exception as e:
-            print(f"{bcolors.FAIL}Error during execution: {e}")
-            print(
-                f"You can view the generated file at {
-                    (temp_file_path)}{
-                    bcolors.ENDC}")
-
-
 def main():
     parser = argparse.ArgumentParser(description="Compile REPY files.")
     parser.add_argument("filename", help="The REPY file to compile.")
@@ -146,7 +144,8 @@ def main():
                 print(
                     f"{bcolors.OKGREEN}Compiled {file_path_z} to {output_file_z}{bcolors.ENDC}")
     else:
-        source_code = lib.read_file(input_file.encode()).decode()
+        with open(input_file, 'r') as f:
+            source_code = f.read()
 
         header_code, code_without_includes = process_includes(
             source_code, input_file)
@@ -160,8 +159,7 @@ def main():
         lib.write_file(output_file.encode(), final_code.encode())
 
         print(
-            f"{bcolors.BOLD}{bcolors.OKGREEN}Compiled {input} to {output_file}{bcolors.ENDC}")
-
+            f"{bcolors.BOLD}{bcolors.OKGREEN}Compiled {input_file}{bcolors.ENDC}{bcolors.OKGREEN} --> {output_file}{bcolors.ENDC}")
 
 def launch():
     parser = argparse.ArgumentParser(description="Preview REPY execution.")
@@ -172,10 +170,11 @@ def launch():
     input_file = str(input_file)
 
     if lib.check_file_exists(input_file.encode()) == 0:
-        print(f"Error: The file {input_file} does not exist.")
+        print(f"{bcolors.BOLD}{bcolors.FAIL}Error: The file {input_file} does not exist.{bcolors.ENDC}")
         return
 
-    source_code = lib.read_file(input_file.encode()).decode()
+    with open(input_file, 'r') as f:
+        source_code = f.read()
 
     header_code, code_without_includes = process_includes(
         source_code, input_file)
@@ -188,7 +187,6 @@ def launch():
         execute_code_temporarily(final_code)
     except Exception as e:
         print(f"Error during execution: {e}")
-
 
 if __name__ == "__main__":
     main()
