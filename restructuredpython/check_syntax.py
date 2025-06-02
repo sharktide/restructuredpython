@@ -14,6 +14,7 @@
 
 from textformat import *
 
+
 def check_syntax(input_lines):
     for i in range(len(input_lines)):
         line = input_lines[i].strip()

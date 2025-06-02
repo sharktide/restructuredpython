@@ -17,6 +17,7 @@ from textformat import bcolors
 import tempfile
 import os
 
+
 def execute_code_temporarily(code):
     """Executes the compiled python code"""
     with tempfile.TemporaryDirectory() as tmpdir:

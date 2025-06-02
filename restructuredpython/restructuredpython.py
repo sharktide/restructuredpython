@@ -26,6 +26,7 @@ from .cload import *
 from .tempload import *
 from textformat import *
 
+
 def compile_header_file(header_filename):
     """Compiles a .cdata file and returns the corresponding Python code."""
     header_filename = Path(header_filename).resolve()
@@ -84,6 +85,7 @@ def process_includes(code, input_file):
     code_without_includes = re.sub(include_pattern, '', code)
 
     return header_code, code_without_includes
+
 
 def main():
     parser = argparse.ArgumentParser(description="Compile REPY files.")
@@ -159,7 +161,13 @@ def main():
         lib.write_file(output_file.encode(), final_code.encode())
 
         print(
-            f"{bcolors.BOLD}{bcolors.OKGREEN}Compiled {input_file}{bcolors.ENDC}{bcolors.OKGREEN} --> {output_file}{bcolors.ENDC}")
+            f"{
+                bcolors.BOLD}{
+                bcolors.OKGREEN}Compiled {input_file}{
+                bcolors.ENDC}{
+                    bcolors.OKGREEN} --> {output_file}{
+                        bcolors.ENDC}")
+
 
 def launch():
     parser = argparse.ArgumentParser(description="Preview REPY execution.")
@@ -170,7 +178,11 @@ def launch():
     input_file = str(input_file)
 
     if lib.check_file_exists(input_file.encode()) == 0:
-        print(f"{bcolors.BOLD}{bcolors.FAIL}Error: The file {input_file} does not exist.{bcolors.ENDC}")
+        print(
+            f"{
+                bcolors.BOLD}{
+                bcolors.FAIL}Error: The file {input_file} does not exist.{
+                bcolors.ENDC}")
         return
 
     with open(input_file, 'r') as f:
@@ -187,6 +199,7 @@ def launch():
         execute_code_temporarily(final_code)
     except Exception as e:
         print(f"Error during execution: {e}")
+
 
 if __name__ == "__main__":
     main()
