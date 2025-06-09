@@ -2,7 +2,7 @@
 ![Publish Python Package](https://github.com/sharktide/restructuredpython/actions/workflows/publish.yml/badge.svg?branch=main)
 ![Latest Version](https://img.shields.io/badge/dynamic/toml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fsharktide%2Frestructuredpython%2Frefs%2Fheads%2Fmain%2Fpyproject.toml&query=%24.project.version&label=Latest)
 [![PyPI Downloads](https://static.pepy.tech/badge/restructuredpython/month)](https://pepy.tech/projects/restructuredpython)
-![Python 3.11 3.12 3.13](https://img.shields.io/badge/Python-3.11+-orange)
+![Python 3.11 3.12 3.13](https://img.shields.io/badge/Python-3.10+-orange)
 [![Socket Badge](https://socket.dev/api/badge/pypi/package/restructuredpython/2.4.0?artifact_id=tar-gz)](https://socket.dev/pypi/package/restructuredpython/overview/2.4.0/tar-gz)
 
 The all in one, new python.
