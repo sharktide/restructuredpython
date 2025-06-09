@@ -51,8 +51,9 @@ html_theme_options = {
     "announcement": '''
     
     <nav class="navbar">
-    <div class="logo">reStructuredPython</div>
+    <a href="/"><div class="logo">reStructuredPython</div></a>
     <ul class="nav-links">
+      <li><a href="https://restructuredpython.rf.gd/playground">Playground</a></li>
       <li><a href="https://restructuredpython.rf.gd#github">Open Source</a></li>
       <li><a href="https://restructuredpython.rf.gd#features">Features</a></li>
       <li><a href="/">Docs</a></li>
