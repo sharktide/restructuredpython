@@ -1,5 +1,6 @@
 from textformat import *
 
+
 def check_syntax(input_lines):
     """
     Check restructuredpython syntax
