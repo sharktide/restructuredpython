@@ -4,10 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "restructuredpython"
-version = "2.3.0"
+version = "2.4.0"
 description = "A superset of Python with many new features, including full JS integration, multiline comments, header files, and optional curly brackets around control statements"
 authors = [{name = "Rihaan Meher", email = "meherrihaan@gmail.com"}]
 license-files = ["LICENSE"]
+readme = "README.md"
 classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",

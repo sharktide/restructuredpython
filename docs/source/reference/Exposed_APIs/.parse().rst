@@ -1,0 +1,43 @@
+.check_syntax()
+===============
+
+This function parses reStructuredPython
+
+How to use: 
+
+.. code-block:: python
+
+    import restructuredpython as repy
+
+    code = '''
+    #hello.repy
+    name = "sharktide"
+    def say_hello(name) {
+        print("reStructuredPython is Awesome!")
+        return name
+    }
+    def say_bye(name) {
+    print(f'Bye {name}')
+    }
+    name |> say_hello |> say_bye
+    '''
+    python_code = repy.parse(code)
+    print(python_code)
+
+This will throw only parsing errors.
+
+Output of running this:
+
+.. code-block::
+
+    #hello.repy
+    name = "sharktide"
+    def say_hello(name) :
+        print("reStructuredPython is Awesome!")
+        return name
+    def say_bye(name) :
+    print(f'Bye {name}')
+    say_bye(say_hello(name))
+
+This will only throw errors from the compiler, *not* python. 
+This will still look for included header files in the shell directory.

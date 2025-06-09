@@ -66,11 +66,12 @@ def process_includes(code, input_file):
             header_code += compile_header_file(predefined_path) + "\n"
             continue
         # userdefined
-        if not os.path.isabs(include):
-            include = os.path.join(
-                os.path.dirname(
-                    os.path.abspath(input_file)),
-                include)
+        if not input_file == ".":
+            if not os.path.isabs(include):
+                include = os.path.join(
+                    os.path.dirname(
+                        os.path.abspath(input_file)),
+                    include)
 
         if lib.check_file_exists(include.encode()):
             header_code += compile_header_file(include) + "\n"
