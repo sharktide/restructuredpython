@@ -1,0 +1,30 @@
+.check_syntax()
+===============
+
+This function simply checks for reStructuredPython syntax errors.
+
+.. warning::
+    
+    This will not check python syntax. You will not get errors about undeclared functions/variables etc.
+
+How to use: 
+
+.. code-block:: python
+
+    import restructuredpython as repy
+
+    code = '''
+    #hello.repy
+    name = "sharktide"
+    def say_hello(name) {
+        print("reStructuredPython is Awesome!")
+        return name
+    }
+    def say_bye(name) {
+    print(f'Bye {name}')
+    }
+    name |> say_hello |> say_bye
+    '''
+    repy.check_syntax(code)
+
+This will not throw any errors. In the event a specific reStructuredPython syntax *is* incorrect, a SyntaxError will be thrown

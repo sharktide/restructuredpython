@@ -9,6 +9,13 @@ Major release 2
 .. raw:: html
 
     <details>
+    <summary>2.4.0</summary>
+        <ul>
+            <li>Exposed check_syntax as public and exposed new .parse function as public</li>
+        </ul>
+    </details>
+
+    <details>
     <summary>2.3.0</summary>
         <ul>
             <li>Fixed <a href="https://github.com/sharktide/restructuredpython/issues/28">#28</a>, <a href="https://github.com/sharktide/restructuredpython/issues/31">#31</a>, <a href="https://github.com/sharktide/restructuredpython/issues/32">#32</a>, <a href="https://github.com/sharktide/restructuredpython/issues/33">#33<a>, <a href="https://github.com/sharktide/restructuredpython/issues/34">#34</a></li>

@@ -3,4 +3,4 @@ Roadmap
 
 Nothing to see here!
 
-The content of releases 2.2.0 2.3.0 and 2.4.0 has not been decided yet
+The content of releases 2.5.0 hass not been decided yet, although will probably include an overhaul to the argparsing
