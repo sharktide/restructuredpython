@@ -61,6 +61,7 @@ html_theme_options = {
       <li><a href="https://restructuredpython.rf.gd#community">Community</a></li>
     </ul>
   </nav>
+  <script data-goatcounter="https://sharktide.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
   <style>
   :root {
     --blue: #3178c6;
