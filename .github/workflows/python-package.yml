@@ -113,13 +113,6 @@ on:
       - opened
       - synchronize
       - reopened
-    paths-ignore:
-      - 'docs/**'
-      - 'restructuredpython.egg-info/**'
-      - '.github/**'
-      - '.gitattributes'
-      - '.gitignore'
-      - 'README.md'
 
 jobs:
   build:
