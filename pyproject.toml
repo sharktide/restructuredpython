@@ -7,7 +7,7 @@ name = "restructuredpython"
 version = "2.5.0"
 description = "A superset of Python with many new features, including full JS integration, multiline comments, header files, and optional curly brackets around control statements"
 authors = [{name = "Rihaan Meher", email = "meherrihaan@gmail.com"}]
-license-files = ["LICENSE"]
+license = "Apache-2.0"
 readme = "README.md"
 classifiers = [
     "Programming Language :: Python :: 3",
