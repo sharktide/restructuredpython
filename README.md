@@ -1,8 +1,27 @@
-# This is reStructuredPython 2
-![Publish Python Package](https://github.com/sharktide/restructuredpython/actions/workflows/publish.yml/badge.svg?branch=main)
-![Latest Version](https://img.shields.io/badge/dynamic/toml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fsharktide%2Frestructuredpython%2Frefs%2Fheads%2Fmain%2Fpyproject.toml&query=%24.project.version&label=Latest)
-[![PyPI Downloads](https://static.pepy.tech/badge/restructuredpython/month)](https://pepy.tech/projects/restructuredpython)
-![Python 3.11 3.12 3.13](https://img.shields.io/badge/Python-3.11+-orange)
+<h1 align="left"> This is reStructuredPython 2 </h1>
+
+<p align="center">
+    <img src="https://github.com/sharktide/repython-vs/blob/main/icons/icon.png">
+</p>
+<!-- ![logo](https://github.com/sharktide/repython-vs/blob/main/icons/icon.png)
+ -->
+ 
+<p align="center">
+  <img src="https://github.com/sharktide/restructuredpython/actions/workflows/publish.yml/badge.svg?branch=main" alt="Publish Python Package">
+  <img src="https://img.shields.io/badge/dynamic/toml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fsharktide%2Frestructuredpython%2Frefs%2Fheads%2Fmain%2Fpyproject.toml&query=%24.project.version&label=Latest" alt="Latest Version">
+  <a href="https://pepy.tech/projects/restructuredpython">
+    <img src="https://static.pepy.tech/badge/restructuredpython/month" alt="PyPI Downloads">
+  </a>
+  <a href="https://socket.dev/pypi/package/restructuredpython/overview/2.4.0/tar-gz">
+    <img src="https://socket.dev/api/badge/pypi/package/restructuredpython/2.4.0?artifact_id=tar-gz" alt="Socket Badge">
+  </a>
+  <a href="https://www.codefactor.io/repository/github/sharktide/restructuredpython">
+    <img src="https://www.codefactor.io/repository/github/sharktide/restructuredpython/badge" alt="CodeFactor">
+  </a>
+  <img src="https://img.shields.io/pypi/pyversions/restructuredpython" alt="Python Versions">
+  <img alt="Static Badge" src="https://img.shields.io/badge/license-apache--2.0-red">
+</p>
+
 
 The all in one, new python.
 reStructuredPython aka 'rePython' is a superset of python with many new features, such as header files, similar to C and C++, Optional Javascript-like syntax with curly brackets {} around control loops, function chanining and more. All the features can be found in the syntax/feature guide of our documentation https://restructuredpython.readthedocs.io/en/latest/reference/Syntax_Guide.html
