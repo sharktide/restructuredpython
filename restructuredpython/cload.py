@@ -46,16 +46,6 @@ if spec and spec.origin:
 load_s = time.perf_counter()
 
 import restructuredpython.api.libio as lib
-# if sys.platform == "win32":
-#     if (struct.calcsize("P") * 8) == 32:
-#         lib = ctypes.WinDLL(io32_dll)
-#     else:
-#         lib = ctypes.WinDLL(io_dll)
-# elif sys.platform == "darwin":
-#     lib = ctypes.CDLL(io_dylib)
-# else:
-#     lib = ctypes.CDLL(io_so)
-
 
 def io_s():
     lib.check_file_exists.argtypes = [ctypes.c_char_p]
