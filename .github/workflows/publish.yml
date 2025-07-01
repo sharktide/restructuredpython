@@ -56,57 +56,31 @@ jobs:
           git push origin main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  build-windows:
-    runs-on: windows-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        
-      - name: Compile for Windows (32-bit & 64-bit)
-        run: |
-          clang -shared -m32 -o restructuredpython/lib/io32.dll restructuredpython/include/io.c
-          clang -shared -m64 -o restructuredpython/lib/io64.dll restructuredpython/include/io.c
- 
-      - name: Upload Windows artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: windows-libs
-          path: restructuredpython/lib/io*.dll
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest, windows-11-arm, macos-13, macos-latest]
 
-  build-linux:
-    runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        
-      - name: Compile for Linux (.so)
-        run: |
-          gcc -shared -fPIC -o restructuredpython/lib/io.so restructuredpython/include/io.c
-          
-      - name: Upload Linux artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: linux-libs
-          path: restructuredpython/lib/io.so
+      - uses: actions/checkout@v4
 
-  build-macos:
-    runs-on: macos-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        
-      - name: Compile for macOS (.dylib)
-        run: |
-          clang -shared -fPIC -fdeclspec -o restructuredpython/lib/io.dylib restructuredpython/include/io.c
-          
-      - name: Upload macOS artifacts
-        uses: actions/upload-artifact@v4
+      - uses: actions/setup-python@v5
+
+      - name: Install cibuildwheel
+        run: python -m pip install --upgrade pip cibuildwheel setuptools wheel toml
+
+      - name: Build wheels
+        run: python -m cibuildwheel --output-dir dist
+
+      - uses: actions/upload-artifact@v4
         with:
-          name: macos-libs
-          path: restructuredpython/lib/io.dylib
+          name: wheels-${{ matrix.os }}
+          path: dist/*.whl
+
   publish:
     runs-on: ubuntu-latest
-    needs: [build-windows, build-linux, build-macos]
+    needs: [build]
     environment:
       name: pypi
     permissions:
@@ -115,10 +89,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Download all compiled libraries
+      - name: Download all wheels
         uses: actions/download-artifact@v4
         with:
-          path: restructuredpython/lib/
+          path: dist
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -128,11 +102,12 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install twine setuptools wheel build toml
-
-      - name: Build the package with compiled shared libraries
+          pip install setuptools wheel build toml
+      - name: Extract version from pyproject.toml
+        id: extract_version
         run: |
-          python3 -m build
+          python -c "import toml; print(toml.load('pyproject.toml')['project']['version'])" > version.txt
+          echo "release_version=$(cat version.txt)" >> $GITHUB_ENV
 
       - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1

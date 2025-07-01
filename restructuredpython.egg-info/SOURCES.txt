@@ -14,9 +14,9 @@ restructuredpython.egg-info/dependency_links.txt
 restructuredpython.egg-info/entry_points.txt
 restructuredpython.egg-info/requires.txt
 restructuredpython.egg-info/top_level.txt
-restructuredpython/include/io.c
+restructuredpython/lib/io.c
 restructuredpython/lib/DO_NOT_MODIFY_THIS_DIR.txt
-restructuredpython/lib/windows-libs/io64.dll
+restructuredpython/lib/io.c
 restructuredpython/predefined/__init__.py
 restructuredpython/predefined/decorators.py
 restructuredpython/predefined/decorators/access_control.py
@@ -25,3 +25,5 @@ restructuredpython/predefined/decorators/memoization.py
 restructuredpython/predefined/decorators/retry.py
 restructuredpython/predefined/decorators/strict_types.py
 restructuredpython/predefined/decorators/timer.py
+restructuredpython/predefined/subinterpreter/optimize.py
+restructuredpython/predefined/subinterpreter/__pycache__/optimize.cpython-312.pyc

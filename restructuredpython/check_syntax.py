@@ -1,6 +1,6 @@
 from textformat import *
 
-def check_syntax(input_lines):
+def check_syntax(input_lines, mode="classic"):
     """
     Check restructuredpython syntax
     param: input_lines: list object of all input lines to check
@@ -35,6 +35,11 @@ def check_syntax(input_lines):
                     i +
                     1}. (REPY-0004){
                     bcolors.ENDC}")
+
         if line.startswith('} case'):
             raise SyntaxError(
                 f"{bcolors.BOLD}{bcolors.FAIL}Misplaced 'case' statement at line {i + 1}. (REPY-0005){bcolors.ENDC}")
+
+        if mode == "classic" and line.startswith("<OPTIMIZE"):
+            raise SyntaxError(
+                f"{bcolors.BOLD}{bcolors.FAIL}<OPTIMIZE> directives are only valid in interpreter mode (repycl), not transpile mode. Line {i+1} (REPY-0006){bcolors.ENDC}")

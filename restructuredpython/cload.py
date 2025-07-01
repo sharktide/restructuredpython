@@ -20,7 +20,7 @@ import ctypes
 import tomllib as toml
 import time
 from textformat import *
-
+from .predefined.subinterpreter.optimize import optimize_loop, optimize_function
 
 def time_opening(func):
     def wrapper(*args, **kwargs):
@@ -45,15 +45,16 @@ if spec and spec.origin:
     io_dylib = os.path.join(package_dir, "lib", "macos-libs", "io.dylib")
 load_s = time.perf_counter()
 
-if sys.platform == "win32":
-    if (struct.calcsize("P") * 8) == 32:
-        lib = ctypes.WinDLL(io32_dll)
-    else:
-        lib = ctypes.WinDLL(io_dll)
-elif sys.platform == "darwin":
-    lib = ctypes.CDLL(io_dylib)
-else:
-    lib = ctypes.CDLL(io_so)
+import restructuredpython.api.libio as lib
+# if sys.platform == "win32":
+#     if (struct.calcsize("P") * 8) == 32:
+#         lib = ctypes.WinDLL(io32_dll)
+#     else:
+#         lib = ctypes.WinDLL(io_dll)
+# elif sys.platform == "darwin":
+#     lib = ctypes.CDLL(io_dylib)
+# else:
+#     lib = ctypes.CDLL(io_so)
 
 
 def io_s():
@@ -72,25 +73,17 @@ def io_s():
     lib.read_binary_file.restype = ctypes.POINTER(ctypes.c_char)
 
 
-io_s()
+# io_s()
 
 load_e = time.perf_counter()
 count = load_e - load_s
 print(f"{bcolors.OKBLUE}Loading modules took {count}s{bcolors.ENDC}")
 
-
 def load_toml_binary(filename):
-    filename = str(filename)
-    size = ctypes.c_size_t()
-    raw_data_ptr = lib.read_binary_file(filename.encode(), ctypes.byref(size))
-
-    if not raw_data_ptr:
-        raise FileNotFoundError(
-            f"{bcolors.BOLD}{bcolors.FAIL}Could not read {filename}{bcolors.ENDC}")
-
-    raw_data = ctypes.string_at(raw_data_ptr, size.value)
+    raw_data = lib.read_binary_file(filename)
+    if raw_data is None:
+        raise FileNotFoundError(f"{bcolors.FAIL}Could not read {filename}{bcolors.ENDC}")
     return toml.loads(raw_data.decode())
-
 
 def read_file_utf8(filename: str) -> str:
     size = ctypes.c_size_t()

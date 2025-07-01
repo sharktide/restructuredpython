@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "restructuredpython"
-version = "2.4.0"
+version = "2.5.0"
 description = "A superset of Python with many new features, including full JS integration, multiline comments, header files, and optional curly brackets around control statements"
 authors = [{name = "Rihaan Meher", email = "meherrihaan@gmail.com"}]
 license-files = ["LICENSE"]
@@ -25,4 +25,6 @@ repycl = "restructuredpython.restructuredpython:launch"
 
 [tool.setuptools]
 packages = ["restructuredpython"]
-
+ext-modules = [
+  {name = "restructuredpython.api.libio", sources = ["restructuredpython/lib/io.c"]}
+]
