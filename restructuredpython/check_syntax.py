@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from textformat import *
-
+import warnings
 def check_syntax(input_lines, mode="classic"):
     """
     Check restructuredpython syntax
@@ -55,5 +55,5 @@ def check_syntax(input_lines, mode="classic"):
                 f"{bcolors.BOLD}{bcolors.FAIL}Misplaced 'case' statement at line {i + 1}. (REPY-0005){bcolors.ENDC}")
 
         if mode == "classic" and line.startswith("<OPTIMIZE"):
-            raise SyntaxError(
-                f"{bcolors.BOLD}{bcolors.FAIL}<OPTIMIZE> directives are only valid in interpreter mode (repycl), not transpile mode. Line {i+1} (REPY-0006){bcolors.ENDC}")
+            warnings.warn(
+                f"{bcolors.BOLD}{bcolors.WARNING}Files containing <OPTIMIZE> directives will require restructuredpython installed as a python package during runtime to make use of optimizations. (REPY-0006){bcolors.ENDC}")
