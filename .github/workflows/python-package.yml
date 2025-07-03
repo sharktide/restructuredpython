@@ -1,4 +1,4 @@
-name: Build and Create GitHub Release for PR
+name: Build and Create Github Release for PR
 
 on:
   pull_request:
@@ -8,90 +8,63 @@ on:
       - reopened
     paths-ignore:
       - 'docs/**'
-      - 'restructuredpython.egg-info/**'
       - '.github/**'
       - '.gitattributes'
       - '.gitignore'
       - 'README.md'
 
 jobs:
-  Windows:
-    runs-on: windows-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Compile Windows DLLs
-        run: |
-          clang -shared -m32 -o restructuredpython/lib/io32.dll restructuredpython/include/io.c
-          clang -shared -m64 -o restructuredpython/lib/io64.dll restructuredpython/include/io.c
-
-
-      - name: Upload Windows artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: windows-libs
-          path: restructuredpython/lib/io*.dll
-
-  Ubuntu:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Compile Linux .so
-        run: |
-          gcc -shared -fPIC -o restructuredpython/lib/io.so restructuredpython/include/io.c
-      - name: Upload Linux artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: linux-libs
-          path: restructuredpython/lib/io.so
-
-  macOS:
-    runs-on: macos-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Compile macOS .dylib
-        run: |
-          clang -shared -fPIC -fdeclspec -o restructuredpython/lib/io.dylib restructuredpython/include/io.c
-
-      - name: Upload macOS artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: macos-libs
-          path: restructuredpython/lib/io.dylib
-
-  build-package:
-    runs-on: windows-latest
-    needs: [Windows, Ubuntu, macOS]
+  build:
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        python-version: ["3.13"]
+        os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest, windows-11-arm, macos-13, macos-latest]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+
+      - name: Install cibuildwheel
+        run: python -m pip install --upgrade pip cibuildwheel setuptools wheel toml
+
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v3.0.0
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
+          path: ./wheelhouse/*.whl
+  build_sdist:
+    name: Make SDist
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        submodules: false
+
+    - name: Build SDist
+      run: pipx run build --sdist
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: cibw-sdist
+        path: dist/*.tar.gz
+  create_release:
+    runs-on: ubuntu-latest
+    needs: [build, build_sdist]
+    permissions:
+      id-token: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Download all compiled libraries
-        uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v4
         with:
-          path: restructuredpython/lib/
-
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install setuptools wheel build
-
-      - name: Build the package
-        run: |
-          python -m build
+          pattern: cibw-*
+          path: dist
+          merge-multiple: true
 
       - name: Create a GitHub release
         id: create_release
@@ -99,9 +72,9 @@ jobs:
         with:
           tag_name: "#${{ github.event.pull_request.number }}"
           name: "PR #${{ github.event.pull_request.number }}"
-          prerelease: true
           files: |
-            dist/*.whl
-            dist/*.tar.gz
+            dist/*
+          body: |
+            Auto-generated wheels from PR #[${{github.event.pull_request.number}}](https://github.com/sharktide/restructuredpython/pull/${{github.event.pull_request.number}}).
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}

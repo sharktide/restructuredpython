@@ -1,4 +1,4 @@
-reStructuredPython Changelog
+Changelog
 =============================
 
 *Note: This changelog skips version 0.1.1*
@@ -7,6 +7,13 @@ Major release 2
 ---------------
 
 .. raw:: html
+
+    <details>
+    <summary>2.5.0</summary>
+        <ul>
+            <li>Introduced &lt;OPTIMIZE&gt; markers, which allow restructuredpython code to be executed faster than cpython would normally when restructuredpython is installed.
+        </ul>
+    </details>
 
     <details>
     <summary>2.4.0</summary>

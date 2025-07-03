@@ -1,4 +1,4 @@
-.check_syntax()
+.parse()
 ===============
 
 This function parses reStructuredPython

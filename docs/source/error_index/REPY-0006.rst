@@ -1,0 +1,51 @@
+Warning: ... directive will require ... to be installed (REPY-0006)
+===================================================================
+
+This warning means that a certain directive you are using in your code (a common one being <OPTIMIZE ...>) will require a specific python package (eg. restructuredpython, this package) to be installed at runtime.
+
+What this means in simpler terms is that a certain feature that you are using like <OPTIMIZE ...> :doc:`<reference/Features/OPTIMIZE>` will be compiled into python, but will require recources from another python package via import. (oftentimes restructuredpython itself)
+
+For example, this code using the <OPTIMIZE gct=True, profile=True> :doc:`<reference/Features/OPTIMIZE>`will raise this warning during transpilation and will compile to this:
+
+``ops.repy``
+
+.. code-block:: repy
+
+    print("Running unoptimized loop:")
+    import time
+    start = time.perf_counter()
+    for i in range(10_000_000) {
+        temp = str(i) * 10
+    }
+    end = time.perf_counter()
+    print("Unoptimized loop time:", round(end - start, 4), "seconds")
+
+    <OPTIMIZE gct=True, profile=True>
+    for j in range(10_000_000) {
+        temp = str(j) * 10
+    }
+
+Now, if transpiled using ``repy ops.repy``, this will warn of REPY-0006, and transpile to this:
+
+``ops.py``
+
+.. code-block::python
+
+    from restructuredpython.predefined.subinterpreter import optimize_loop
+    print("Running unoptimized loop:")
+    import time
+    start = time.perf_counter()
+    for i in range(10_000_000) :
+        temp = str(i) * 10
+    end = time.perf_counter()
+    print("Unoptimized loop time:", round(end - start, 4), "seconds")
+
+    @optimize_loop(gct=True, profile=True)
+    def _repy_optimized_loop_0():
+        for j in range(10_000_000) :
+            temp = str(j) * 10
+    _repy_optimized_loop_0()
+
+You can see how this code now has an import from the ``restructuredpython`` module. This is necessary for features using the <...> syntax as these are markers to do complex things and there isn't an easy way to transpile them to pure python.
+
+Never fear, however! You can usually either run it directly with :doc:`repycl <reference/repycl>` or make the generated python code runnable by just adding the requested package specified to your ``requirements.txt`` or the equivalent.

@@ -27,15 +27,15 @@ from .tempload import *
 from textformat import *
 
 
-def compile_header_file(header_filename):
+def compile_header_file(header_filename, mode="classic"):
     """Compiles a .cdata file and returns the corresponding Python code."""
     header_filename = Path(header_filename).resolve()
     header_filename = str(header_filename)
-    if lib.check_file_exists(header_filename.encode()) == 0:
+    if lib.check_file_exists(header_filename) == 0:
         raise FileNotFoundError(
             f"{bcolors.BOLD}{bcolors.FAIL}Header file {header_filename} not found.{bcolors.ENDC}")
     try:
-        header_code = read_file_utf8(header_filename)
+        header_code = lib.read_file(header_filename)
         if not header_code.strip():
             raise ValueError(
                 f"{bcolors.BOLD}{bcolors.FAIL}Header file {header_filename} is empty.{bcolors.ENDC}")
@@ -44,13 +44,13 @@ def compile_header_file(header_filename):
             f"{bcolors.WARNING}Error opening file {header_filename}: {e}{bcolors.ENDC}")
         return ""
 
-    return parse_repython(header_code)
+    return parse_repython(header_code, mode)
 
 
 PREDEFINED_HEADERS_DIR = os.path.join(os.path.dirname(__file__), "predefined")
 
 
-def process_includes(code, input_file):
+def process_includes(code, input_file, mode="classic"):
     """Processes #include directives, handling both predefined and user-defined files."""
     include_pattern = r'\s*include\s+[\'"]([^\'"]+)[\'"]'
     includes = re.findall(include_pattern, code)
@@ -62,7 +62,7 @@ def process_includes(code, input_file):
         predefined_path = os.path.join(
             PREDEFINED_HEADERS_DIR, include.replace(
                 '.', os.sep) + '.py')
-        if lib.check_file_exists(predefined_path.encode()):
+        if lib.check_file_exists(predefined_path):
             header_code += compile_header_file(predefined_path) + "\n"
             continue
         # userdefined
@@ -73,8 +73,8 @@ def process_includes(code, input_file):
                         os.path.abspath(input_file)),
                     include)
 
-        if lib.check_file_exists(include.encode()):
-            header_code += compile_header_file(include) + "\n"
+        if lib.check_file_exists(include):
+            header_code += compile_header_file(include, mode) + "\n"
         else:
             print(
                 f"{
@@ -97,7 +97,7 @@ def main():
 
     input_file = str(input_file)
 
-    if lib.check_file_exists(input_file.encode()) == 0:
+    if lib.check_file_exists(input_file) == 0:
         print(
             f"{
                 bcolors.BOLD}{
@@ -131,7 +131,7 @@ def main():
                         matching_files.append(file_path_temp)
             for file_path_z in matching_files:
                 file_path_z = str(file_path_z)
-                source_code_z = lib.read_file(file_path_z.encode()).decode()
+                source_code_z = lib.read_file(file_path_z)
 
                 header_code_z, code_without_includes_z = process_includes(
                     source_code_z, file_path_z)
@@ -142,7 +142,7 @@ def main():
 
                 output_file_z = os.path.splitext(file_path_z)[0] + '.py'
 
-                lib.write_file(output_file_z.encode(), final_code_z.encode())
+                lib.write_file(output_file_z, final_code_z)
 
                 print(
                     f"{bcolors.OKGREEN}Compiled {file_path_z} to {output_file_z}{bcolors.ENDC}")
@@ -159,7 +159,7 @@ def main():
 
         output_file = os.path.splitext(input_file)[0] + '.py'
 
-        lib.write_file(output_file.encode(), final_code.encode())
+        lib.write_file(output_file, final_code)
 
         print(
             f"{
@@ -178,7 +178,7 @@ def launch():
     input_file = args.filename
     input_file = str(input_file)
 
-    if lib.check_file_exists(input_file.encode()) == 0:
+    if lib.check_file_exists(input_file) == 0:
         print(
             f"{
                 bcolors.BOLD}{
@@ -190,9 +190,9 @@ def launch():
         source_code = f.read()
 
     header_code, code_without_includes = process_includes(
-        source_code, input_file)
+        source_code, input_file, mode="launch")
 
-    python_code = parse_repython(code_without_includes)
+    python_code = parse_repython(code_without_includes, mode="launch")
 
     final_code = header_code + python_code
 

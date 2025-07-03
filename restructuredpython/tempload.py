@@ -12,22 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .cload import lib
+from .cload import lib, optimize_function, optimize_loop
 from textformat import bcolors
 import tempfile
 import os
 
+exec_globals = {
+    "__name__": "__main__"
+}
 
 def execute_code_temporarily(code):
     """Executes the compiled python code"""
     with tempfile.TemporaryDirectory() as tmpdir:
-        temp_file_path = os.path.join(tmpdir, "compiled_repy.py")
-        lib.write_file(temp_file_path.encode(), code.encode())
+        temp_file_path = os.path.join(tmpdir, "_runtime.rpyt")
+        lib.write_file(temp_file_path, code)
         try:
-            exec(open(temp_file_path).read(), {"__name__": "__main__"})
+            exec(open(temp_file_path).read(), exec_globals)
         except Exception as e:
             print(f"{bcolors.FAIL}Error during execution: {e}")
-            print(
-                f"You can view the generated file at {
-                    (temp_file_path)}{
-                    bcolors.ENDC}")
