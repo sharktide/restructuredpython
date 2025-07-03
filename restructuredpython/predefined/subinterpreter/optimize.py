@@ -12,7 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import gc, time, sys, functools, types, dis, multiprocessing
+import gc
+import time
+import sys
+import functools
+import types
+import dis
+import multiprocessing
+
 
 def optimize_loop(profile=False, gct=False, parallel=False, unroll=0):
     def decorator(fn):
@@ -41,6 +48,7 @@ def optimize_loop(profile=False, gct=False, parallel=False, unroll=0):
         return wrapper
     return decorator
 
+
 def optimize_function(profile=False, trace=False):
     def decorator(fn):
         if profile:
@@ -48,13 +56,18 @@ def optimize_function(profile=False, trace=False):
             def profiled(*args, **kwargs):
                 start = time.perf_counter()
                 result = fn(*args, **kwargs)
-                print(f"[PROFILE] {fn.__name__} took {time.perf_counter() - start:.4f}s")
+                print(
+                    f"[PROFILE] {
+                        fn.__name__} took {
+                        time.perf_counter() -
+                        start:.4f}s")
                 return result
             return profiled
         if trace:
             def tracer(frame, event, arg):
                 print(f"[TRACE] {event} in {frame.f_code.co_name}")
                 return tracer
+
             def wrapped(*args, **kwargs):
                 sys.settrace(tracer)
                 result = fn(*args, **kwargs)

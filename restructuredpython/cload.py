@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import restructuredpython.api.libio as lib
 import importlib.util
 import struct
 import sys
@@ -21,6 +22,7 @@ import tomllib as toml
 import time
 from textformat import *
 from .predefined.subinterpreter.optimize import optimize_loop, optimize_function
+
 
 def time_opening(func):
     def wrapper(*args, **kwargs):
@@ -45,14 +47,15 @@ if spec and spec.origin:
     io_dylib = os.path.join(package_dir, "lib", "macos-libs", "io.dylib")
 load_s = time.perf_counter()
 
-import restructuredpython.api.libio as lib
 
 load_e = time.perf_counter()
 count = load_e - load_s
 print(f"{bcolors.OKBLUE}Loading modules took {count}s{bcolors.ENDC}")
 
+
 def load_toml_binary(filename):
     raw_data = lib.read_binary_file(filename)
     if raw_data is None:
-        raise FileNotFoundError(f"{bcolors.FAIL}Could not read {filename}{bcolors.ENDC}")
+        raise FileNotFoundError(
+            f"{bcolors.FAIL}Could not read {filename}{bcolors.ENDC}")
     return toml.loads(raw_data.decode())

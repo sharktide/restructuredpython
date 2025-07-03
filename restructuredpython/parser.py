@@ -15,6 +15,7 @@
 from .check_syntax import check_syntax
 import re
 
+
 def wrap_loops_for_optimization(code):
     """
     Rewrites for/while loops with <OPTIMIZE ...> annotations into runtime functions
@@ -49,7 +50,8 @@ def wrap_loops_for_optimization(code):
                 body_indent = len(body_line) - len(body_line.lstrip())
                 if body_indent <= loop_indent:
                     break
-                modified_lines.append(" " * (loop_indent + 8) + body_line.strip())
+                modified_lines.append(
+                    " " * (loop_indent + 8) + body_line.strip())
                 i += 1
 
             modified_lines.append(" " * loop_indent + f"{func_name}()")
@@ -59,9 +61,11 @@ def wrap_loops_for_optimization(code):
 
     return "\n".join(modified_lines)
 
+
 def parse_repython(code, mode="classic"):
     """Parses reStructuredPython and converts it to Python."""
     required_imports = set()
+
     def chain_pipeline(code):
         parts = [part.strip() for part in code.split('|>')]
         if len(parts) > 1:
@@ -70,7 +74,8 @@ def parse_repython(code, mode="classic"):
                     return parts[0]
                 else:
                     return f'{parts[-1]}({nest(parts[:-1])})'
-            variable, pipeline = parts[0].split('=') if '=' in parts[0] else ('', parts[0])
+            variable, pipeline = parts[0].split(
+                '=') if '=' in parts[0] else ('', parts[0])
             variable = variable.strip()
             pipeline = pipeline.strip()
             if variable:
@@ -133,7 +138,9 @@ def parse_repython(code, mode="classic"):
                 pending_optimize = None
 
         # Block conversions
-        if re.match(r'^\s*(if|for|while|def|try|elif|else|except|class|match|with|case)\s.*\{', processed_line):
+        if re.match(
+            r'^\s*(if|for|while|def|try|elif|else|except|class|match|with|case)\s.*\{',
+                processed_line):
             modified_code.append(processed_line.split('{')[0] + ':')
             brace_stack.append('{')
             inside_block = True
@@ -159,9 +166,10 @@ def parse_repython(code, mode="classic"):
             imports.append("optimize_function")
         if "optimize_loop" in required_imports:
             imports.append("optimize_loop")
-        import_lines.append(f"from restructuredpython.predefined.subinterpreter import {', '.join(imports)}")
+        import_lines.append(
+            f"from restructuredpython.predefined.subinterpreter import {
+                ', '.join(imports)}")
 
     raw_code = '\n'.join(import_lines + modified_code)
     final_code = wrap_loops_for_optimization(raw_code)
     return final_code
-

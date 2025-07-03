@@ -21,6 +21,7 @@ exec_globals = {
     "__name__": "__main__"
 }
 
+
 def execute_code_temporarily(code):
     """Executes the compiled python code"""
     with tempfile.TemporaryDirectory() as tmpdir:

@@ -14,6 +14,8 @@
 
 from textformat import *
 import warnings
+
+
 def check_syntax(input_lines, mode="classic"):
     """
     Check restructuredpython syntax
@@ -56,4 +58,7 @@ def check_syntax(input_lines, mode="classic"):
 
         if mode == "classic" and line.startswith("<OPTIMIZE"):
             warnings.warn(
-                f"{bcolors.BOLD}{bcolors.WARNING}Files containing <OPTIMIZE> directives will require restructuredpython installed as a python package during runtime to make use of optimizations. (REPY-0006){bcolors.ENDC}")
+                f"{
+                    bcolors.BOLD}{
+                    bcolors.WARNING}Files containing <OPTIMIZE> directives will require restructuredpython installed as a python package during runtime to make use of optimizations. (REPY-0006){
+                    bcolors.ENDC}")
