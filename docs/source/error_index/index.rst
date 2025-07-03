@@ -11,3 +11,4 @@ This section contains all the error codes and their explanations.
    REPY-0003
    REPY-0004
    REPY-0005
+   REPY-0006

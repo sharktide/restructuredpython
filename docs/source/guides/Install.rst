@@ -43,10 +43,3 @@ Consider the following reStructuredPython code in ``example.repy``:
 
 Running ``repy example.repy`` compiles this into standard Python code, which can then be executed as usual.
 
-*Note: reStructuredPython is designed for users who prefer a JavaScript-like syntax within the Python ecosystem. While it offers syntactic differences, the compiled output remains standard Python code.*
-
-
-
-
-
-

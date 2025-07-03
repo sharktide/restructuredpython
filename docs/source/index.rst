@@ -56,13 +56,15 @@ Join the reStructuredPython community to contribute, ask questions, and stay upd
    :maxdepth: 2
    :caption: Contents
 
-   compiler/overview
-   compiler/error_index/index
+   error_index/index
    changelog
    guides/Getting_Started
    guides/Install
    reference/index
    reference/Builtin_Decorators
+   reference/optimize
+   reference/repycl
+   reference/repy
    tutorials/Example_Programs
    roadmap
 
