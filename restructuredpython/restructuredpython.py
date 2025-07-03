@@ -35,7 +35,7 @@ def compile_header_file(header_filename, mode="classic"):
         raise FileNotFoundError(
             f"{bcolors.BOLD}{bcolors.FAIL}Header file {header_filename} not found.{bcolors.ENDC}")
     try:
-        header_code = read_file_utf8(header_filename)
+        header_code = lib.read_file(header_filename)
         if not header_code.strip():
             raise ValueError(
                 f"{bcolors.BOLD}{bcolors.FAIL}Header file {header_filename} is empty.{bcolors.ENDC}")
