@@ -1,0 +1,46 @@
+pr:
+  branches:
+    include: 
+    - main
+  paths:
+    exclude:
+      - README.md
+      - docs/*
+      - .github/*
+      - tests/*
+      - .gitignore
+      - .gitmodules
+      - .gitattributes
+      - LICENSE
+      - MANIFEST.in
+      - .readthedocs.yaml
+      - exclude.txt
+      - requirements.txt
+  
+jobs:
+- job: build_sdist
+  pool:
+    vmImage: ubuntu-latest
+
+  steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.13'
+      addToPath: true
+      architecture: 'x64'
+    displayName: 'Set up Python @3.13'
+
+  - script: |
+      python -m pip install --upgrade pip
+      pip install --upgrade cibuildwheel setuptools wheel toml build
+    displayName: 'Install dependencies'
+
+  - script: |
+      python -m build --sdist
+    displayName: 'Build sdist'
+  
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: 'dist'
+      artifact: 'sdist'
+    displayName: 'Upload sdist'
