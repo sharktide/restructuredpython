@@ -26,6 +26,7 @@ from .cload import *
 from .tempload import *
 from textformat import *
 
+__version__ = "2.5.0"
 
 def compile_header_file(header_filename, mode="classic"):
     """Compiles a .cdata file and returns the corresponding Python code."""
@@ -90,14 +91,23 @@ def process_includes(code, input_file, mode="classic"):
 
 def main():
     parser = argparse.ArgumentParser(description="Compile REPY files.")
-    parser.add_argument("filename", help="The REPY file to compile.")
+    parser.add_argument("filename", nargs="?", help="The REPY file to compile.")
+    parser.add_argument("-v", "--version", action="store_true", help="Show the version")
     args = parser.parse_args()
+
+    if args.version:
+        return f"reStructuredPython {__version__} Copyright (c) 2025, Rihaan Meher. Licensed under the Apache License 2.0"
+        sys.exit(0)
 
     input_file = args.filename
 
     input_file = str(input_file)
 
-    if lib.check_file_exists(input_file) == 0:
+    if input_file == "None":
+        print("Error: Missing one required positional argument: filename. Use the -h or --help flag for help")
+        sys.exit(1)
+
+    if (lib.check_file_exists(input_file) == 0):
         print(
             f"{
                 bcolors.BOLD}{
@@ -172,13 +182,22 @@ def main():
 
 def launch():
     parser = argparse.ArgumentParser(description="Preview REPY execution.")
-    parser.add_argument("filename", help="The REPY file to preview.")
+    parser.add_argument("filename", nargs="?", help="The REPY file to preview.")
+    parser.add_argument("-v", "--version", action="store_true", help="Show the version")
     args = parser.parse_args()
 
+    if args.version:
+        return f"reStructuredPython {__version__} Copyright (c) 2025, Rihaan Meher. Licensed under the Apache License 2.0"
+        sys.exit(0)
+    
     input_file = args.filename
     input_file = str(input_file)
 
-    if lib.check_file_exists(input_file) == 0:
+    if input_file == "None":
+        print("Error: Missing one required positional argument: filename. Use the -h or --help flag for help")
+        sys.exit(1)
+
+    if (lib.check_file_exists(input_file) == 0):
         print(
             f"{
                 bcolors.BOLD}{
