@@ -1,4 +1,4 @@
-name: Build and Create SDIST for PR
+name: Pull Request
 
 on:
   pull_request:
@@ -13,8 +13,12 @@ on:
       - '.gitignore'
       - 'README.md'
 
+permissions:
+  issues: write
+  pull-requests: write
+
 jobs:
-  build:
+  Build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
