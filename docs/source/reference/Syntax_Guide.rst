@@ -3,6 +3,8 @@ Syntax Guide
 
 reStructuredPython introduces a syntax that combines Python's functionality with JavaScript-like conventions. Below are some key syntax elements:
 
+You can find these and everything else in the :doc:`Features <reference/Features/index>` section
+
 1. **Control Loop Syntax** Latest in 0.6.0
 
     Control loops and class/function definitions use curly brackets instead of ":" like in regular Python
