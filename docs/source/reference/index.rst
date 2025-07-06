@@ -12,3 +12,4 @@ The reference section provides detailed information about the built-in functions
    repyconfig.toml
    Exposed_APIs/index
    Features/index
+   Syntax_Guide
