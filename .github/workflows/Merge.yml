@@ -11,4 +11,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Confirm merge
-        run: echo "✅ PR was merged!"
+        run: echo "PR was merged!"
