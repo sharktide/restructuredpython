@@ -1,0 +1,14 @@
+name: Post Closure
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  Deploy_Nightly:
+    if: github.event.pull_request.merged == true
+    environment: Nightly
+    runs-on: ubuntu-latest
+    steps:
+      - name: Confirm merge
+        run: echo "✅ PR #${{ github.event.pull_request.number }} was merged!"
