@@ -85,7 +85,10 @@ repy path/to/your/file.repy
 ```
 
 ## 📚 Documentation
-Explore the syntax guide, chaining rules, and .cdata structure: 👉 Read the Docs 👉 Syntax Guide
+Explore the syntax guide, chaining rules, and .cdata structure: 
+
+[Docs Home](https://restructuredpython.readthedocs.io)
+[Syntax Guide](https://restructuredpython.readthedocs.io/en/latest/reference/Syntax_Guide.html)
 
 ## Contributing
 
