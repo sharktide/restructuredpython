@@ -141,7 +141,8 @@ def main():
                         matching_files.append(file_path_temp)
             for file_path_z in matching_files:
                 file_path_z = str(file_path_z)
-                source_code_z = lib.read_file(file_path_z)
+                with open(file_path_z) as f:
+                    source_code_z = f.read()
 
                 header_code_z, code_without_includes_z = process_includes(
                     source_code_z, file_path_z)
