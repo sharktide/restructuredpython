@@ -26,7 +26,7 @@ from .cload import *
 from .tempload import *
 from textformat import *
 
-__version__ = "2.5.0"
+__version__ = "2.5.1"
 
 
 def compile_header_file(header_filename, mode="classic"):
