@@ -47,11 +47,15 @@ def wrap_loops_for_optimization(code):
                     modified_lines.append(body_line)
                     i += 1
                     continue
+
                 body_indent = len(body_line) - len(body_line.lstrip())
                 if body_indent <= loop_indent:
                     break
-                modified_lines.append(
-                    " " * (loop_indent + 8) + body_line.strip())
+
+                # Preserve relative indentation inside the wrapped function
+                relative_indent = body_indent - loop_indent
+                new_indent = loop_indent + 4 + relative_indent
+                modified_lines.append(" " * new_indent + body_line.lstrip())
                 i += 1
 
             modified_lines.append(" " * loop_indent + f"{func_name}()")
