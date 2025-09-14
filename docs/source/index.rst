@@ -52,6 +52,19 @@ Join the reStructuredPython community to contribute, ask questions, and stay upd
 * **GitHub Repository:** Access the source code, report issues, and contribute to the project at https://github.com/sharktide/restructuredpython.
 * **Discussions:** Participate in discussions with other users and developers to share ideas and get support.
 
+
+Checking the version of reStructuredPython
+------------------------------------------
+
+If reStructuredPython is already installed on your systen, you may
+check the version of reStructuredPython via the following methods
+
+- ``pip show restructuredpython``
+- ``repy --version``
+- ``repy -v``
+- ``repycl --version``
+- ``repycl -v``
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents
