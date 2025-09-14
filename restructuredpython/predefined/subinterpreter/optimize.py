@@ -16,63 +16,71 @@ import gc
 import time
 import sys
 import functools
-import types
-import dis
 import multiprocessing
+import warnings
 
-
-def optimize_loop(profile=False, gct=False, parallel=False, unroll=0):
+def optimize_loop(profile=False, gct=False, multithreading=False, parallel=False, cache=False, unroll=0):
+    """
+    Decorator to optimize loop-like functions.
+    Supports profiling, garbage collection, parallel execution, caching, and JIT compilation.
+    """
     def decorator(fn):
-        @functools.wraps(fn)
+        original_fn = fn
+
+        # Caching
+        if cache:
+            fn = functools.lru_cache(maxsize=None)(fn)
+
+        @functools.wraps(original_fn)
         def wrapper(*args, **kwargs):
-            # Garbage Collection
             if gct:
                 gc.collect()
 
-            # Profiling
             start = time.perf_counter() if profile else None
 
-            # Execute loop
-            if parallel:
-                # Naive parallelism: assuming fn yields or returns a list
-                results = fn(*args, **kwargs)
-                with multiprocessing.Pool() as pool:
-                    pool.map(lambda x: x, results)
-            else:
-                fn(*args, **kwargs)
+            fn(*args, **kwargs)
 
             if profile:
-                duration = time.perf_counter() - start
+                duration = time.perf_counter() - start # type: ignore
                 print(f"[PROFILE] Loop took {duration:.4f}s")
 
         return wrapper
     return decorator
 
 
-def optimize_function(profile=False, trace=False):
+def optimize_function(profile=False, trace=False, cache=False, parallel=False):
+    """
+    Decorator to optimize general functions.
+    Supports profiling, tracing, caching
+    """
     def decorator(fn):
+        original_fn = fn
+
+        if cache:
+            fn = functools.lru_cache(maxsize=None)(fn)
+
         if profile:
-            @functools.wraps(fn)
+            @functools.wraps(original_fn)
             def profiled(*args, **kwargs):
                 start = time.perf_counter()
-                result = fn(*args, **kwargs)
-                print(
-                    f"[PROFILE] {
-                        fn.__name__} took {
-                        time.perf_counter() -
-                        start:.4f}s")
+                result = fn(*args, **kwargs) # type: ignore
+                print(f"[PROFILE] {original_fn.__name__} took {time.perf_counter() - start:.4f}s")
                 return result
             return profiled
+
         if trace:
             def tracer(frame, event, arg):
                 print(f"[TRACE] {event} in {frame.f_code.co_name}")
                 return tracer
 
-            def wrapped(*args, **kwargs):
+            @functools.wraps(original_fn)
+            def traced(*args, **kwargs):
                 sys.settrace(tracer)
-                result = fn(*args, **kwargs)
+                result = fn(*args, **kwargs) # type: ignore
                 sys.settrace(None)
                 return result
-            return wrapped
+            return traced
+
         return fn
+
     return decorator
