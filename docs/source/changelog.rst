@@ -3,10 +3,19 @@ Changelog
 
 *Note: This changelog skips version 0.1.1*
 
-Major release 2
+reStructuredPython 2
 ---------------
 
 .. raw:: html
+
+    <details>
+        <summary>2.6.0</summary>
+        <ul>
+            <li>Add optimizations to functions</li>
+            <li>Fix &lt;OPTIMIZE&gt; not preserving indent</li>
+            <li>Add multithreading to loops</li>
+        </ul>
+    </details>
 
     <details>
     <summary>2.5.0 - 2.5.1</summary>
@@ -81,7 +90,7 @@ Major release 2
     </ul>
     </details>
 
-Major release 1
+reStructuredPython 1
 ---------------
 
 .. raw:: html
@@ -102,7 +111,7 @@ Major release 1
     </ul>
     </details>
 
-Major release 0
+reStructuredPython 0
 ---------------
 
 .. raw:: html
