@@ -44,5 +44,5 @@ jobs:
           issue-number: ${{ github.event.pull_request.number }}
           body: |
             ### We successfully built a source distribution!
-            You can [download it from the workflow run](https://github.com/sharktide/actions/runs/${{ github.run_id }})
+            You can [download it from the workflow run](https://github.com/sharktide/restructuredpython/actions/runs/${{ github.run_id }})
             This will be avalible for 90 days.
