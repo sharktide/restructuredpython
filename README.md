@@ -12,9 +12,7 @@
   <a href="https://pepy.tech/projects/restructuredpython">
     <img src="https://static.pepy.tech/badge/restructuredpython/month" alt="PyPI Downloads">
   </a>
-  <a href="https://socket.dev/pypi/package/restructuredpython/overview/2.4.0/tar-gz">
-    <img src="https://socket.dev/api/badge/pypi/package/restructuredpython/2.4.0?artifact_id=tar-gz" alt="Socket Badge">
-  </a>
+  <img src=https://badge.socket.dev/pypi/package/restructuredpython/2.6.0?artifact_id=tar-gz />
 
   <img src="https://www.codefactor.io/repository/github/sharktide/restructuredpython/badge" alt="CodeFactor">
   <img src="https://img.shields.io/pypi/pyversions/restructuredpython" alt="Python Versions">
