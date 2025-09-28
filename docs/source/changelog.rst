@@ -3,16 +3,36 @@ Changelog
 
 *Note: This changelog skips version 0.1.1*
 
-Major release 2
+reStructuredPython 2
 ---------------
 
 .. raw:: html
 
     <details>
-    <summary>2.5.0</summary>
+        <summary>2.6.0</summary>
         <ul>
-            <li>Introduced &lt;OPTIMIZE&gt; markers, which allow restructuredpython code to be executed faster than cpython would normally when restructuredpython is installed.
+            <li>Add optimizations to functions</li>
+            <li>Fix &lt;OPTIMIZE&gt; not preserving indent</li>
+            <li>Add multithreading to loops</li>
         </ul>
+    </details>
+
+    <details>
+    <summary>2.5.0 - 2.5.1</summary>
+        <details>
+            <summary>2.5.0</summary>
+            <ul>
+                <li>Introduced &lt;OPTIMIZE&gt; markers, which allow restructuredpython code to be executed faster than cpython would normally when restructuredpython is installed.
+            </ul>
+        </details>
+        <details>
+            <summary>2.5.1</summary>
+            <ul>
+                <li>Add syntax guide back for SEO and clarity by @sharktide in #95</li>
+                <li>Add -v and --version flags by @sharktide in #84</li>
+                <li>Explicitly state <OPTIMIZE ...> on functions does nothing by @sharktide in #109</li>
+            </ul>
+        </details>
     </details>
 
     <details>
@@ -70,7 +90,7 @@ Major release 2
     </ul>
     </details>
 
-Major release 1
+reStructuredPython 1
 ---------------
 
 .. raw:: html
@@ -91,7 +111,7 @@ Major release 1
     </ul>
     </details>
 
-Major release 0
+reStructuredPython 0
 ---------------
 
 .. raw:: html
