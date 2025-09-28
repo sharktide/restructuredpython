@@ -19,7 +19,14 @@ import functools
 import multiprocessing
 import warnings
 
-def optimize_loop(profile=False, gct=False, multithreading=False, parallel=False, cache=False, unroll=0):
+
+def optimize_loop(
+        profile=False,
+        gct=False,
+        multithreading=False,
+        parallel=False,
+        cache=False,
+        unroll=0):
     """
     Decorator to optimize loop-like functions.
     Supports profiling, garbage collection, parallel execution, caching, and JIT compilation.
@@ -41,7 +48,7 @@ def optimize_loop(profile=False, gct=False, multithreading=False, parallel=False
             fn(*args, **kwargs)
 
             if profile:
-                duration = time.perf_counter() - start # type: ignore
+                duration = time.perf_counter() - start  # type: ignore
                 print(f"[PROFILE] Loop took {duration:.4f}s")
 
         return wrapper
@@ -63,8 +70,12 @@ def optimize_function(profile=False, trace=False, cache=False, parallel=False):
             @functools.wraps(original_fn)
             def profiled(*args, **kwargs):
                 start = time.perf_counter()
-                result = fn(*args, **kwargs) # type: ignore
-                print(f"[PROFILE] {original_fn.__name__} took {time.perf_counter() - start:.4f}s")
+                result = fn(*args, **kwargs)  # type: ignore
+                print(
+                    f"[PROFILE] {
+                        original_fn.__name__} took {
+                        time.perf_counter() -
+                        start:.4f}s")
                 return result
             return profiled
 
@@ -76,7 +87,7 @@ def optimize_function(profile=False, trace=False, cache=False, parallel=False):
             @functools.wraps(original_fn)
             def traced(*args, **kwargs):
                 sys.settrace(tracer)
-                result = fn(*args, **kwargs) # type: ignore
+                result = fn(*args, **kwargs)  # type: ignore
                 sys.settrace(None)
                 return result
             return traced
