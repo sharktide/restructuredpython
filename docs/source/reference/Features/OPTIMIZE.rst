@@ -13,16 +13,17 @@ Use ``<OPTIMIZE ...>`` before a ``for`` or ``while`` loop to apply runtime enhan
 
 .. code-block:: python
 
-<OPTIMIZE gct=True, parallel=True, profile=True, cache=True>
-for i in range(10_000_000) {
-    temp = str(i) * 10
-}
+    <OPTIMIZE gct=True, parallel=True, profile=True, cache=True>
+    for i in range(10_000_000) {
+        temp = str(i) * 10
+    }
 
-.. versionadded:: 
-   Added the cache option in 2.6.0
 
-.. versionchanged::
-   Changed the parallel functionality in 2.6.0 
+.. versionadded:: 2.6.0
+   The cache option
+
+.. versionchanged:: 2.6.0
+   The parallel functionality from multiprocessing to multithreading
 
 Arguments for <OPTIMIZE ...> on loops include:
 
