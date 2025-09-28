@@ -9,10 +9,21 @@ Major release 2
 .. raw:: html
 
     <details>
-    <summary>2.5.0</summary>
-        <ul>
-            <li>Introduced &lt;OPTIMIZE&gt; markers, which allow restructuredpython code to be executed faster than cpython would normally when restructuredpython is installed.
-        </ul>
+    <summary>2.5.0 - 2.5.1</summary>
+        <details>
+            <summary>2.5.0</summary>
+            <ul>
+                <li>Introduced &lt;OPTIMIZE&gt; markers, which allow restructuredpython code to be executed faster than cpython would normally when restructuredpython is installed.
+            </ul>
+        </details>
+        <details>
+            <summary>2.5.1</summary>
+            <ul>
+                <li>Add syntax guide back for SEO and clarity by @sharktide in #95</li>
+                <li>Add -v and --version flags by @sharktide in #84</li>
+                <li>Explicitly state <OPTIMIZE ...> on functions does nothing by @sharktide in #109</li>
+            </ul>
+        </details>
     </details>
 
     <details>
