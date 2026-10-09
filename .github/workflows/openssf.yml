@@ -35,7 +35,6 @@ jobs:
           scorecard --repo=://github.com/sharktide/restructuredpython \
                     --format=sarif \
                     --output=results.sarif \
-                    --publish=true
 
       - name: "Upload results to Security Tab"
         uses: github/codeql-action/upload-sarif@v3
