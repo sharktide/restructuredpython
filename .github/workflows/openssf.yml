@@ -21,6 +21,9 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: "Set up Homebrew"
+        uses: Homebrew/actions/setup-homebrew@master
+
       - name: "Install Scorecard via Homebrew"
         run: |
           brew install scorecard
