@@ -24,19 +24,24 @@ jobs:
       - name: "Set up Homebrew"
         uses: Homebrew/actions/setup-homebrew@main
 
-      - name: "Install Scorecard via Homebrew"
-        run: |
-          brew install scorecard
-
-      - name: "Run Scorecard CLI"
-        env:
-          GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          scorecard --repo=://github.com/sharktide/restructuredpython \
-                    --format=sarif \
-                    --output=results.sarif \
-
-      - name: "Upload results to Security Tab"
+      - name: "Run analysis"
+        uses: ossf/scorecard-action@v2.4.0 # Use the latest stable version
+        with:
+          results_file: results.sarif
+          results_format: sarif
+          repo_token: ${{ secrets.GH_PAT }}
+          publish_results: true
+      
+      - name: "Upload artifact"
+        uses: actions/upload-artifact@v4
+        with:
+          name: SARIF file
+          path: results.sarif
+      
+      - name: "Upload to code-scanning"
         uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: results.sarif
+
         with:
           sarif_file: results.sarif
