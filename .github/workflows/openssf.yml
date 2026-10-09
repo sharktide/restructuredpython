@@ -18,9 +18,23 @@ jobs:
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v4
-      - name: "Run analysis"
-        uses: ossf/scorecard-action@v2.4.0
         with:
-          results_file: results.sarif
-          results_format: sarif
-          publish_results: true
+          persist-credentials: false
+
+      - name: "Install Scorecard via Homebrew"
+        run: |
+          brew install scorecard
+
+      - name: "Run Scorecard CLI"
+        env:
+          GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          scorecard --repo=://github.com{{ github.repository }} \
+                    --format=sarif \
+                    --output=results.sarif \
+                    --publish=true
+
+      - name: "Upload results to Security Tab"
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: results.sarif
